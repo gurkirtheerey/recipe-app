@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Calendar,
   ChevronUp,
@@ -7,7 +9,8 @@ import {
   Settings,
   User2,
 } from "lucide-react";
-
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +21,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
@@ -25,18 +29,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { createClient } from "@/lib/supabase/server";
 import SidebarSignOut from "./sidebar-signout";
+
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Dashboard",
+    url: "/dashboard",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Profile",
+    url: "/profile",
     icon: Inbox,
   },
   {
@@ -56,26 +60,47 @@ const items = [
   },
 ];
 
-export async function AppSidebar() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+interface AppSidebarProps {
+  user: {
+    email?: string;
+    user_metadata: {
+      first_name?: string;
+      last_name?: string;
+    };
+  };
+}
+
+export function AppSidebar({ user }: AppSidebarProps) {
+  const { setOpenMobile, isMobile, setOpen } = useSidebar();
+  const router = useRouter();
+  const username = user?.user_metadata.first_name;
+
+  const handleNavigation = (url: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push(url);
+    setTimeout(() => {
+      if (isMobile) {
+        setOpenMobile(false);
+      } else {
+        setOpen(false);
+      }
+    }, 150);
+  };
 
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Mrs. Nusantara</SidebarGroupLabel>
+          <SidebarGroupLabel>Welcome, {username}!</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url} onClick={handleNavigation(item.url)}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
