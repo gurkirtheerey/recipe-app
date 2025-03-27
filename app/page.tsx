@@ -326,7 +326,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <footer className="mt-24 pt-12 border-t border-gray-200">
+        <footer className="mt-24 pt-16 pb-16 border-t border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
