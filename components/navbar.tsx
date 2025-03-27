@@ -24,24 +24,29 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/features"
+              data-testid="features-link-navbar"
               className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               Features
             </Link>
             <Link
               href="/pricing"
+              data-testid="pricing-link-navbar"
               className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               Pricing
             </Link>
             <Link
-              href="/blog"
+              href="https://www.gurkirtheerey.com"
+              data-testid="blog-link-navbar"
+              target="_blank"
               className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               Blog
             </Link>
             <Link
               href="/about"
+              data-testid="about-link-navbar"
               className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               About
@@ -50,7 +55,7 @@ export default function Navbar() {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/login">
+            <Link href="/login" data-testid="login-link-navbar">
               <Button
                 variant="ghost"
                 className="text-gray-600 hover:text-blue-600"
@@ -58,7 +63,7 @@ export default function Navbar() {
                 Login
               </Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/signup" data-testid="signup-link-navbar">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                 Sign Up
               </Button>
@@ -80,24 +85,29 @@ export default function Navbar() {
               <div className="flex flex-col space-y-6 mt-8">
                 <Link
                   href="/features"
+                  data-testid="features-link-navbar"
                   className="text-gray-600 hover:text-blue-600 transition-colors text-lg py-2"
                 >
                   Features
                 </Link>
                 <Link
                   href="/pricing"
+                  data-testid="pricing-link-navbar"
                   className="text-gray-600 hover:text-blue-600 transition-colors text-lg py-2"
                 >
                   Pricing
                 </Link>
                 <Link
-                  href="/blog"
+                  href="https://www.gurkirtheerey.com"
+                  target="_blank"
+                  data-testid="blog-link-navbar"
                   className="text-gray-600 hover:text-blue-600 transition-colors text-lg py-2"
                 >
                   Blog
                 </Link>
                 <Link
                   href="/about"
+                  data-testid="about-link-navbar"
                   className="text-gray-600 hover:text-blue-600 transition-colors text-lg py-2"
                 >
                   About

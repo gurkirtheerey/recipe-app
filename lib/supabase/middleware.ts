@@ -39,6 +39,10 @@ export async function updateSession(request: NextRequest) {
     "/reset-password",
     "/public", // Any other public routes,
     "/check-email",
+    "/features",
+    "/pricing",
+    "/blog",
+    "/about",
   ];
 
   // Define routes that authenticated users should not access
