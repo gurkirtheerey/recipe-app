@@ -15,9 +15,9 @@ export default async function Dashboard() {
 
   return (
     <>
-      <div className="flex justify-between items-center p-4 w-ful">
+      <div className="flex justify-between p-4 w-full">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex justify-center gap-4">
           <Button>Discover</Button>
           <Button variant="outline">Create Recipe</Button>
         </div>
