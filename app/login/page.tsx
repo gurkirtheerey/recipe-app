@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import SignInForm from "./login-form";
 import { redirect } from "next/navigation";
+import Navbar from "@/components/navbar";
+
 export default async function Login() {
   const supabase = await createClient();
   const {
@@ -12,8 +14,14 @@ export default async function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <SignInForm />
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      {/* Main Content */}
+      <div className="container mx-auto px-4 pt-24">
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
+          <SignInForm />
+        </div>
+      </div>
     </div>
   );
 }
