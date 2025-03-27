@@ -99,6 +99,8 @@ export default async function Home() {
         <div className="min-h-screen bg-white">
           <div className="container mx-auto px-4 py-12">
             <main className="text-center">
+              {/* Previous main content remains the same */}
+
               <section className="max-w-6xl mx-auto mt-16">
                 <h3 className="text-3xl font-bold text-gray-800 mb-12">
                   Discover How Nibbl Transforms Your Cooking Experience
@@ -197,6 +199,8 @@ export default async function Home() {
                 </div>
               </section>
             </main>
+
+            {/* Previous footer code remains the same */}
           </div>
         </div>
 
