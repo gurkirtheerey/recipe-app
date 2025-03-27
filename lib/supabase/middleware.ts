@@ -37,7 +37,8 @@ export async function updateSession(request: NextRequest) {
     "/code", // Email confirmation page
     "/", // Home page
     "/reset-password",
-    "/public", // Any other public routes
+    "/public", // Any other public routes,
+    "/check-email",
   ];
 
   // Define routes that authenticated users should not access
