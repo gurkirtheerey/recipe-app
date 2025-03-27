@@ -45,13 +45,11 @@ export async function updateSession(request: NextRequest) {
   const unauthenticatedOnlyRoutes = ["/login", "/signup", "/reset-password"];
 
   const currentPath = request.nextUrl.pathname;
-  console.log("Current path:", currentPath);
 
   // Check if the current route is a public route
   const isPublicRoute = publicRoutes.some((route) => {
     const matches =
       currentPath === route || currentPath.startsWith(`${route}/`);
-    console.log(`Checking public route ${route}: ${matches}`);
     return matches;
   });
 
@@ -59,7 +57,6 @@ export async function updateSession(request: NextRequest) {
   const isUnauthenticatedOnlyRoute = unauthenticatedOnlyRoutes.some((route) => {
     const matches =
       currentPath === route || currentPath.startsWith(`${route}/`);
-    console.log(`Checking unauthenticated route ${route}: ${matches}`);
     return matches;
   });
 
@@ -67,15 +64,8 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("User:", user ? "authenticated" : "not authenticated");
-  console.log("Is public route:", isPublicRoute);
-  console.log("Is unauthenticated only route:", isUnauthenticatedOnlyRoute);
-
   // Redirect unauthenticated users from protected routes
   if (!user && !isPublicRoute) {
-    console.log(
-      "Redirecting to login - user not authenticated and route not public"
-    );
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
@@ -83,9 +73,6 @@ export async function updateSession(request: NextRequest) {
 
   // Redirect authenticated users from unauthenticated-only routes
   if (user && isUnauthenticatedOnlyRoute) {
-    console.log(
-      "Redirecting to dashboard - user authenticated trying to access unauthenticated route"
-    );
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
