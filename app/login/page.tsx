@@ -17,7 +17,7 @@ export default async function Login() {
     <div className="min-h-screen bg-white">
       <Navbar />
       {/* Main Content */}
-      <div className="container mx-auto px-4 pt-24">
+      <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
           <SignInForm />
         </div>

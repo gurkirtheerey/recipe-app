@@ -11,9 +11,9 @@ const SignInForm = () => {
   const [state, formAction, isPending] = useActionState(login, null);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <form
-        className="flex flex-col gap-6 w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 transform transition-all hover:shadow-3xl"
+        className="flex flex-col gap-6 w-full max-w-md bg-white rounded-2xl shadow-lg p-8"
         action={formAction}
       >
         <div className="text-center space-y-2">
