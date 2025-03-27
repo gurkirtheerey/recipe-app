@@ -4,8 +4,8 @@ import {
   Home,
   Inbox,
   Search,
-  Settings,
   User2,
+  Utensils,
 } from "lucide-react";
 
 import {
@@ -50,9 +50,9 @@ const items = [
     icon: Search,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Recipes",
+    url: "/recipes",
+    icon: Utensils,
   },
 ];
 
