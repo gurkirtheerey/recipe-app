@@ -5,7 +5,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import {
   type Recipe,
@@ -14,6 +13,8 @@ import {
   favoriteRecipes,
   collections,
 } from "@/app/data/dummy-recipes";
+import { createClient } from "@/lib/supabase/server";
+import { RecipeCard } from "@/components/RecipeCard";
 
 interface RecipeRowProps {
   title: string;
@@ -22,57 +23,34 @@ interface RecipeRowProps {
 }
 
 function RecipeRow({ title, items, type }: RecipeRowProps) {
+  const route = title.toLowerCase().replace(/\s+/g, "-");
+  const displayItems = items.slice(0, 6);
+
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-      <div className="relative w-full">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+        <Link
+          href={`/${route}`}
+          className="text-sm text-primary hover:underline"
+        >
+          View All
+        </Link>
+      </div>
+      <div className="relative -mx-4 sm:mx-0">
         <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          className="w-full"
         >
-          <CarouselContent className="-ml-1 sm:-ml-4">
-            {items.map((item) => (
+          <CarouselContent className="-ml-1 pr-2 sm:-ml-4 sm:pr-0">
+            {displayItems.map((item) => (
               <CarouselItem
                 key={item.id}
-                className="pl-1 sm:pl-4 basis-[200px] min-w-0 sm:basis-[300px]"
+                className="pl-1 sm:pl-4 basis-[280px] min-w-0"
               >
-                <Link href={`/${type}s/${item.id}`}>
-                  <Card className="h-full">
-                    <CardHeader className="p-0">
-                      <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg">
-                        <img
-                          src={
-                            type === "recipe"
-                              ? (item as Recipe).image
-                              : (item as Collection).coverImage
-                          }
-                          alt={item.title}
-                          className="h-full w-full object-cover transition-transform hover:scale-105"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="p-2 sm:p-6">
-                        <CardTitle className="line-clamp-1 text-sm sm:text-lg">
-                          {item.title}
-                        </CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="hidden sm:block p-6">
-                      {type === "recipe" ? (
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {(item as Recipe).description}
-                        </p>
-                      ) : (
-                        <p className="text-sm text-muted-foreground">
-                          {(item as Collection).recipeCount} recipes
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Link>
+                <RecipeCard item={item} type={type} />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -86,21 +64,38 @@ function RecipeRow({ title, items, type }: RecipeRowProps) {
   );
 }
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+
+  const rows = [
+    { title: "Recent Recipes", items: recentRecipes, type: "recipe" as const },
+    {
+      title: "Favorite Recipes",
+      items: favoriteRecipes,
+      type: "recipe" as const,
+    },
+    {
+      title: "Recipe Collections",
+      items: collections,
+      type: "collection" as const,
+    },
+  ];
+
   return (
     <main className="min-h-screen bg-background overflow-x-hidden">
-      <div className="container relative mx-auto py-8 space-y-8 px-2 sm:px-16 lg:px-24">
-        <RecipeRow title="Recent Recipes" items={recentRecipes} type="recipe" />
-        <RecipeRow
-          title="Favorite Recipes"
-          items={favoriteRecipes}
-          type="recipe"
-        />
-        <RecipeRow
-          title="Recipe Collections"
-          items={collections}
-          type="collection"
-        />
+      <div className="container mx-auto py-8 space-y-8 px-2 sm:px-16 lg:px-24">
+        {rows.map((row) => (
+          <RecipeRow key={row.title} {...row} />
+        ))}
       </div>
     </main>
   );
