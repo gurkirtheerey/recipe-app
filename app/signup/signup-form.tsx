@@ -12,6 +12,7 @@ const SignUpForm = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <form
+        data-testid="signup-form"
         className="flex flex-col gap-6 w-full max-w-md bg-white rounded-2xl shadow-lg p-8"
         action={formAction}
       >
@@ -27,6 +28,7 @@ const SignUpForm = () => {
             <div className="relative flex-1">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
+                data-testid="first-name-input"
                 type="text"
                 placeholder="First Name"
                 name="first_name"
@@ -36,6 +38,7 @@ const SignUpForm = () => {
             <div className="relative flex-1">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
+                data-testid="last-name-input"
                 type="text"
                 placeholder="Last Name"
                 name="last_name"
@@ -47,6 +50,7 @@ const SignUpForm = () => {
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <Input
+              data-testid="email-input"
               type="email"
               placeholder="Email"
               name="email"
@@ -57,6 +61,7 @@ const SignUpForm = () => {
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <Input
+              data-testid="password-input"
               type="password"
               placeholder="Password"
               name="password"
@@ -66,6 +71,7 @@ const SignUpForm = () => {
         </div>
 
         <Button
+          data-testid="submit-button"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02]"
           type="submit"
           disabled={isPending}
@@ -83,6 +89,7 @@ const SignUpForm = () => {
         <div className="flex gap-2 text-sm justify-center items-center text-gray-600">
           <span>Already have an account?</span>
           <Link
+            data-testid="login-link"
             className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
             href="/login"
           >
@@ -91,7 +98,10 @@ const SignUpForm = () => {
         </div>
 
         {state?.error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div
+            data-testid="error-message"
+            className="p-3 bg-red-50 border border-red-200 rounded-lg"
+          >
             <p className="text-sm font-medium text-red-600 text-center">
               {state.error}
             </p>
