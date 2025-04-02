@@ -1,6 +1,6 @@
-import { getRecipes } from "./actions";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { getRecipes } from './actions';
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 
 export default async function RecipesPage() {
   const supabase = await createClient();
@@ -9,7 +9,7 @@ export default async function RecipesPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   const recipes = await getRecipes(user.id);

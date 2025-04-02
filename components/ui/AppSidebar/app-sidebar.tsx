@@ -1,4 +1,4 @@
-import { Home, User, Utensils } from "lucide-react";
+import { Home, User, Utensils } from 'lucide-react';
 
 import {
   Sidebar,
@@ -10,25 +10,25 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { createClient } from "@/lib/supabase/server";
-import SidebarAction from "./SidebarAction";
-import { redirect } from "next/navigation";
+} from '@/components/ui/sidebar';
+import { createClient } from '@/lib/supabase/server';
+import SidebarAction from './SidebarAction';
+import { redirect } from 'next/navigation';
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "/dashboard",
+    title: 'Home',
+    url: '/dashboard',
     icon: Home,
   },
   {
-    title: "Recipes",
-    url: "/recipes",
+    title: 'Recipes',
+    url: '/recipes',
     icon: Utensils,
   },
   {
-    title: "Profile",
-    url: "/profile",
+    title: 'Profile',
+    url: '/profile',
     icon: User,
   },
 ];
@@ -40,7 +40,7 @@ export async function AppSidebar() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   return (

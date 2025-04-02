@@ -1,7 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
-import SignInForm from "./login-form";
-import { redirect } from "next/navigation";
-import Navbar from "@/components/navbar";
+import { createClient } from '@/lib/supabase/server';
+import SignInForm from './login-form';
+import { redirect } from 'next/navigation';
+import Navbar from '@/components/navbar';
 
 export default async function Login() {
   const supabase = await createClient();
@@ -10,7 +10,7 @@ export default async function Login() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   }
 
   return (

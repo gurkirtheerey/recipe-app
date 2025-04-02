@@ -1,13 +1,7 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Utensils, Menu } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Utensils, Menu } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 export default function Navbar() {
   return (
@@ -56,17 +50,12 @@ export default function Navbar() {
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/login" data-testid="login-link-navbar">
-              <Button
-                variant="ghost"
-                className="text-gray-600 hover:text-blue-600"
-              >
+              <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
                 Login
               </Button>
             </Link>
             <Link href="/signup" data-testid="signup-link-navbar">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Sign Up
-              </Button>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">Sign Up</Button>
             </Link>
           </div>
 
@@ -114,17 +103,12 @@ export default function Navbar() {
                 </Link>
                 <div className="flex flex-col space-y-4 mt-4 pt-6 border-t border-gray-100">
                   <Link href="/login" className="w-full">
-                    <Button
-                      variant="ghost"
-                      className="w-full text-gray-600 hover:text-blue-600 text-lg h-12"
-                    >
+                    <Button variant="ghost" className="w-full text-gray-600 hover:text-blue-600 text-lg h-12">
                       Login
                     </Button>
                   </Link>
                   <Link href="/signup" className="w-full">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg h-12">
-                      Sign Up
-                    </Button>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg h-12">Sign Up</Button>
                   </Link>
                 </div>
               </div>
