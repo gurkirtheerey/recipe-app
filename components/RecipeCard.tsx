@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { type Recipe, type Collection } from "@/app/data/dummy-recipes";
 import Link from "next/link";
+import Image from "next/image";
 
 interface RecipeCardProps {
   item: Recipe | Collection;
@@ -12,15 +13,16 @@ export function RecipeCard({ item, type, className = "" }: RecipeCardProps) {
   return (
     <Link href={`/${type}s/${item.id}`} className="block h-full">
       <Card
-        className={`h-full hover:shadow-lg transition-all duration-300 ${className}`}
+        className={`h-full hover:shadow-lg transition-all duration-300 ${className} p-0`}
       >
         <CardHeader className="p-0">
-          <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg">
-            <img
+          <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg relative">
+            <Image
               src={item.image}
               alt={item.title}
-              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-              loading="lazy"
+              fill
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
           <div className="p-3 sm:p-4">

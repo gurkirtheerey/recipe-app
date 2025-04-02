@@ -66,10 +66,7 @@ function RecipeRow({ title, items, type }: RecipeRowProps) {
 
 export default async function RecipesPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+  const { error } = await supabase.auth.getUser();
 
   if (error) {
     console.error("Error fetching user:", error);
