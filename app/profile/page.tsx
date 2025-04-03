@@ -2,22 +2,19 @@ import { createClient } from '@/lib/supabase/server';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { error } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (error) {
+    console.error("Error fetching user:", error);
+    return null;
   }
 
-  // Now TypeScript knows user is not null
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold">Profile</h1>
-      <div className="mt-4">
-        <p>Email: {user.email}</p>
-        <p>User ID: {user.id}</p>
+    <main className="min-h-screen bg-background">
+      <div className="container mx-auto py-8 space-y-8 px-2 sm:px-16 lg:px-24">
+        <h1 className="text-3xl font-bold">Profile</h1>
+        {/* Add profile content here */}
       </div>
-    </div>
+    </main>
   );
 }

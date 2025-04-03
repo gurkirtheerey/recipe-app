@@ -7,11 +7,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@radix-ui/react-dropdown-menu';
-import { SidebarMenuButton } from '../sidebar';
-import { ChevronUp } from 'lucide-react';
-import { redirect } from 'next/navigation';
-import { User } from '@supabase/supabase-js';
+} from "@radix-ui/react-dropdown-menu";
+import { ChevronUp } from "lucide-react";
+import { redirect } from "next/navigation";
+import { User } from "@supabase/supabase-js";
+import { SidebarMenuButton } from "../ui/sidebar";
 const SidebarAction = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
