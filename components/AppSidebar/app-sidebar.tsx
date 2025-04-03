@@ -47,7 +47,7 @@ export async function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Mrs. Nusantara</SidebarGroupLabel>
+          <SidebarGroupLabel>Nibbl</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
