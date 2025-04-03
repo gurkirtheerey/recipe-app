@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { Recipe } from '../../types/recipeTypes';
 
-export async function getRecipes(userId: string): Promise<Recipe[]> {
+export async function getRecipes(): Promise<Recipe[]> {
+  
   const supabase = await createClient();
-  const { data, error } = await supabase.from('recipes').select('*').eq('user_id', userId);
+  const { data, error } = await supabase.from('recipes').select('*');
 
   if (error) {
     throw new Error(error.message);
