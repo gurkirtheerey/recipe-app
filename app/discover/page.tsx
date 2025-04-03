@@ -1,8 +1,8 @@
-import { getRecipes } from "../recipes/actions";
+import { getAllRecipes } from "../recipes/actions";
 import { RecipeListPage } from "@/components/Recipe/RecipeListPage";
 
 export default async function DiscoverPage() {
-  const recipes = await getRecipes();
+  const recipes = await getAllRecipes();
   
   return (
     <RecipeListPage 

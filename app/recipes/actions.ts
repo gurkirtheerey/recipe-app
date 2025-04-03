@@ -23,8 +23,18 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
   }
 }
 
+export async function getMyRecipes(user_id: string): Promise<Recipe[]> {
+  
+  const supabase = await createClient();
+  const { data, error } = await supabase.from('recipes').select('*').eq('user_id', user_id);
 
-export async function getRecipes(): Promise<Recipe[]> {
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Recipe[];
+}
+
+export async function getAllRecipes(): Promise<Recipe[]> {
   
   const supabase = await createClient();
   const { data, error } = await supabase.from('recipes').select('*');
