@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { createClient } from "@/lib/supabase/server";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar/app-sidebar";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { createClient } from '@/lib/supabase/server';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/AppSidebar/app-sidebar';
+import { Toaster } from 'sonner';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -47,6 +48,7 @@ export default async function RootLayout({
           </div>
           <main className="flex-1">{children}</main>
         </SidebarProvider>
+        <Toaster />
       </body>
     </html>
   );
