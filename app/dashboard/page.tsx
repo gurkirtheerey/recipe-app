@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import DashboardContent from './DashboardContent';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -13,15 +13,5 @@ export default async function Dashboard() {
     redirect('/login');
   }
 
-  return (
-    <>
-      <div className="flex justify-between p-4 w-full">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="flex justify-center gap-4">
-          <Button>Discover</Button>
-          <Button variant="outline">Create Recipe</Button>
-        </div>
-      </div>
-    </>
-  );
+  return <DashboardContent />;
 }
