@@ -1,13 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { Mail } from "lucide-react";
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
+import { Mail } from 'lucide-react';
 
 export default async function CheckEmail() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
   if (data.user) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   }
 
   return (
@@ -22,16 +22,13 @@ export default async function CheckEmail() {
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-gray-900">Check your email</h1>
           <p className="text-gray-600">
-            We&apos;ve sent you a magic link to sign in. Please check your inbox
-            and click the link to continue.
+            We&apos;ve sent you a magic link to sign in. Please check your inbox and click the link to continue.
           </p>
         </div>
 
         <div className="mt-8 text-sm text-gray-500">
           <p>Didn&apos;t receive an email?</p>
-          <p className="mt-2">
-            Check your spam folder or try signing in again.
-          </p>
+          <p className="mt-2">Check your spam folder or try signing in again.</p>
         </div>
       </div>
     </div>

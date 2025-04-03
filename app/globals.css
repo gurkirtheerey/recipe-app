@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -147,7 +147,7 @@
 
 @layer base {
   button,
-  [role="button"] {
+  [role='button'] {
     cursor: pointer;
   }
 }

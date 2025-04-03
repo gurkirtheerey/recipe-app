@@ -1,21 +1,18 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { login } from "../actions/auth/actions";
-import { Input } from "@/components/ui/input";
-import { useActionState } from "react";
-import Link from "next/link";
-import { Mail, Lock } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { login } from '../actions/auth/actions';
+import { Input } from '@/components/ui/input';
+import { useActionState } from 'react';
+import Link from 'next/link';
+import { Mail, Lock } from 'lucide-react';
 
 const SignInForm = () => {
   const [state, formAction, isPending] = useActionState(login, null);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <form
-        className="flex flex-col gap-6 w-full max-w-md bg-white rounded-2xl shadow-lg p-8"
-        action={formAction}
-      >
+      <form className="flex flex-col gap-6 w-full max-w-md bg-white rounded-2xl shadow-lg p-8" action={formAction}>
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
           <p className="text-gray-500">Please sign in to your account</p>
@@ -55,25 +52,20 @@ const SignInForm = () => {
               Logging in...
             </span>
           ) : (
-            "Sign In"
+            'Sign In'
           )}
         </Button>
 
         <div className="flex gap-2 text-sm justify-center items-center text-gray-600">
           <span>Don&apos;t have an account?</span>
-          <Link
-            className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-            href="/signup"
-          >
+          <Link className="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/signup">
             Sign up
           </Link>
         </div>
 
         {state?.error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm font-medium text-red-600 text-center">
-              {state.error}
-            </p>
+            <p className="text-sm font-medium text-red-600 text-center">{state.error}</p>
           </div>
         )}
       </form>

@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -10,7 +10,7 @@ export default async function Dashboard() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   return (

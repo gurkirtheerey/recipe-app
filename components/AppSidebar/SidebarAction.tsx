@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { signOut } from "@/app/actions/auth/actions";
-import { User2 } from "lucide-react";
+import { signOut } from '@/app/actions/auth/actions';
+import { User2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +26,7 @@ const SidebarAction = ({ user }: { user: User }) => {
         className="w-[--radix-popper-anchor-width] min-w-[200px] rounded-md border bg-white p-1 shadow-md"
       >
         <DropdownMenuItem
-          onClick={() => redirect("/profile")}
+          onClick={() => redirect('/profile')}
           className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-gray-100"
         >
           <span>Profile</span>
