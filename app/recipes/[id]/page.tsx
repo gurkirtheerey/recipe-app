@@ -1,16 +1,15 @@
-import { notFound } from "next/navigation";
-import { getRecipeById } from "../actions";
-import { Clock,} from "lucide-react";
-import Image from "next/image";
-import BackButton from "@/components/BackButton";
-interface RecipePageProps {
-  params: {
-    id: string;
-  };
-}
+import { notFound } from 'next/navigation';
+import { getRecipeById } from '../actions';
+import { Clock } from 'lucide-react';
+import Image from 'next/image';
+import BackButton from '@/components/BackButton';
 
-export default async function RecipePage({ params }: RecipePageProps) {
-    const { id } = await params;
+type RecipeParams = Promise<{
+  id: string;
+}>;
+
+export default async function RecipePage({ params }: { params: RecipeParams }) {
+  const { id } = await params;
   const recipe = await getRecipeById(id);
 
   if (!recipe) {
@@ -22,21 +21,13 @@ export default async function RecipePage({ params }: RecipePageProps) {
       <div className="relative">
         {/* Navigation Buttons */}
         <div className="absolute top-4 left-4 z-10">
-        <BackButton />  
+          <BackButton />
         </div>
-        
 
         {/* Recipe Image */}
         {recipe.image && (
           <div className="relative h-[300px] sm:h-[400px] w-full">
-            <Image
-              src={recipe.image}
-              alt={recipe.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
+            <Image src={recipe.image} alt={recipe.title} fill className="object-cover" sizes="100vw" priority />
           </div>
         )}
       </div>
@@ -50,8 +41,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
                 <span>{recipe.prepTime} mins</span>
-              </div> 
-            
+              </div>
             </div>
           </div>
 
@@ -94,4 +84,4 @@ export default async function RecipePage({ params }: RecipePageProps) {
       </div>
     </main>
   );
-} 
+}
