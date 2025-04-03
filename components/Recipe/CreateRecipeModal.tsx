@@ -9,6 +9,9 @@ import { Textarea } from '../ui/textarea';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createRecipeSchema, type CreateRecipeSchema } from '@/lib/schemas/recipe';
 
 interface CreateRecipeModalProps {
   open: boolean;
@@ -16,32 +19,41 @@ interface CreateRecipeModalProps {
 }
 
 const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<CreateRecipeSchema>({
+    resolver: zodResolver(createRecipeSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      ingredients: '',
+      instructions: '',
+    },
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
   const { user, isLoading: isAuthLoading } = useAuth();
   const supabase = createClient();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = async (values: CreateRecipeSchema) => {
     if (!user) {
       console.error('No user found');
       return;
     }
 
-    setIsSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
-    const title = formData.get('title') as string;
-    const description = formData.get('description') as string;
-    const ingredients = formData.get('ingredients') as string;
-    const instructions = formData.get('instructions') as string;
+    setIsLoading(true);
 
     try {
       const { error } = await supabase.from('recipes').insert([
         {
-          title,
-          description,
-          ingredients: ingredients.split('\n'),
-          instructions: instructions.split('\n'),
+          title: values.title,
+          description: values.description,
+          ingredients: values.ingredients.split('\n'),
+          instructions: values.instructions.split('\n'),
           user_id: user.id,
         },
       ]);
@@ -53,7 +65,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       console.error('Error creating recipe:', error);
       toast.error('Error creating recipe');
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -62,27 +74,31 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       <DialogContent>
         <DialogTitle>Create Recipe</DialogTitle>
         <DialogDescription>Create a new recipe to get started.</DialogDescription>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="title">Title</Label>
-              <Input type="text" id="title" name="title" placeholder="Recipe title" required />
+              <Input type="text" id="title" placeholder="Recipe title" {...register('title')} />
+              {errors.title && <p className="text-red-500">{errors.title.message}</p>}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" name="description" placeholder="Recipe description" required />
+              <Textarea id="description" placeholder="Recipe description" {...register('description')} />
+              {errors.description && <p className="text-red-500">{errors.description.message}</p>}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="ingredients">Ingredients</Label>
-              <Textarea id="ingredients" name="ingredients" placeholder="Recipe ingredients" required />
+              <Textarea id="ingredients" placeholder="Recipe ingredients" {...register('ingredients')} />
+              {errors.ingredients && <p className="text-red-500">{errors.ingredients.message}</p>}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="instructions">Instructions</Label>
-              <Textarea id="instructions" name="instructions" placeholder="Recipe instructions" required />
+              <Textarea id="instructions" placeholder="Recipe instructions" {...register('instructions')} />
+              {errors.instructions && <p className="text-red-500">{errors.instructions.message}</p>}
             </div>
           </div>
-          <Button className="w-full mt-4" type="submit" disabled={isSubmitting || isAuthLoading || !user}>
-            {isSubmitting ? 'Creating...' : 'Create'}
+          <Button className="w-full mt-4" type="submit" disabled={isLoading || isAuthLoading || !user}>
+            {isLoading ? 'Creating...' : 'Create'}
           </Button>
         </form>
       </DialogContent>
