@@ -14,72 +14,73 @@ export interface Collection {
   image: string;
 }
 
-export const recentRecipes: Recipe[] = [
-  {
-    id: uuidv4(),
-    title: "Spaghetti Carbonara",
-    image:
-      "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=800",
-    description:
-      "Classic Italian pasta dish with eggs, cheese, pancetta, and black pepper.",
-  },
-  {
-    id: uuidv4(),
-    title: "Grilled Salmon",
-    image:
-      "https://images.unsplash.com/photo-1485921325833-c519f76c4927?q=80&w=800",
-    description:
-      "Fresh salmon fillet with lemon and herbs, grilled to perfection.",
-  },
-  {
-    id: uuidv4(),
-    title: "Avocado Toast",
-    image:
-      "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?q=80&w=800",
-    description:
-      "Smashed avocado on sourdough with poached eggs and chili flakes.",
-  },
-  {
-    id: uuidv4(),
-    title: "Berry Smoothie Bowl",
-    image:
-      "https://images.unsplash.com/photo-1626074353765-517a681e40be?q=80&w=800",
-    description:
-      "Mixed berries smoothie topped with granola, coconut, and fresh fruits.",
-  },
-  {
-    id: uuidv4(),
-    title: "Cheeseburger",
-    image:
-      "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?q=80&w=800",
-    description:
-      "Juicy beef patty with melted cheese, lettuce, tomato, and a soft bun.",
-  },
-  {
-    id: uuidv4(),
-    title: "Mediterranean Pasta",
-    image:
-      "https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=800",
-    description:
-      "Fresh pasta with sun-dried tomatoes, olives, and fresh herbs in olive oil.",
-  },
-  {
-    id: uuidv4(),
-    title: "Korean BBQ Ribs",
-    image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800",
-    description:
-      "Sweet and spicy Korean-style BBQ ribs with sesame seeds and green onions.",
-  },
-  {
-    id: uuidv4(),
-    title: "Mango Sticky Rice",
-    image:
-      "https://images.unsplash.com/photo-1600271886742-f049cd451bba?q=80&w=800",
-    description:
-      "Traditional Thai dessert with sweet sticky rice, fresh mango, and coconut cream.",
-  },
-];
+export const recentRecipes: Recipe[] = [];
+// export const recentRecipes: Recipe[] = [
+//   {
+//     id: uuidv4(),
+//     title: "Spaghetti Carbonara",
+//     image:
+//       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=800",
+//     description:
+//       "Classic Italian pasta dish with eggs, cheese, pancetta, and black pepper.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Grilled Salmon",
+//     image:
+//       "https://images.unsplash.com/photo-1485921325833-c519f76c4927?q=80&w=800",
+//     description:
+//       "Fresh salmon fillet with lemon and herbs, grilled to perfection.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Avocado Toast",
+//     image:
+//       "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?q=80&w=800",
+//     description:
+//       "Smashed avocado on sourdough with poached eggs and chili flakes.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Berry Smoothie Bowl",
+//     image:
+//       "https://images.unsplash.com/photo-1626074353765-517a681e40be?q=80&w=800",
+//     description:
+//       "Mixed berries smoothie topped with granola, coconut, and fresh fruits.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Cheeseburger",
+//     image:
+//       "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?q=80&w=800",
+//     description:
+//       "Juicy beef patty with melted cheese, lettuce, tomato, and a soft bun.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Mediterranean Pasta",
+//     image:
+//       "https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=800",
+//     description:
+//       "Fresh pasta with sun-dried tomatoes, olives, and fresh herbs in olive oil.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Korean BBQ Ribs",
+//     image:
+//       "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800",
+//     description:
+//       "Sweet and spicy Korean-style BBQ ribs with sesame seeds and green onions.",
+//   },
+//   {
+//     id: uuidv4(),
+//     title: "Mango Sticky Rice",
+//     image:
+//       "https://images.unsplash.com/photo-1600271886742-f049cd451bba?q=80&w=800",
+//     description:
+//       "Traditional Thai dessert with sweet sticky rice, fresh mango, and coconut cream.",
+//   },
+// ];
 
 export const favoriteRecipes: Recipe[] = [
   {

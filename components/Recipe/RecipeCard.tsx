@@ -1,13 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Recipe, type Collection } from "@/app/data/dummy-recipes";
+import {
+  type Recipe,
+  type Collection,
+  type RecipeCardProps,
+} from "@/types/recipeTypes";
 import Link from "next/link";
 import Image from "next/image";
-
-interface RecipeCardProps {
-  item: Recipe | Collection;
-  type: "recipe" | "collection";
-  className?: string;
-}
 
 export function RecipeCard({ item, type, className = "" }: RecipeCardProps) {
   return (

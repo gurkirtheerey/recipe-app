@@ -1,5 +1,5 @@
 import { collections } from "@/app/data/dummy-recipes";
-import { RecipeCard } from "@/components/RecipeCard";
+import { RecipeCard } from "@/components/Recipe/RecipeCard";
 
 export default function RecipeCollectionsPage() {
   return (
