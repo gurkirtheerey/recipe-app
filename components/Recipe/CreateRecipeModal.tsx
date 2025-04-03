@@ -8,6 +8,7 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface CreateRecipeModalProps {
   open: boolean;
@@ -47,8 +48,10 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
 
       if (error) throw error;
       setOpen(false);
+      toast.success('Recipe created successfully');
     } catch (error) {
       console.error('Error creating recipe:', error);
+      toast.error('Error creating recipe');
     } finally {
       setIsSubmitting(false);
     }
