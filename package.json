@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test-ui": "playwright test --ui"
+    "test": "playwright test --ui"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
