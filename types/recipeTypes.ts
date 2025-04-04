@@ -5,8 +5,9 @@ export interface Recipe {
   description: string;
   ingredients?: string[];
   instructions?: string[];
-  prepTime?: number;
-  cookTime?: number;
+  prep_time?: number;
+  cook_time?: number;
+  total_time?: number;
   servings?: number;
   rating?: number;
   created_at?: string;
