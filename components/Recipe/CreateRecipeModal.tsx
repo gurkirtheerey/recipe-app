@@ -31,6 +31,9 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       cook_time: 0,
       servings: 0,
       image: undefined,
+      prep_time: 0,
+      cook_time: 0,
+      servings: 0,
     },
   });
 
@@ -143,6 +146,10 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
           total_time: values.prep_time + values.cook_time,
           servings: values.servings,
           image: imageUrl,
+          prep_time: values.prep_time,
+          cook_time: values.cook_time,
+          total_time: values.prep_time + values.cook_time,
+          servings: values.servings,
         },
       ]);
 
