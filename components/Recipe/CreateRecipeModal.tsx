@@ -26,6 +26,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       description: '',
       ingredients: '',
       instructions: '',
+      image: undefined,
     },
   });
 
@@ -36,8 +37,33 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = form;
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setValue('image', file);
+  };
+
+  const handleUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const data = await res.json();
+    return data.url;
+  };
 
   const onSubmit = async (values: CreateRecipeSchema) => {
     if (!user) {
@@ -47,6 +73,8 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
 
     setIsLoading(true);
 
+    const imageUrl = await handleUpload(values.image);
+
     try {
       const { error } = await supabase.from('recipes').insert([
         {
@@ -55,6 +83,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
           ingredients: values.ingredients.split('\n'),
           instructions: values.instructions.split('\n'),
           user_id: user.id,
+          image: imageUrl,
         },
       ]);
 
@@ -80,6 +109,11 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
               <Label htmlFor="title">Title</Label>
               <Input type="text" id="title" placeholder="Recipe title" {...register('title')} />
               {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+            </div>
+            <div className="mt-4">
+              <Label htmlFor="file">Image</Label>
+              <Input type="file" id="file" accept="image/*" onChange={handleFileChange} className="mt-2" />
+              {errors.image && <p className="text-red-500">{errors.image.message}</p>}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
