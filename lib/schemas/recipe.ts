@@ -8,6 +8,7 @@ export const createRecipeSchema = z.object({
   prep_time: z.number().min(0),
   cook_time: z.number().min(0),
   servings: z.number().min(1, { message: 'Servings is required.' }),
+  image: z.instanceof(File, { message: 'Image is required.' }),
 });
 
 export type CreateRecipeSchema = z.infer<typeof createRecipeSchema>;
