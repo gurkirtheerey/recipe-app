@@ -48,8 +48,8 @@ export function RecipeRow({ title, items, type }: RecipeRowProps) {
     );
   }
 
-  // Display only the first 6 items in the carousel
-  const displayItems = items.slice(0, 6);
+  // Display only the most recent 6 items in the carousel
+  const displayItems = items.slice(-6).reverse();
 
   return (
     <div className="space-y-4">
