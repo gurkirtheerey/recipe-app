@@ -113,11 +113,6 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
         }
       }
 
-      if (!imageUrl) {
-        toast.error('Failed to upload image');
-        return;
-      }
-
       const { error } = await supabase.from('recipes').insert([
         {
           title: values.title,
