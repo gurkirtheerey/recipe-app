@@ -5,7 +5,7 @@ export const createRecipeSchema = z.object({
   description: z.string().min(1, { message: 'Description is required.' }),
   ingredients: z.string().min(1, { message: 'Ingredients are required.' }),
   instructions: z.string().min(1, { message: 'Instructions are required.' }),
-  image: z.instanceof(File, { message: 'Image is required.' }),
+  image: z.instanceof(File).optional(),
 });
 
 export type CreateRecipeSchema = z.infer<typeof createRecipeSchema>;
