@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createRecipeSchema, type CreateRecipeSchema } from '@/lib/schemas/recipe';
+import { FileErrors } from '@/app/data/recipe-error-types';
 
 interface CreateRecipeModalProps {
   open: boolean;
@@ -51,68 +52,82 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
   const handleUpload = async (file: File) => {
     try {
       if (!file) {
-        console.error('No file selected');
-        return;
+        return FileErrors.NO_FILE_SELECTED;
       }
 
+      // 5MB limit
       if (file.size > 5 * 1024 * 1024) {
-        // 5MB limit
-        toast.error('File size too large. Please upload an image smaller than 5MB');
-        console.error('File size too large. Please upload an image smaller than 5MB');
-        return;
+        return FileErrors.FILE_TOO_LARGE;
       }
 
+      // Only allow JPEG, PNG, or WebP images
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
-        toast.error('Invalid file type. Please upload a JPEG, PNG, or WebP image');
-        console.error('Invalid file type. Please upload a JPEG, PNG, or WebP image');
-        return;
+        return FileErrors.INVALID_FILE_TYPE;
       }
 
+      // Create a form data object to send the file to the server
       const formData = new FormData();
       formData.append('file', file);
 
+      // Send the file to the server
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
 
+      // If the file upload fails, return the error and show a toast
       if (!res.ok) {
         const error = await res.text();
         console.error('Upload failed:', error);
       }
 
+      // Get the URL from the response
       const data = await res.json();
       if (!data.url) {
         console.error('No URL received from upload');
       }
 
+      // Return the URL
       return data.url;
     } catch (error) {
+      // If there is an error, return the error and show a toast
       console.error('Error uploading image:', error);
-      toast.error('Failed to upload image');
+      return FileErrors.UPLOAD_FAILED;
     }
   };
 
   const onSubmit = async (values: CreateRecipeSchema) => {
+    // If the user is not logged in, return
     if (!user) {
       console.error('No user found');
       return;
     }
 
+    // Set the loading state to true
     setIsLoading(true);
 
     try {
       let imageUrl;
+      // If the user has selected an image, upload it
       if (values.image) {
         try {
+          // Upload the image and get the URL
           imageUrl = await handleUpload(values.image);
         } catch (error) {
-          toast.error(error instanceof Error ? error.message : 'Failed to upload image');
+          // If the image upload fails, return the error and show a toast
+          toast.error(error instanceof Error ? error.message : FileErrors.UPLOAD_FAILED);
           return;
         }
       }
 
+      // If the image URL returned is an error, return the error and show a toast
+      if (imageUrl === FileErrors.FILE_TOO_LARGE || imageUrl === FileErrors.INVALID_FILE_TYPE) {
+        toast.error(imageUrl);
+        return;
+      }
+
+      // Insert the recipe into the database
       const { error } = await supabase.from('recipes').insert([
         {
           title: values.title,
@@ -124,13 +139,20 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
         },
       ]);
 
+      // If the recipe creation fails, return the error and show a toast
       if (error) throw error;
+
+      // Close the modal
       setOpen(false);
+
+      // Show a success toast
       toast.success('Recipe created successfully');
     } catch (error) {
+      // If there is an error, return the error and show a toast
       console.error('Error creating recipe:', error);
       toast.error('Error creating recipe');
     } finally {
+      // Set the loading state to false
       setIsLoading(false);
     }
   };
