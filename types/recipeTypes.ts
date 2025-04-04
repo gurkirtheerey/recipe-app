@@ -5,8 +5,9 @@ export interface Recipe {
   description: string;
   ingredients?: string[];
   instructions?: string[];
-  prepTime?: number;
-  cookTime?: number;
+  prep_time?: number;
+  cook_time?: number;
+  total_time?: number;
   servings?: number;
   created_at?: string;
   updated_at?: string;
@@ -22,12 +23,12 @@ export interface Collection {
 
 export interface RecipeCardProps {
   item: Recipe | Collection;
-  type: "recipe" | "collection";
+  type: 'recipe' | 'collection';
   className?: string;
 }
 
 export interface RecipeRowProps {
   title: string;
   items: Recipe[] | Collection[] | undefined;
-  type: "recipe" | "collection";
+  type: 'recipe' | 'collection';
 }

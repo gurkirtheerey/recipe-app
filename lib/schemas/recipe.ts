@@ -5,6 +5,9 @@ export const createRecipeSchema = z.object({
   description: z.string().min(1, { message: 'Description is required.' }),
   ingredients: z.string().min(1, { message: 'Ingredients are required.' }),
   instructions: z.string().min(1, { message: 'Instructions are required.' }),
+  prep_time: z.number().min(0),
+  cook_time: z.number().min(0),
+  servings: z.number().min(1, { message: 'Servings is required.' }),
   image: z.instanceof(File).optional(),
 });
 
