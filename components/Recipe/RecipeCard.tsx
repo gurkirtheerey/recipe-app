@@ -3,20 +3,28 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { type Recipe, type Collection, type RecipeCardProps } from '@/types/recipeTypes';
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { PlusIcon } from 'lucide-react';
 export function RecipeCard({ item, type, className = '' }: RecipeCardProps) {
   return (
     <Link href={`/${type}s/${item.id}`} className="block h-full">
       <Card className={`h-full hover:shadow-lg transition-all duration-300 ${className} p-0`}>
         <CardHeader className="p-0">
           <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg relative">
-            <Image
-              src={item.image}
-              alt={item.title}
-              fill
-              className="object-cover transition-transform duration-300 hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            {item.image ? (
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover transition-transform duration-300 hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : (
+              <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg relative bg-gray-200">
+                <div className="flex items-center justify-center h-full">
+                  <PlusIcon className="h-10 w-10 text-gray-400" />
+                </div>
+              </div>
+            )}
           </div>
           <div className="p-3 sm:p-4">
             <CardTitle className="line-clamp-1 text-base sm:text-lg">{item.title}</CardTitle>

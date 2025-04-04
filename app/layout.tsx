@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { createClient } from '@/lib/supabase/server';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar/app-sidebar';
 import { Toaster } from 'sonner';
+import AppSidebarTrigger from '@/components/AppSidebar/AppSidebarTrigger';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -43,9 +45,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider>
           <AppSidebar />
-          <div className="sm:hidden">
-            <SidebarTrigger />
-          </div>
+          <AppSidebarTrigger />
           <main className="flex-1">{children}</main>
         </SidebarProvider>
         <Toaster />
