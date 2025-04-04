@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getRecipeById } from '../actions';
+import { PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 
@@ -30,9 +31,15 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         </div>
 
         {/* Recipe Image */}
-        {recipe.image && (
+        {recipe.image ? (
           <div className="relative h-[300px] sm:h-[400px] w-full">
             <Image src={recipe.image} alt={recipe.title} fill className="object-cover" sizes="100vw" priority />
+          </div>
+        ) : (
+          <div className="relative h-[300px] sm:h-[400px] w-full bg-gray-200">
+            <div className="flex items-center justify-center h-full">
+              <PlusIcon className="h-10 w-10 text-gray-400" />
+            </div>
           </div>
         )}
       </div>
