@@ -1,24 +1,35 @@
-import { recentRecipes } from "./dummy-recipes";
-import { favoriteRecipes } from "./dummy-recipes";
-// import { collections } from "./dummy-recipes";
+import { getMyRecipes } from '../recipes/actions';
+import { favoriteRecipes } from './dummy-recipes';
+import { createClient } from '@/lib/supabase/server';
 
-const rows = [
-  {
-    title: "Recent Recipes",
-    items: recentRecipes,
-    type: "recipe" as const,
-  },
-  {
-    title: "Favorite Recipes",
-    items: favoriteRecipes,
-    type: "recipe" as const,
-  },
-  // TODO: Add recipe collections
-  //   {
-  //     title: "Recipe Collections",
-  //     items: collections,
-  //     type: "collection" as const,
-  //   },
-];
+export async function getRecipeRows() {
+  // Get the user from the session
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default rows;
+  if (!user) return;
+
+  // Get the user's recipes
+  const myRecipes = await getMyRecipes(user.id);
+
+  return [
+    {
+      title: 'My Recipes',
+      items: myRecipes,
+      type: 'recipe' as const,
+    },
+    {
+      title: 'Favorite Recipes',
+      items: favoriteRecipes, // still getting from dummy data
+      type: 'recipe' as const,
+    },
+    // TODO: Add recipe collections
+    //   {
+    //     title: "Recipe Collections",
+    //     items: collections,
+    //     type: "collection" as const,
+    //   },
+  ];
+}
