@@ -6,6 +6,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar/app-sidebar';
 import { Toaster } from 'sonner';
 import AppSidebarTrigger from '@/components/AppSidebar/AppSidebarTrigger';
+import QueryProvider from './providers/query-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -44,9 +45,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider>
-          <AppSidebar />
-          <AppSidebarTrigger />
-          <main className="flex-1">{children}</main>
+          <QueryProvider>
+            <AppSidebar />
+            <AppSidebarTrigger />
+            <main className="flex-1">{children}</main>
+          </QueryProvider>
         </SidebarProvider>
         <Toaster />
       </body>
