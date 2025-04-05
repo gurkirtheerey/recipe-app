@@ -3,6 +3,7 @@ import { getRecipeById } from '../actions';
 import { Clock, PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
+import { StarRating } from '@/components/StarRating';
 
 type RecipeParams = Promise<{
   id: string;
@@ -42,7 +43,10 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         <div className="bg-white rounded-t-3xl px-6 pt-8 pb-20 max-w-3xl mx-auto shadow-sm">
           {/* Recipe Header */}
           <div className="mb-8">
-            <h1 className="text-2xl sm:text-3xl font-semibold mb-2">{recipe.title}</h1>
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl sm:text-3xl font-semibold mb-2">{recipe.title}</h1>
+              <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
+            </div>
             <div className="flex items-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
