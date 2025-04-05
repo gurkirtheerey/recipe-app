@@ -23,10 +23,12 @@ export interface Collection {
 
 export interface RecipeCardProps {
   item: Recipe | Collection;
+  type: 'recipe' | 'collection';
   className?: string;
 }
 
 export interface RecipeRowProps {
   title: string;
   items: Recipe[] | Collection[] | undefined;
+  type: 'recipe' | 'collection';
 }
