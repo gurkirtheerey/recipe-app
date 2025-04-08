@@ -27,6 +27,9 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       description: '',
       ingredients: '',
       instructions: '',
+      prep_time: 0,
+      cook_time: 0,
+      servings: 0,
       image: undefined,
     },
   });
@@ -108,6 +111,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
     setIsLoading(true);
 
     try {
+      const totalTime = values.prep_time + values.cook_time;
       let imageUrl;
       // If the user has selected an image, upload it
       if (values.image) {
@@ -135,6 +139,10 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
           ingredients: values.ingredients.split('\n'),
           instructions: values.instructions.split('\n'),
           user_id: user.id,
+          prep_time: values.prep_time,
+          cook_time: values.cook_time,
+          total_time: totalTime,
+          servings: values.servings,
           image: imageUrl,
         },
       ]);
@@ -173,6 +181,38 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" placeholder="Recipe description" {...register('description')} />
               {errors.description && <p className="text-red-500">{errors.description.message}</p>}
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="prep_time">Prep Time</Label>
+                <Input
+                  type="number"
+                  id="prep_time"
+                  placeholder="Mins"
+                  {...register('prep_time', { valueAsNumber: true })}
+                />
+                {errors.prep_time && <p className="text-red-500">{errors.prep_time.message}</p>}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="cook_time">Cook Time</Label>
+                <Input
+                  type="number"
+                  id="cook_time"
+                  placeholder="Mins"
+                  {...register('cook_time', { valueAsNumber: true })}
+                />
+                {errors.cook_time && <p className="text-red-500">{errors.cook_time.message}</p>}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="servings">Servings</Label>
+                <Input
+                  type="number"
+                  id="servings"
+                  placeholder="# of servings"
+                  {...register('servings', { valueAsNumber: true })}
+                />
+                {errors.servings && <p className="text-red-500">{errors.servings.message}</p>}
+              </div>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="ingredients">Ingredients</Label>

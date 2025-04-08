@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getRecipeById } from '../actions';
-import { Clock, PlusIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
@@ -16,6 +16,12 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
   if (!recipe) {
     notFound();
   }
+
+  const totalTimeInMinutes: number = recipe.total_time ?? 0;
+  const hours: number = Math.floor(totalTimeInMinutes / 60);
+  const minutes: number = totalTimeInMinutes % 60;
+  // e.g., "1 hour 30 minutes"
+  const formattedTime: string = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
 
   return (
     <main className="min-h-screen bg-[#f8f8f8]">
@@ -49,9 +55,26 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{recipe.prepTime} mins</span>
+                <span>Prep Time: {recipe.prep_time} mins</span>
               </div>
+              {recipe.cook_time && (
+                <div className="flex items-center gap-2">
+                  <span>Cook Time: {recipe.cook_time} mins</span>
+                </div>
+              )}
+              {recipe.prep_time && recipe.cook_time && (
+                <div className="flex items-center gap-2">
+                  <span>
+                    Total Time:{' '}
+                    {recipe.total_time && recipe.total_time < 60 ? `${recipe.total_time} mins` : formattedTime}
+                  </span>
+                </div>
+              )}
+              {recipe.servings && (
+                <div className="flex items-center gap-2">
+                  <span>Serves: {recipe.servings}</span>
+                </div>
+              )}
             </div>
           </div>
 

@@ -1,5 +1,5 @@
-import { getMyRecipes } from '../recipes/actions';
-import { favoriteRecipes } from './dummy-recipes';
+import { getMyRecipesCarousel } from '../recipes/actions';
+// import { favoriteRecipes } from './dummy-recipes';
 import { createClient } from '@/lib/supabase/server';
 
 export async function getRecipeRows() {
@@ -12,7 +12,7 @@ export async function getRecipeRows() {
   if (!user) return;
 
   // Get the user's recipes
-  const myRecipes = await getMyRecipes(user.id);
+  const myRecipes = await getMyRecipesCarousel(user.id);
 
   return [
     {
@@ -20,11 +20,11 @@ export async function getRecipeRows() {
       items: myRecipes,
       type: 'recipe' as const,
     },
-    {
-      title: 'Favorite Recipes',
-      items: favoriteRecipes, // still getting from dummy data
-      type: 'recipe' as const,
-    },
+    // {
+    //   title: 'Favorite Recipes',
+    //   items: favoriteRecipes, // still getting from dummy data
+    //   type: 'recipe' as const,
+    // },
     // TODO: Add recipe collections
     //   {
     //     title: "Recipe Collections",
