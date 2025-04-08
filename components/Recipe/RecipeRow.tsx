@@ -48,9 +48,6 @@ export function RecipeRow({ title, items, type }: RecipeRowProps) {
     );
   }
 
-  // Display only the most recent 6 items in the carousel
-  const displayItems = items.slice(-6).reverse();
-
   return (
     <div className="space-y-4">
       <Header />
@@ -64,7 +61,7 @@ export function RecipeRow({ title, items, type }: RecipeRowProps) {
         >
           <CarouselPrevious className="hidden sm:flex absolute -left-12 lg:-left-16 z-10" />
           <CarouselContent className="-ml-1 pr-2 sm:-ml-4 sm:pr-0">
-            {displayItems.map((item) => (
+            {items.map((item) => (
               <CarouselItem key={item.id} className="pl-1 sm:pl-4 basis-[280px] min-w-0">
                 <RecipeCard item={item} type={type} />
               </CarouselItem>

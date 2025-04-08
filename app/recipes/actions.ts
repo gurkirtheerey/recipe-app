@@ -20,7 +20,28 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
 
 export async function getMyRecipes(user_id: string): Promise<Recipe[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from('recipes').select('*').eq('user_id', user_id);
+  // Get the user's recipes sorted by most recent
+  const { data, error } = await supabase
+    .from('recipes')
+    .select('*')
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Recipe[];
+}
+
+export async function getMyRecipesCarousel(user_id: string): Promise<Recipe[]> {
+  const supabase = await createClient();
+  // Get the user's 6 most recent recipes
+  const { data, error } = await supabase
+    .from('recipes')
+    .select('*')
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false })
+    .limit(6);
 
   if (error) {
     throw new Error(error.message);

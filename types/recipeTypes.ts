@@ -3,12 +3,12 @@ export interface Recipe {
   title: string;
   image: string;
   description: string;
-  ingredients?: string[];
-  instructions?: string[];
+  ingredients: string[];
+  instructions: string[];
   prep_time?: number;
   cook_time?: number;
   total_time?: number;
-  servings?: number;
+  servings: number;
   rating?: number;
   created_at?: string;
   updated_at?: string;
