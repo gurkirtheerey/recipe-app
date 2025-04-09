@@ -1,30 +1,18 @@
 'use client';
 
 import { Heart } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from './ui/button';
-import { useAuth } from '@/hooks/useAuth';
 import { useParams } from 'next/navigation';
-import { favoritesService } from '@/lib/services/favorites';
-import { Favorite } from '@/types/favoriteTypes';
+import { useFavorite } from '@/hooks/useFavorite';
 
 const FavoriteButton = () => {
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const { user } = useAuth();
-
   const params = useParams();
   const recipeId = params.id as string;
+  const { updateFavoriteStatus, isFavorite } = useFavorite(recipeId);
 
-  // Update the favorite status of specific recipe
-  const handleClick = async () => {
-    const favorite: Favorite = {
-      recipe_id: recipeId,
-      user_id: user?.id as string,
-      is_favorite: !isFavorite,
-    };
-    await favoritesService.updateFavorite(favorite);
-    setIsFavorite(!isFavorite);
+  const handleClick = () => {
+    updateFavoriteStatus(!isFavorite);
   };
 
   return (
