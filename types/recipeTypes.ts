@@ -32,4 +32,5 @@ export interface RecipeRowProps {
   title: string;
   items: Recipe[] | Collection[] | undefined;
   type: 'recipe' | 'collection';
+  isLoading?: boolean;
 }

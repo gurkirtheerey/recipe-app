@@ -34,9 +34,31 @@ export const useFavorite = (recipeId: string) => {
       toast.success('Favorite status updated successfully');
     },
   });
+
   return {
     favoriteStatus,
     updateFavoriteStatus,
     isFavorite,
+  };
+};
+
+export const useFavoriteCarousel = () => {
+  const { user } = useAuth();
+
+  const { data: favoriteCarousel, isFetching } = useQuery({
+    queryKey: ['favoriteCarousel', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      return await favoritesService.getFavoriteCarousel(user.id);
+    },
+    enabled: !!user,
+  });
+
+  // Consider loading if either fetching or no user
+  const isLoading = isFetching || !user;
+
+  return {
+    favoriteCarousel: favoriteCarousel || [],
+    favoriteCarouselLoading: isLoading,
   };
 };

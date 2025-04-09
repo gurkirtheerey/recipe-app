@@ -43,4 +43,30 @@ export const favoritesService = {
 
     return recipes.filter((recipe): recipe is Recipe => recipe !== null);
   },
+
+  async getFavoriteCarousel(userId: string): Promise<Recipe[]> {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('favorites')
+      .select('recipe_id, is_favorite')
+      .eq('user_id', userId)
+      .eq('is_favorite', true)
+      .order('favorited_at', { ascending: false })
+      .limit(6);
+
+    if (error) {
+      console.error('Error fetching favorites:', error);
+      return [];
+    }
+
+    // Fetch the full recipe details for each favorite
+    const recipes = await Promise.all(
+      data.map(async (favorite) => {
+        const { data: recipe } = await supabase.from('recipes').select('*').eq('id', favorite.recipe_id).single();
+        return recipe;
+      })
+    );
+
+    return recipes.filter((recipe): recipe is Recipe => recipe !== null);
+  },
 };
