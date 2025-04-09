@@ -7,18 +7,20 @@ import { toast } from 'sonner';
 
 export const useFavorite = (recipeId: string) => {
   const { user } = useAuth();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   // Get the favorite status of specific recipe
-  const { data: favoriteStatus } = useQuery({
+  const { data: favoriteStatus, isFetching } = useQuery({
     queryKey: ['favorites', recipeId, user?.id],
     queryFn: async () => {
       if (!user) return false;
       const currentStatus = await favoritesService.getFavoriteStatus(recipeId, user.id);
+      setIsFavorite(currentStatus);
       return currentStatus;
     },
     enabled: !!user,
   });
+  const isLoading = isFetching || !user;
 
   // Update the favorite status of specific recipe
   const { mutate: updateFavoriteStatus } = useMutation({
@@ -39,6 +41,7 @@ export const useFavorite = (recipeId: string) => {
     favoriteStatus,
     updateFavoriteStatus,
     isFavorite,
+    favoriteStatusLoading: isLoading,
   };
 };
 

@@ -10,7 +10,7 @@ export default function RecipesPage() {
 
   const rows: RecipeRowProps[] = [
     {
-      title: 'Recent Recipes',
+      title: 'My Recipes',
       items: myRecipeCarousel || [],
       isLoading: myRecipeCarouselLoading,
       type: 'recipe' as const,
