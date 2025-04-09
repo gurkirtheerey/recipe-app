@@ -4,7 +4,7 @@ import { PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
-
+import FavoriteButton from '@/components/FavoriteButton';
 type RecipeParams = Promise<{
   id: string;
 }>;
@@ -29,6 +29,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         {/* Navigation Buttons */}
         <div className="absolute top-4 left-4 z-10">
           <BackButton />
+          <FavoriteButton />
         </div>
 
         {/* Recipe Image */}
