@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
@@ -43,6 +43,7 @@ const updateProfile = async (userId: string, formData: z.infer<typeof profileSch
 };
 
 export default function ProfilePage() {
+  const [isEditing, setIsEditing] = useState(false);
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -91,6 +92,7 @@ export default function ProfilePage() {
       last_name: data.last_name,
       username: data.username,
     });
+    setIsEditing(false);
   };
 
   if (isLoading || isLoadingProfile) {
@@ -115,9 +117,22 @@ export default function ProfilePage() {
               Update your profile information to keep your account up to date.
             </p>
           </div>
-          <Button type="submit" variant="outline" data-testid="submit-button">
-            Edit Profile
-          </Button>
+          {isEditing ? (
+            <Button type="submit" variant="outline" data-testid="submit-button">
+              Save
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsEditing(true);
+              }}
+            >
+              Edit Profile
+            </Button>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <div className="grid sm:grid-cols-2 gap-2">
@@ -127,15 +142,27 @@ export default function ProfilePage() {
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">First Name</h2>
-              <Input disabled={onSubmit.isPending} {...register('first_name')} data-testid="first-name-input" />
+              <Input
+                disabled={onSubmit.isPending || !isEditing}
+                {...register('first_name')}
+                data-testid="first-name-input"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">Last Name</h2>
-              <Input disabled={onSubmit.isPending} {...register('last_name')} data-testid="last-name-input" />
+              <Input
+                disabled={onSubmit.isPending || !isEditing}
+                {...register('last_name')}
+                data-testid="last-name-input"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">Username</h2>
-              <Input disabled={onSubmit.isPending} {...register('username')} data-testid="username-input" />
+              <Input
+                disabled={onSubmit.isPending || !isEditing}
+                {...register('username')}
+                data-testid="username-input"
+              />
             </div>
           </div>
         </div>
