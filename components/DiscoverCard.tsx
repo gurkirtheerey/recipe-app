@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { Share2, PlusIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import { Recipe } from '@/types/recipeTypes';
 import FavoriteButton from './FavoriteButton';
-import { Button } from './ui/button';
+import ShareButton from './ShareButton';
 import Link from 'next/link';
 interface DiscoverCardProps {
   item: Recipe;
@@ -49,9 +49,7 @@ export function DiscoverCard({ item }: DiscoverCardProps) {
           {/* Buttons */}
           <div className="flex justify-between items-center">
             <FavoriteButton type="post" id={item.id} />
-            <Button className="p-0 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent hover:text-gray-300">
-              <Share2 />
-            </Button>
+            <ShareButton id={item.id} title={item.title} />
           </div>
 
           <Link href={`/recipes/${item.id}`} className="text-xl font-bold hover:underline">
