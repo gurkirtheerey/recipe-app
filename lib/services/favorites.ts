@@ -17,7 +17,7 @@ export const favoritesService = {
       .eq('recipe_id', recipeId)
       .single();
 
-    return data?.is_favorite || false;
+    return !!data?.is_favorite;
   },
 
   async getUserFavorites(userId: string): Promise<Recipe[]> {

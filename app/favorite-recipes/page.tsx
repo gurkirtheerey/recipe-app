@@ -17,7 +17,7 @@ export default async function FavoriteRecipesPage() {
   }
 
   // Fetch user's favorite recipe IDs from the database
-  const favorites = await getUserFavorites(user?.id as string);
+  const favorites = await getUserFavorites(user.id);
 
   return <RecipeListPage title="Favorite Recipes" items={favorites} type="recipe" />;
 }
