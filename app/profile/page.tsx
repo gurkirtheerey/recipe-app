@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { useMetadata } from '@/hooks/useMetadata';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const profileSchema = z.object({
   first_name: z.string().min(1),
@@ -103,6 +104,8 @@ export default function ProfilePage() {
     return <div>Error: {error.message}</div>;
   }
 
+  const userFullName = `${user?.user_metadata.first_name} ${user?.user_metadata.last_name}`;
+
   return (
     <main className="min-h-screen bg-background">
       <form
@@ -111,12 +114,20 @@ export default function ProfilePage() {
         data-testid="profile-form"
       >
         <div className="flex justify-between items-center gap-2">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold">Profile</h1>
-            <p className="text-sm text-muted-foreground">
-              Update your profile information to keep your account up to date.
-            </p>
+          <div className="flex items-center gap-6">
+            <Avatar className="h-20 w-20">
+              {/* ----------------------------------- DUMMY IMAGE FOR NOW ----------------------------------- */}
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>{userFullName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-2">
+              <h1 className="text-3xl font-bold">{userFullName}</h1>
+              <p className="text-sm text-muted-foreground">
+                Update your profile information to keep your account up to date.
+              </p>
+            </div>
           </div>
+
           {isEditing ? (
             <Button type="submit" variant="outline" data-testid="submit-button">
               Save
