@@ -31,7 +31,7 @@ export function timeAgo(date: string): string {
 export function DiscoverCard({ item }: DiscoverCardProps) {
   const timePosted = timeAgo(item.created_at as string);
   return (
-    <div className="w-full sm:w-1/2 md:w-2/3 lg:w-1/2">
+    <div className="w-full sm:w-3/4 xl:w-1/2">
       <div className="sm:rounded-lg overflow-hidden shadow-lg bg-slate-400 text-white mb-6">
         <Link href={`/recipes/${item.id}`} className="block">
           <div className="relative h-72 md:h-84 w-full">
