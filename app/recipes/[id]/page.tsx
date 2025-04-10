@@ -4,7 +4,7 @@ import { PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
-
+import FavoriteButton from '@/components/FavoriteButton';
 type RecipeParams = Promise<{
   id: string;
 }>;
@@ -27,8 +27,9 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
     <main className="min-h-screen bg-[#f8f8f8]">
       <div className="relative">
         {/* Navigation Buttons */}
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
+          <FavoriteButton />
         </div>
 
         {/* Recipe Image */}
