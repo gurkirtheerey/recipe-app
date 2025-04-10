@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
+import { useMetadata } from '@/hooks/useMetadata';
 
 const profileSchema = z.object({
   first_name: z.string().min(1),
@@ -54,6 +55,7 @@ export default function ProfilePage() {
   });
 
   const { user, isLoading } = useAuth();
+  const { updateMetadata } = useMetadata();
 
   const {
     data,
@@ -82,7 +84,14 @@ export default function ProfilePage() {
     },
   });
 
-  const handleFormSubmit = (data: z.infer<typeof profileSchema>) => onSubmit.mutate(data);
+  const handleFormSubmit = (data: z.infer<typeof profileSchema>) => {
+    onSubmit.mutate(data);
+    updateMetadata({
+      first_name: data.first_name,
+      last_name: data.last_name,
+      username: data.username,
+    });
+  };
 
   if (isLoading || isLoadingProfile) {
     return <div>Loading...</div>;
