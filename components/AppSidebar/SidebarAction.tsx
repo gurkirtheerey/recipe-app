@@ -1,23 +1,27 @@
 'use client';
 
 import { signOut } from '@/app/actions/auth/actions';
-import { User2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { ChevronUp } from "lucide-react";
-import { redirect } from "next/navigation";
-import { User } from "@supabase/supabase-js";
-import { SidebarMenuButton } from "../ui/sidebar";
+} from '@radix-ui/react-dropdown-menu';
+import { ChevronUp } from 'lucide-react';
+import { redirect } from 'next/navigation';
+import { User } from '@supabase/supabase-js';
+import { SidebarMenuButton } from '../ui/sidebar';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 const SidebarAction = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarMenuButton>
-          <User2 /> {user?.email}
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>{user?.email?.charAt(0)}</AvatarFallback>
+          </Avatar>
+          {user?.email}
           <ChevronUp className="ml-auto" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
