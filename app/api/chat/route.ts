@@ -1,7 +1,7 @@
 import { streamText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
-export function errorHandler(error: unknown) {
+function errorHandler(error: unknown) {
   if (error == null) {
     return 'unknown error';
   }
