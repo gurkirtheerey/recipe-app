@@ -10,7 +10,6 @@ import { useFlags } from 'flagsmith/react';
 
 export default function DashboardContent() {
   const { 'ai-chatbot': aiChatbot } = useFlags(['ai-chatbot']);
-  console.log(aiChatbot);
   const { messages, input, handleSubmit, handleInputChange, status } = useChat({
     api: '/api/chat',
   });
