@@ -14,8 +14,6 @@ export default function DashboardContent() {
     api: '/api/chat',
   });
 
-  console.log('OPENAI_API_KEY is set:', Boolean(process.env.OPENAI_API_KEY), process.env.OPENAI_API_KEY);
-
   const [open, setOpen] = useState(false);
 
   return (
