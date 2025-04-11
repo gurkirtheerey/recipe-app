@@ -7,6 +7,8 @@ import { AppSidebar } from '@/components/AppSidebar/app-sidebar';
 import { Toaster } from 'sonner';
 import AppSidebarTrigger from '@/components/AppSidebar/AppSidebarTrigger';
 import QueryProvider from './providers/query-provider';
+import { FeatureFlagProvider } from './providers/flagsmith-provider';
+import flagsmith from 'flagsmith/isomorphic';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,6 +35,11 @@ export default async function RootLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
+  await flagsmith.init({
+    environmentID: process.env.FLAGSMITH_API_KEY,
+  });
+  const serverState = flagsmith.getState();
+
   if (!user) {
     return (
       <html lang="en">
@@ -42,15 +49,17 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SidebarProvider>
-          <QueryProvider>
-            <AppSidebar />
-            <AppSidebarTrigger />
-            <main className="flex-1">{children}</main>
-          </QueryProvider>
-        </SidebarProvider>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body>
+        <QueryProvider>
+          <SidebarProvider>
+            <FeatureFlagProvider serverState={serverState}>
+              <AppSidebar />
+              <AppSidebarTrigger />
+              <main className="flex-1">{children}</main>
+            </FeatureFlagProvider>
+          </SidebarProvider>
+        </QueryProvider>
         <Toaster />
       </body>
     </html>
