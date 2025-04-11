@@ -6,9 +6,9 @@ import { Button } from './ui/button';
 import { useParams } from 'next/navigation';
 import { useFavorite } from '@/hooks/useFavorite';
 
-const FavoriteButton = () => {
+const FavoriteButton = ({ type, id }: { type?: 'post'; id?: string }) => {
   const params = useParams();
-  const recipeId = params.id as string;
+  const recipeId = id || (params.id as string);
   const { updateFavoriteStatus, isFavorite, favoriteStatusLoading } = useFavorite(recipeId);
 
   const handleClick = () => {
@@ -16,11 +16,21 @@ const FavoriteButton = () => {
   };
 
   return (
-    <Button onClick={handleClick} className="p-2 bg-gray-200 rounded-full hover:bg-gray-300">
+    <Button
+      onClick={handleClick}
+      className={
+        type === 'post'
+          ? // has-[>svg]:p-0 --> overrides Button styling
+            'p-0 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent'
+          : 'p-2 bg-gray-200 rounded-full hover:bg-gray-300'
+      }
+    >
       {favoriteStatusLoading ? (
-        <Loader2 className="h-5 w-5 animate-spin text-black" />
+        <Loader2 className="animate-spin text-black" />
       ) : (
-        <Heart className={`h-5 w-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-black'}`} />
+        <Heart
+          className={`${isFavorite ? 'fill-red-500 text-red-500' : type === 'post' ? 'text-white' : 'text-black'}`}
+        />
       )}
     </Button>
   );
