@@ -13,6 +13,7 @@ import { createClient } from '@/lib/supabase/server';
 import SidebarAction from './SidebarAction';
 import { redirect } from 'next/navigation';
 import { AppSidebarMenuItem } from './AppSidebarMenuItem';
+
 // Menu items.
 const items = [
   {
@@ -43,6 +44,8 @@ export async function AppSidebar() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const firstName = user?.user_metadata.first_name;
+
   if (!user) {
     redirect('/login');
   }
@@ -51,7 +54,7 @@ export async function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Mrs. Nusantara</SidebarGroupLabel>
+          <SidebarGroupLabel>Welcome, {firstName}!</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

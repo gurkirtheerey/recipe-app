@@ -87,7 +87,7 @@ export async function getMyRecipesCarousel(user_id: string): Promise<Recipe[]> {
 
 export async function getAllRecipes(): Promise<Recipe[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from('recipes').select('*');
+  const { data, error } = await supabase.from('recipes').select('*').order('created_at', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
