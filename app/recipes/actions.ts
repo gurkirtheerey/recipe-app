@@ -1,20 +1,56 @@
 import { createClient } from '@/lib/supabase/server';
 import { Recipe } from '../../types/recipeTypes';
+import { Profile } from '@/types/profileTypes';
 
-export async function getRecipeById(id: string): Promise<Recipe | null> {
+type RecipeWithProfile = {
+  recipe: Recipe;
+  profile: Profile;
+};
+
+/**
+ * Get a recipe by its ID
+ * @param id - The ID of the recipe to get
+ * @returns A promise that resolves to the recipe and its profile
+ */
+export async function getRecipeById(id: string): Promise<RecipeWithProfile> {
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase.from('recipes').select('*').eq('id', id).single();
+    // Get the recipe
+    const { data: recipe, error: recipeError } = await supabase
+      .from('recipes')
+      .select('*')
+      .eq('id', id)
+      .single<Recipe>();
 
-    if (error) {
-      console.error('Error fetching recipe:', error);
-      return null;
+    // If the recipe is not found, throw an error
+    if (recipeError || !recipe) {
+      console.error('Error fetching recipe:', recipeError);
+      throw new Error('Recipe not found');
     }
 
-    return data as Recipe;
+    // Get the user's profile
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', recipe.user_id)
+      .single<Profile>();
+
+    // If the profile is not found, throw an error
+    if (profileError || !profile) {
+      console.error('Error fetching profile:', profileError);
+      console.error('Profile query details:', {
+        userId: recipe.user_id,
+        error: profileError,
+      });
+      throw new Error('Profile not found');
+    }
+
+    // Return the recipe and profile
+    return { recipe, profile };
   } catch (e) {
+    // If an unexpected error occurs, throw an error
     console.error('Unexpected error in getRecipeById:', e);
-    return null;
+    throw new Error('Unexpected error in getRecipeById');
   }
 }
 

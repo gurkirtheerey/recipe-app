@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
-
+import Loading from './loading';
 const profileSchema = z.object({
   first_name: z.string().min(1),
   last_name: z.string().min(1),
@@ -85,7 +85,7 @@ export default function ProfilePage() {
   const handleFormSubmit = (data: z.infer<typeof profileSchema>) => onSubmit.mutate(data);
 
   if (isLoading || isLoadingProfile) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

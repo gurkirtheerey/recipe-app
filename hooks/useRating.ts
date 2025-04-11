@@ -8,10 +8,10 @@ import { Rating } from '@/types/ratingTypes';
 export const useRating = (recipeId: string, initialRating = 0) => {
   const [rating, setRating] = useState(initialRating);
   const [hoverRating, setHoverRating] = useState(0);
-  const { user } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
 
   // Fetch initial rating
-  const { isLoading } = useQuery({
+  const { isLoading: isRatingLoading } = useQuery({
     queryKey: ['rating', recipeId, user?.id],
     queryFn: async () => {
       if (!user) return 0;
@@ -50,7 +50,7 @@ export const useRating = (recipeId: string, initialRating = 0) => {
     hoverRating,
     setHoverRating,
     handleStarClick,
-    isLoading,
+    isLoading: isAuthLoading || isRatingLoading,
     isAuthenticated: !!user,
   };
 };

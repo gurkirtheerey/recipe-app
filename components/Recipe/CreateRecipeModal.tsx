@@ -131,13 +131,16 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
         return;
       }
 
+      // console.log(values.ingredients.split('\n'));
+      console.log(values.ingredients.split('\n').filter((step) => step.trim() !== ''));
+      // console.log(values.ingredients.replace(/\n/g, ''));
       // Insert the recipe into the database
       const { error } = await supabase.from('recipes').insert([
         {
           title: values.title,
           description: values.description,
-          ingredients: values.ingredients.split('\n'),
-          instructions: values.instructions.split('\n'),
+          ingredients: values.ingredients.split('\n').filter((step) => step.trim() !== ''),
+          instructions: values.instructions.split('\n').filter((step) => step.trim() !== ''),
           user_id: user.id,
           prep_time: values.prep_time,
           cook_time: values.cook_time,
@@ -167,7 +170,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogTitle>Create Recipe</DialogTitle>
         <DialogDescription>Create a new recipe to get started.</DialogDescription>
         <form onSubmit={handleSubmit(onSubmit)}>

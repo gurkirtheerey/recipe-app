@@ -1,3 +1,14 @@
+export interface Profile {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  username: string;
+  profile_picture?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -5,14 +16,20 @@ export interface Recipe {
   description: string;
   ingredients: string[];
   instructions: string[];
-  prep_time?: number;
-  cook_time?: number;
+  prep_time: number;
+  cook_time: number;
   total_time?: number;
   servings: number;
+  difficulty: 'easy' | 'medium' | 'hard';
   rating?: number;
-  created_at?: string;
-  updated_at?: string;
-  user_id?: string;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  profile?: Profile;
+}
+
+export interface RecipeWithProfile extends Recipe {
+  profile: Profile;
 }
 
 export interface Collection {

@@ -2,6 +2,7 @@
 
 import { StarIcon } from 'lucide-react';
 import { useRating } from '@/hooks/useRating';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface StarRatingProps {
   initialRating?: number;
@@ -17,7 +18,13 @@ export function StarRating({ initialRating = 0, recipeId }: StarRatingProps) {
   );
 
   if (isLoading) {
-    return <div className="flex items-center gap-2">Loading...</div>;
+    return (
+      <div className="flex items-center gap-2">
+        {Array.from({ length: MAX_RATING }, (_, i) => (
+          <Skeleton key={i} className="h-4 w-4 rounded-full" />
+        ))}
+      </div>
+    );
   }
 
   return (

@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation';
 import { getRecipeById } from '../actions';
 import { PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type RecipeParams = Promise<{
   id: string;
@@ -11,10 +11,14 @@ type RecipeParams = Promise<{
 
 export default async function RecipePage({ params }: { params: RecipeParams }) {
   const { id } = await params;
-  const recipe = await getRecipeById(id);
+  const { recipe, profile } = await getRecipeById(id);
 
   if (!recipe) {
-    notFound();
+    return <div>Recipe not found</div>;
+  }
+
+  if (!profile) {
+    return <div>Profile not found</div>;
   }
 
   const totalTimeInMinutes: number = recipe.total_time ?? 0;
@@ -22,6 +26,9 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
   const minutes: number = totalTimeInMinutes % 60;
   // e.g., "1 hour 30 minutes"
   const formattedTime: string = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+
+  const { first_name, last_name } = profile;
+  const fullName: string = `${first_name.charAt(0).toUpperCase() + first_name.slice(1)} ${last_name.charAt(0).toUpperCase() + last_name.slice(1)}`;
 
   return (
     <main className="min-h-screen bg-[#f8f8f8]">
@@ -51,7 +58,24 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl sm:text-3xl font-semibold mb-2">{recipe.title}</h1>
-              <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
+              <div className="flex flex-col justify-between items-end gap-2">
+                <div className="flex items-center gap-2">
+                  <Avatar className="mr-2">
+                    <AvatarImage
+                      src={
+                        'https://lh3.googleusercontent.com/a/ACg8ocJ_pu16wz0Vtc9TE8sFr-ofYs5eJ_ZvQdQhf9ztiHjGQqm83TPZUw=s576-c-no'
+                      }
+                    />
+                    <AvatarFallback className="font-medium">
+                      {profile.first_name.charAt(0)}
+                      {profile.last_name.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-gray-600 font-medium">Added by:</span>
+                  <span className="text-sm text-gray-600">{fullName}</span>
+                </div>
+                <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
+              </div>
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
