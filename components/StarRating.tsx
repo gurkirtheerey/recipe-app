@@ -17,7 +17,13 @@ export function StarRating({ initialRating = 0, recipeId }: StarRatingProps) {
   );
 
   if (isLoading) {
-    return <div className="flex items-center gap-2">Loading...</div>;
+    return (
+      <div className="flex items-center gap-2">
+        {Array.from({ length: MAX_RATING }, (_, i) => i + 1).map((star) => (
+          <div key={star} className="h-4 w-4 animate-pulse rounded-full bg-gray-200" aria-hidden="true" />
+        ))}
+      </div>
+    );
   }
 
   return (
