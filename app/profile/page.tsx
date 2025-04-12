@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { useMetadata } from '@/hooks/useMetadata';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
+import Loading from './loading';
 const profileSchema = z.object({
   first_name: z.string().min(1),
   last_name: z.string().min(1),
@@ -64,7 +64,7 @@ export default function ProfilePage() {
     isLoading: isLoadingProfile,
     error,
   } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', user?.id],
     queryFn: () => fetchProfile(user?.id || ''),
     enabled: !!user?.id,
   });
@@ -97,7 +97,7 @@ export default function ProfilePage() {
   };
 
   if (isLoading || isLoadingProfile) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
