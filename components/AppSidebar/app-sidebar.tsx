@@ -8,12 +8,11 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { createClient } from '@/lib/supabase/server';
 import SidebarAction from './SidebarAction';
 import { redirect } from 'next/navigation';
+import { AppSidebarMenuItem } from './AppSidebarMenuItem';
 
 // Menu items.
 const items = [
@@ -59,14 +58,7 @@ export async function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <AppSidebarMenuItem key={item.title} title={item.title} url={item.url} icon={<item.icon />} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
