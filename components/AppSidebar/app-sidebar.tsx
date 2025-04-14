@@ -1,4 +1,4 @@
-import { Home, Search, User, Utensils } from 'lucide-react';
+import { Home, Search, User, Utensils, Plus } from 'lucide-react';
 
 import {
   Sidebar,
@@ -36,6 +36,11 @@ const items = [
     title: 'Profile',
     url: '/profile',
     icon: User,
+  },
+  {
+    title: 'Create AI Recipe',
+    url: '/create-ai-recipe',
+    icon: Plus,
   },
 ];
 
