@@ -1,10 +1,25 @@
 import { createClient } from '@/lib/supabase/server';
-import { Recipe } from '../../types/recipeTypes';
+import { Recipe, RecipeWithFavorites } from '../../types/recipeTypes';
 
 export async function getRecipeById(id: string): Promise<Recipe | null> {
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase.from('recipes').select('*').eq('id', id).single();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { data, error } = await supabase
+      .from('recipes')
+      .select(
+        `
+      *,
+      favorites (
+        is_favorite
+      )
+    `
+      )
+      .eq('id', id)
+      .eq('favorites.user_id', user?.id) // only get favorite for this user
+      .single();
 
     if (error) {
       console.error('Error fetching recipe:', error);
@@ -49,12 +64,22 @@ export async function getMyRecipesCarousel(user_id: string): Promise<Recipe[]> {
   return data as Recipe[];
 }
 
-export async function getAllRecipes(): Promise<Recipe[]> {
+export async function getAllRecipes(user_id: string): Promise<RecipeWithFavorites[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from('recipes').select('*').order('created_at', { ascending: false });
+  const { data, error } = await supabase
+    .from('recipes')
+    .select(
+      `
+    *,
+    favorites (
+      is_favorite
+    )
+  `
+    )
+    .eq('favorites.user_id', user_id);
 
   if (error) {
     throw new Error(error.message);
   }
-  return data as Recipe[];
+  return data as RecipeWithFavorites[];
 }

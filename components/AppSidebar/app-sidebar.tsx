@@ -8,41 +8,11 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { createClient } from '@/lib/supabase/server';
 import SidebarAction from './SidebarAction';
 import { redirect } from 'next/navigation';
-
-// Menu items.
-const items = [
-  {
-    title: 'Home',
-    url: '/dashboard',
-    icon: Home,
-  },
-  {
-    title: 'Discover',
-    url: '/discover',
-    icon: Search,
-  },
-  {
-    title: 'Recipes',
-    url: '/recipes',
-    icon: Utensils,
-  },
-  {
-    title: 'Profile',
-    url: '/profile',
-    icon: User,
-  },
-  {
-    title: 'Create AI Recipe',
-    url: '/create-ai-recipe',
-    icon: Plus,
-  },
-];
+import { AppSidebarMenuItem } from './AppSidebarMenuItem';
 
 export async function AppSidebar() {
   const supabase = await createClient();
@@ -51,6 +21,35 @@ export async function AppSidebar() {
   } = await supabase.auth.getUser();
 
   const firstName = user?.user_metadata.first_name;
+
+  // Menu items.
+  const items = [
+    {
+      title: 'Home',
+      url: '/dashboard',
+      icon: Home,
+    },
+    {
+      title: 'Discover',
+      url: '/discover',
+      icon: Search,
+    },
+    {
+      title: 'Recipes',
+      url: '/recipes',
+      icon: Utensils,
+    },
+    {
+      title: 'Profile',
+      url: `/profile/${user?.user_metadata.username}`,
+      icon: User,
+    },
+    {
+      title: 'Create AI Recipe',
+      url: '/create-ai-recipe',
+      icon: Plus,
+    },
+  ];
 
   if (!user) {
     redirect('/login');
@@ -64,14 +63,7 @@ export async function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <AppSidebarMenuItem key={item.title} title={item.title} url={item.url} icon={<item.icon />} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

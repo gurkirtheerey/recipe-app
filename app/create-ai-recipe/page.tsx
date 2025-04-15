@@ -24,11 +24,6 @@ const CreateAiRecipe = () => {
     api: '/api/chat',
   });
 
-  if (!user) {
-    toast.error('Please login to add recipes');
-    return;
-  }
-
   // Check if the recipe is saved
   const isRecipeSaved = (messageId: string) => {
     return savedResponses.includes(messageId);
@@ -37,6 +32,11 @@ const CreateAiRecipe = () => {
   // Handler for adding a recipe to the user's recipe list
   const handleAddRecipe = async (message: UIMessage) => {
     const recipe = extractRecipeData(message.content);
+
+    if (!user) {
+      toast.error('Please login to add recipes');
+      return;
+    }
 
     const { error } = await supabase.from('recipes').insert([
       {
@@ -152,7 +152,7 @@ const CreateAiRecipe = () => {
       </main>
 
       {/* Input area */}
-      <div className="bg-white border-t border-gray-200 p-4 shadow-sm mb-10">
+      <div className="bg-white border-t border-gray-200 p-4 shadow-sm">
         <div className="flex items-center rounded-full bg-gray-50 border border-gray-200">
           <form onSubmit={handleSubmit} className="flex-1 flex gap-2">
             <input

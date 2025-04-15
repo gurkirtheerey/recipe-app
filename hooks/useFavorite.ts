@@ -1,47 +1,44 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from './useAuth';
 import { favoritesService } from '@/lib/services/favorites';
-import { Favorite } from '@/types/favoriteTypes';
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
+/**
+ * Hook for managing favorites
+ * @param recipeId - The id of the recipe to manage favorites for
+ * @returns An object containing the createFavorite and deleteFavorite functions
+ */
 export const useFavorite = (recipeId: string) => {
   const { user } = useAuth();
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const supabase = createClient();
+  const router = useRouter();
 
-  // Get the favorite status of specific recipe
-  const { data: favoriteStatus, isFetching } = useQuery({
-    queryKey: ['favorites', recipeId, user?.id],
-    queryFn: async () => {
-      if (!user) return false;
-      const currentStatus = await favoritesService.getFavoriteStatus(recipeId, user.id);
-      setIsFavorite(currentStatus);
-      return currentStatus;
-    },
-    enabled: !!user,
-  });
-  const isLoading = isFetching || !user;
+  /**
+   * Creates favorite in database and refreshes the page
+   */
+  const createFavorite = async () => {
+    if (!user) return;
+    await supabase.from('favorites').upsert({
+      user_id: user.id,
+      recipe_id: recipeId,
+      is_favorite: true,
+    });
+    router.refresh();
+  };
 
-  // Update the favorite status of specific recipe
-  const { mutate: updateFavoriteStatus } = useMutation({
-    mutationFn: async (newStatus: boolean) => {
-      if (!user) return;
-      const favorite: Favorite = {
-        recipe_id: recipeId,
-        user_id: user.id,
-        is_favorite: newStatus,
-      };
-      await favoritesService.updateFavorite(favorite);
-      setIsFavorite(newStatus);
-      toast.success('Favorite status updated successfully');
-    },
-  });
+  /**
+   * Deletes favorite from database and refreshes the page
+   */
+  const deleteFavorite = async () => {
+    if (!user) return;
+    await supabase.from('favorites').delete().eq('user_id', user.id).eq('recipe_id', recipeId);
+    router.refresh();
+  };
 
   return {
-    favoriteStatus,
-    updateFavoriteStatus,
-    isFavorite,
-    favoriteStatusLoading: isLoading,
+    createFavorite,
+    deleteFavorite,
   };
 };
 

@@ -8,10 +8,10 @@ import { Rating } from '@/types/ratingTypes';
 export const useRating = (recipeId: string, initialRating = 0) => {
   const [rating, setRating] = useState(initialRating);
   const [hoverRating, setHoverRating] = useState(0);
-  const { user } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
 
   // Fetch initial rating
-  const { isLoading } = useQuery({
+  const { isLoading: isQueryLoading } = useQuery({
     queryKey: ['rating', recipeId, user?.id],
     queryFn: async () => {
       if (!user) return 0;
@@ -44,6 +44,9 @@ export const useRating = (recipeId: string, initialRating = 0) => {
     const newRating = rating === starValue ? 0 : starValue;
     updateRatingMutation(newRating);
   };
+
+  // Consider loading if either auth is loading or query is loading
+  const isLoading = isAuthLoading || isQueryLoading;
 
   return {
     rating,
