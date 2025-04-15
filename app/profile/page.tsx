@@ -12,7 +12,6 @@ import { toast } from 'sonner';
 import { useMetadata } from '@/hooks/useMetadata';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { handleUpload } from '@/lib/utils/fileUpload';
-import { redirect } from 'next/navigation';
 const profileSchema = z.object({
   first_name: z.string().min(1),
   last_name: z.string().min(1),
