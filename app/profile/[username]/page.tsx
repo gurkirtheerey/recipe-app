@@ -44,7 +44,7 @@ const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }
         </div>
 
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">My Recipes</h2>
+          <h2 className="text-2xl font-bold mb-4">{first_name}&apos;s Recipes</h2>
           <RecipeGrid items={recipes} type="recipe" />
         </div>
       </div>
