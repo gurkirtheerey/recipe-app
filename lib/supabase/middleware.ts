@@ -39,6 +39,7 @@ export async function updateSession(request: NextRequest) {
     '/pricing',
     '/blog',
     '/about',
+    '/profile/:username',
   ];
 
   // Define routes that authenticated users should not access
@@ -48,8 +49,12 @@ export async function updateSession(request: NextRequest) {
 
   // Check if the current route is a public route
   const isPublicRoute = publicRoutes.some((route) => {
-    const matches = currentPath === route || currentPath.startsWith(`${route}/`);
-    return matches;
+    // Special handling for profile routes
+    if (route === '/profile/:username') {
+      return true;
+    }
+    // Regular route matching
+    return currentPath === route || currentPath.startsWith(`${route}/`);
   });
 
   // Check if the current route is only for unauthenticated users

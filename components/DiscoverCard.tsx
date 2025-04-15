@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import { PlusIcon } from 'lucide-react';
-import { Recipe } from '@/types/recipeTypes';
+import { RecipeWithFavorites } from '@/types/recipeTypes';
 import FavoriteButton from './FavoriteButton';
 import ShareButton from './ShareButton';
 import Link from 'next/link';
 interface DiscoverCardProps {
-  item: Recipe;
+  item: RecipeWithFavorites;
 }
 
 // Helper function to calculate how long ago a post was made
@@ -48,7 +48,7 @@ export function DiscoverCard({ item }: DiscoverCardProps) {
         <div className="h-46 flex flex-col p-4 space-y-2">
           {/* Buttons */}
           <div className="flex justify-between items-center">
-            <FavoriteButton type="post" id={item.id} />
+            <FavoriteButton type="post" id={item.id} isFavorite={!!item?.favorites?.[0]?.is_favorite} />
             <ShareButton id={item.id} title={item.title} />
           </div>
 

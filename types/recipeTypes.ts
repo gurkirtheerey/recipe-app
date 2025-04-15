@@ -34,3 +34,9 @@ export interface RecipeRowProps {
   type: 'recipe' | 'collection';
   isLoading?: boolean;
 }
+
+export type RecipeWithFavorites = Recipe & {
+  favorites?: {
+    is_favorite: boolean;
+  }[];
+};

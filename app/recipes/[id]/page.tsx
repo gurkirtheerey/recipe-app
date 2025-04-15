@@ -5,13 +5,15 @@ import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
 import FavoriteButton from '@/components/FavoriteButton';
+import { RecipeWithFavorites } from '@/types/recipeTypes';
+
 type RecipeParams = Promise<{
   id: string;
 }>;
 
 export default async function RecipePage({ params }: { params: RecipeParams }) {
   const { id } = await params;
-  const recipe = await getRecipeById(id);
+  const recipe: RecipeWithFavorites | null = await getRecipeById(id);
 
   if (!recipe) {
     notFound();
@@ -29,7 +31,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         {/* Navigation Buttons */}
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
-          <FavoriteButton />
+          <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
         </div>
 
         {/* Recipe Image */}
@@ -90,11 +92,8 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
             <h2 className="text-lg font-medium mb-4">Ingredients</h2>
             <ul className="space-y-4">
               {recipe.ingredients?.map((ingredient: string, index: number) => (
-                <li key={index} className="flex items-center justify-between py-2 border-b border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-800">{ingredient}</span>
-                  </div>
-                  <span className="text-gray-500">160g</span>
+                <li key={index} className="flex items-center text-gray-800 py-2 border-b border-gray-100">
+                  <span className="">{ingredient}</span>
                 </li>
               ))}
             </ul>
