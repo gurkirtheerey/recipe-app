@@ -10,13 +10,25 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { UIMessage } from 'ai';
 import { extractRecipeData } from './utils';
-
+import { useQuery } from '@tanstack/react-query';
 const CreateAiRecipe = () => {
   // Feature flag to control AI chatbot visibility
   const { 'ai-chatbot': aiChatbot } = useFlags(['ai-chatbot']);
   const supabase = createClient();
   const { user } = useAuth();
   const [savedResponses, setSavedResponses] = useState<string[]>([]);
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile-ai-recipe', user?.id],
+    queryFn: async () => {
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+      const { data } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
+      return data;
+    },
+    enabled: !!user,
+  });
 
   // Chat hook that handles message state, input, and submission
   // Connects to the /api/chat endpoint for AI responses
@@ -142,7 +154,7 @@ const CreateAiRecipe = () => {
                 {message.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
                     <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarImage src={profile?.profile_picture} />
                     </Avatar>
                   </div>
                 )}

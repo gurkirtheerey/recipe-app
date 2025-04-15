@@ -12,13 +12,41 @@ import { redirect } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
 import { SidebarMenuButton } from '../ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { createClient } from '@/lib/supabase/client';
+import { useQuery } from '@tanstack/react-query';
+import { Skeleton } from '../ui/skeleton';
 const SidebarAction = ({ user }: { user: User }) => {
+  const supabase = createClient();
+
+  const {
+    data: profile,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['sidebar-profile-picture', user.id],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('profiles').select('profile_picture').eq('id', user.id).single();
+      if (error) {
+        throw error;
+      }
+      return data;
+    },
+  });
+
+  if (isLoading) {
+    return <Skeleton className="h-8 w-8 rounded-full" />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarMenuButton>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={profile?.profile_picture} />
             <AvatarFallback>{user?.email?.charAt(0)}</AvatarFallback>
           </Avatar>
           {user?.email}
