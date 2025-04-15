@@ -20,38 +20,20 @@ export const favoritesService = {
     return !!data?.is_favorite;
   },
 
-  async getUserFavorites(userId: string): Promise<Recipe[]> {
+  async deleteFavorite(recipeId: string, userId: string): Promise<void> {
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from('favorites')
-      .select('recipe_id, is_favorite')
-      .eq('user_id', userId)
-      .eq('is_favorite', true);
-
-    if (error) {
-      console.error('Error fetching favorites:', error);
-      return [];
-    }
-
-    // Fetch the full recipe details for each favorite
-    const recipes = await Promise.all(
-      data.map(async (favorite) => {
-        const { data: recipe } = await supabase.from('recipes').select('*').eq('id', favorite.recipe_id).single();
-        return recipe;
-      })
-    );
-
-    return recipes.filter((recipe): recipe is Recipe => recipe !== null);
+    await supabase.from('favorites').delete().eq('user_id', userId).eq('recipe_id', recipeId);
   },
 
   async getFavoriteCarousel(userId: string): Promise<Recipe[]> {
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from('favorites')
-      .select('recipe_id, is_favorite')
-      .eq('user_id', userId)
-      .eq('is_favorite', true)
-      .order('favorited_at', { ascending: false })
+    // get recipes that are favorited by the user using inner join
+    const { data: recipes, error } = await supabase
+      .from('recipes')
+      .select('*, favorites!inner(*)') // inner join
+      .eq('favorites.is_favorite', true)
+      .eq('favorites.user_id', userId)
+      .order('created_at', { ascending: false })
       .limit(6);
 
     if (error) {
@@ -59,14 +41,6 @@ export const favoritesService = {
       return [];
     }
 
-    // Fetch the full recipe details for each favorite
-    const recipes = await Promise.all(
-      data.map(async (favorite) => {
-        const { data: recipe } = await supabase.from('recipes').select('*').eq('id', favorite.recipe_id).single();
-        return recipe;
-      })
-    );
-
-    return recipes.filter((recipe): recipe is Recipe => recipe !== null);
+    return recipes;
   },
 };

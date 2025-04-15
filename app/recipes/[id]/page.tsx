@@ -5,13 +5,16 @@ import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
 import FavoriteButton from '@/components/FavoriteButton';
+import { RecipeWithFavorites } from '@/types/recipeTypes';
+import { parseIngredient } from '@/app/utils/recipeUtils';
+
 type RecipeParams = Promise<{
   id: string;
 }>;
 
 export default async function RecipePage({ params }: { params: RecipeParams }) {
   const { id } = await params;
-  const recipe = await getRecipeById(id);
+  const recipe: RecipeWithFavorites | null = await getRecipeById(id);
 
   if (!recipe) {
     notFound();
@@ -23,13 +26,15 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
   // e.g., "1 hour 30 minutes"
   const formattedTime: string = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
 
+  const ingredientsWithMeasurements = recipe.ingredients?.map((ingredient: string) => parseIngredient(ingredient));
+
   return (
     <main className="min-h-screen bg-[#f8f8f8]">
       <div className="relative">
         {/* Navigation Buttons */}
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
-          <FavoriteButton />
+          <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
         </div>
 
         {/* Recipe Image */}
@@ -89,14 +94,16 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
           <div className="mb-8">
             <h2 className="text-lg font-medium mb-4">Ingredients</h2>
             <ul className="space-y-4">
-              {recipe.ingredients?.map((ingredient: string, index: number) => (
-                <li key={index} className="flex items-center justify-between py-2 border-b border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-800">{ingredient}</span>
-                  </div>
-                  <span className="text-gray-500">160g</span>
-                </li>
-              ))}
+              {ingredientsWithMeasurements?.map(
+                (ingredient: { measurements: string; cleaned: string }, index: number) => (
+                  <li key={index} className="flex items-center justify-between py-2 border-b border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <span className="text-gray-800">{ingredient.cleaned}</span>
+                    </div>
+                    <span className="text-gray-500">{ingredient.measurements}</span>
+                  </li>
+                )
+              )}
             </ul>
           </div>
 

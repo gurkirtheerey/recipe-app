@@ -1,7 +1,18 @@
 import { DiscoverCard } from '@/components/DiscoverCard';
 import { getAllRecipes } from '../recipes/actions';
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 export default async function DiscoverPage() {
-  const recipes = await getAllRecipes();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/signin');
+  }
+
+  const recipes = await getAllRecipes(user.id);
 
   return (
     <div className="container mx-auto py-8 space-y-8 px-2 sm:px-16 lg:px-24">
