@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       messagesCopy[lastMsgIndex] = {
         ...messagesCopy[lastMsgIndex],
         // Add recipe-specific requirements to the user's message
-        content: `${messagesCopy[lastMsgIndex].content}. Include prep time, cook time, servings, and a short description.`,
+        content: `${messagesCopy[lastMsgIndex].content}. Include title, prep time in minutes, cook time in minutes, servings, and a short description.`,
       };
     }
 
@@ -41,6 +41,7 @@ export async function POST(req: Request) {
       role,
       content,
     }));
+    console.log('cleanMessages', cleanMessages);
 
     const result = streamText({
       model: openai('gpt-3.5-turbo'),
