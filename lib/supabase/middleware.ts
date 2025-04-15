@@ -51,7 +51,7 @@ export async function updateSession(request: NextRequest) {
   const isPublicRoute = publicRoutes.some((route) => {
     // Special handling for profile routes
     if (route === '/profile/:username') {
-      return currentPath.startsWith('/profile/');
+      return true;
     }
     // Regular route matching
     return currentPath === route || currentPath.startsWith(`${route}/`);
