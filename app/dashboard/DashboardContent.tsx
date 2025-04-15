@@ -5,15 +5,7 @@ import { useState } from 'react';
 import CreateRecipeModal from '@/components/Recipe/CreateRecipeModal';
 import Link from 'next/link';
 
-import { useChat } from '@ai-sdk/react';
-import { useFlags } from 'flagsmith/react';
-
 export default function DashboardContent() {
-  const { 'ai-chatbot': aiChatbot } = useFlags(['ai-chatbot']);
-  const { messages, input, handleSubmit, handleInputChange, status } = useChat({
-    api: '/api/chat',
-  });
-
   const [open, setOpen] = useState(false);
 
   return (
