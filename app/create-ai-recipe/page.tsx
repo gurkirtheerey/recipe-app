@@ -93,7 +93,7 @@ const CreateAiRecipe = () => {
       console.error('Error adding recipe:', error);
       toast.error('Error adding recipe, please try again.');
     } else {
-      toast.success('Recipe added successfully');
+      toast.success(`Recipe added successfully! View it in the Recipes section.`);
     }
   };
 
@@ -149,10 +149,10 @@ const CreateAiRecipe = () => {
                         : 'bg-white text-gray-800 shadow-sm rounded-2xl rounded-tl-none'
                     }`}
                   >
-                    <p className="text-sm">{message.content}</p>
+                    <p className="text-sm whitespace-pre-line">{message.content}</p>
                   </div>
-                  {/* "Add to Recipes" button that appears below assistant messages */}
-                  {message.role === 'assistant' && (
+                  {/* "Add to Recipes" button that appears below assistant messages only if the message contains Prep Time  */}
+                  {message.role === 'assistant' && message.content.includes('Prep Time:') && (
                     <button
                       onClick={() => handleAddRecipe(message.content)}
                       className="self-start flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"

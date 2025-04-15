@@ -29,11 +29,28 @@ export async function POST(req: Request) {
 
     // If there is a user message, update content with recipe-specific requirements
     if (lastMsgIndex !== -1) {
-      messagesCopy[lastMsgIndex] = {
-        ...messagesCopy[lastMsgIndex],
-        // Add recipe-specific requirements to the user's message
-        content: `${messagesCopy[lastMsgIndex].content}. Include title, prep time in minutes, cook time in minutes, servings, and a short description.`,
-      };
+      const userMessage = messagesCopy[lastMsgIndex].content.toLowerCase();
+
+      // Check for explicit recipe creation or generation requests
+      const isRecipeRequest =
+        (userMessage.includes('recipe') &&
+          (userMessage.includes('create') ||
+            userMessage.includes('make') ||
+            userMessage.includes('generate') ||
+            userMessage.includes('give me') ||
+            userMessage.includes('show me') ||
+            userMessage.includes('write') ||
+            userMessage.includes('suggest'))) ||
+        userMessage.includes('how to make a recipe') ||
+        userMessage.includes('how to cook a recipe');
+
+      if (isRecipeRequest) {
+        messagesCopy[lastMsgIndex] = {
+          ...messagesCopy[lastMsgIndex],
+          // Add recipe-specific requirements to the user's message if recipe related
+          content: `${messagesCopy[lastMsgIndex].content}. Include title, prep time in minutes, cook time in minutes, servings, and a short description.`,
+        };
+      }
     }
 
     // Clean the messages to prevent other metadata and ensure only role and content are sent to the AI
