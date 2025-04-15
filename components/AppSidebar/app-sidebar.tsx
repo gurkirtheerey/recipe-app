@@ -1,4 +1,4 @@
-import { Home, Search, User, Utensils } from 'lucide-react';
+import { Home, Search, User, Utensils, Plus } from 'lucide-react';
 
 import {
   Sidebar,
@@ -43,6 +43,11 @@ export async function AppSidebar() {
       title: 'Profile',
       url: `/profile/${user?.user_metadata.username}`,
       icon: User,
+    },
+    {
+      title: 'Create AI Recipe',
+      url: '/create-ai-recipe',
+      icon: Plus,
     },
   ];
 
