@@ -25,8 +25,6 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
   // e.g., "1 hour 30 minutes"
   const formattedTime: string = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
 
-  console.log(recipe);
-
   return (
     <main className="min-h-screen bg-[#f8f8f8]">
       <div className="relative">
