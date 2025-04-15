@@ -30,13 +30,10 @@ const SidebarAction = ({ user }: { user: User }) => {
         className="w-[--radix-popper-anchor-width] min-w-[200px] rounded-md border bg-white p-1 shadow-md"
       >
         <DropdownMenuItem
-          onClick={() => redirect('/profile')}
+          onClick={() => redirect('/account-settings')}
           className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-gray-100"
         >
-          <span>Profile</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-gray-100">
-          <span>Billing</span>
+          <span>Account Settings</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => signOut()}

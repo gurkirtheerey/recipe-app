@@ -40,11 +40,6 @@ export async function AppSidebar() {
       icon: Utensils,
     },
     {
-      title: 'Account Settings',
-      url: '/account-settings',
-      icon: Settings,
-    },
-    {
       title: 'Profile',
       url: `/profile/${user?.user_metadata.username}`,
       icon: User,
