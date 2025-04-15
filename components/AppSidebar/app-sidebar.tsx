@@ -14,13 +14,28 @@ import SidebarAction from './SidebarAction';
 import { redirect } from 'next/navigation';
 import { AppSidebarMenuItem } from './AppSidebarMenuItem';
 
+const getProfile = async (id: string) => {
+  if (!id) {
+    return null;
+  }
+  const supabase = await createClient();
+  const { data } = await supabase.from('profiles').select('*').eq('id', id).single();
+  return data;
+};
+
 export async function AppSidebar() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const firstName = user?.user_metadata.first_name;
+  if (!user) {
+    redirect('/login');
+  }
+
+  const profile = await getProfile(user.id);
+
+  const firstName = profile.first_name;
 
   // Menu items.
   const items = [
@@ -41,7 +56,7 @@ export async function AppSidebar() {
     },
     {
       title: 'Profile',
-      url: `/profile/${user?.user_metadata.username}`,
+      url: `/profile/${profile.username}`,
       icon: User,
     },
     {
