@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Send, ChefHat, Plus } from 'lucide-react';
+import { ChefHat, Plus, ArrowUp } from 'lucide-react';
 import { useChat } from '@ai-sdk/react';
 import { useFlags } from 'flagsmith/react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
@@ -113,7 +113,7 @@ const CreateAiRecipe = () => {
       </header>
 
       {/* Chat messages area */}
-      <main className="flex-1 overflow-y-auto p-4 space-y-4">
+      <main className="flex-1 overflow-y-auto p-8 space-y-4">
         {/* Show empty state if no messages */}
         {aiChatbot.enabled &&
           (messages.length === 0 ? (
@@ -139,10 +139,11 @@ const CreateAiRecipe = () => {
                     <ChefHat className="w-4 h-4 text-blue-600" />
                   </div>
                 )}
-                <div className="flex flex-col gap-1">
-                  {/* Message bubble with different styles for user and assistant */}
+                <div
+                  className={`flex flex-col gap-1 max-w-[75%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}
+                >
                   <div
-                    className={`max-w-[75%] p-3 ${
+                    className={`p-3 ${
                       message.role === 'user'
                         ? 'bg-blue-600 text-white rounded-2xl rounded-tr-none'
                         : 'bg-white text-gray-800 shadow-sm rounded-2xl rounded-tl-none'
@@ -175,23 +176,22 @@ const CreateAiRecipe = () => {
       </main>
 
       {/* Input area */}
-      <footer className="bg-white border-t border-gray-200 p-4 shadow-sm">
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <input
-            value={input}
-            placeholder="Send a message..."
-            onChange={handleInputChange}
-            disabled={status !== 'ready'}
-            className="flex-1 rounded-full bg-gray-50 border border-gray-200 px-4 py-2 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="rounded-full bg-blue-600 p-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white"
-          >
-            <Send className="w-5 h-5" />
+      <div className="bg-white border-t border-gray-200 p-4 shadow-sm mb-10">
+        <div className="flex items-center rounded-full bg-gray-50 border border-gray-200">
+          <form onSubmit={handleSubmit} className="flex-1 flex gap-2">
+            <input
+              value={input}
+              placeholder="Send a message..."
+              onChange={handleInputChange}
+              disabled={status !== 'ready'}
+              className="flex-1 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:border-none focus:ring-none px-4 py-2"
+            />
+          </form>
+          <button type="submit" className="rounded-full bg-blue-600 text-white hover:bg-blue-700 p-2 m-1">
+            <ArrowUp className="w-5 h-5" />
           </button>
-        </form>
-      </footer>
+        </div>
+      </div>
     </div>
   );
 };

@@ -41,7 +41,6 @@ export async function POST(req: Request) {
       role,
       content,
     }));
-    console.log('cleanMessages', cleanMessages);
 
     const result = streamText({
       model: openai('gpt-3.5-turbo'),
