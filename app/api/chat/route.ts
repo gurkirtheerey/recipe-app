@@ -21,10 +21,31 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
+    // Create a copy of the messages array
+    const messagesCopy = [...messages];
+
+    // Find the index of the last user message
+    const lastMsgIndex = messagesCopy.map((m) => m.role).lastIndexOf('user');
+
+    // If there is a user message, update content with recipe-specific requirements
+    if (lastMsgIndex !== -1) {
+      messagesCopy[lastMsgIndex] = {
+        ...messagesCopy[lastMsgIndex],
+        // Add recipe-specific requirements to the user's message
+        content: `${messagesCopy[lastMsgIndex].content}. Include prep time, cook time, servings, and a short description.`,
+      };
+    }
+
+    // Clean the messages to prevent other metadata and ensure only role and content are sent to the AI
+    const cleanMessages = messagesCopy.map(({ role, content }) => ({
+      role,
+      content,
+    }));
+
     const result = streamText({
       model: openai('gpt-3.5-turbo'),
       system: 'You are a helpful assistant.',
-      messages,
+      messages: cleanMessages,
     });
 
     return result.toDataStreamResponse({
