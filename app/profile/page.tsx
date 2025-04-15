@@ -69,7 +69,6 @@ export default function ProfilePage() {
       const supabase = createClient();
       const { error } = await supabase.from('profiles').update(data).eq('id', user.id);
       if (error) {
-        console.log(profile);
         form.reset(profile);
         console.error('Error updating profile:', error);
         toast.error('Error updating profile', {
