@@ -5,39 +5,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { useMetadata } from '@/hooks/useMetadata';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { handleUpload } from '@/lib/utils/fileUpload';
-const profileSchema = z.object({
-  first_name: z.string().min(1),
-  last_name: z.string().min(1),
-  email: z.string().email(),
-  username: z.string().min(1),
-  profile_picture: z.string().optional(),
-});
-
-const updateProfile = async (userId: string, formData: z.infer<typeof profileSchema>) => {
-  const supabase = createClient();
-  const { error } = await supabase.from('profiles').update(formData).eq('id', userId);
-  if (error) {
-    console.error('Error updating profile:', error);
-    toast.error('Error updating profile', {
-      description: error.message,
-    });
-    throw error;
-  }
-  toast.success('Profile updated successfully');
-  return true;
-};
+import Loading from './loading';
+import { profileSchema } from '@/lib/schemas/profile';
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
   const supabase = createClient();
-  const [isEditing, setIsEditing] = useState(false);
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -51,14 +31,14 @@ export default function ProfilePage() {
 
   const { user, isLoading } = useAuth();
 
-  const { updateMetadata } = useMetadata(user);
+  const { updateMetadata } = useMetadata(user ?? null);
 
   const {
-    data,
+    data: profile,
     isLoading: isLoadingProfile,
     error,
   } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', user?.id],
     queryFn: async () => {
       if (!user) {
         throw new Error('User not authenticated');
@@ -76,17 +56,29 @@ export default function ProfilePage() {
   const { register, handleSubmit, reset, setValue } = form;
 
   useEffect(() => {
-    if (data) {
-      reset(data);
+    if (profile) {
+      reset(profile);
     }
-  }, [data, reset]);
+  }, [profile, reset]);
 
   const onSubmit = useMutation({
-    mutationFn: (data: z.infer<typeof profileSchema>) => {
+    mutationFn: async (data: z.infer<typeof profileSchema>) => {
       if (!user) {
         throw new Error('User not authenticated');
       }
-      return updateProfile(user.id, data);
+      const supabase = createClient();
+      const { error } = await supabase.from('profiles').update(data).eq('id', user.id);
+      if (error) {
+        console.log(profile);
+        form.reset(profile);
+        console.error('Error updating profile:', error);
+        toast.error('Error updating profile', {
+          description: error.message,
+        });
+        throw error;
+      }
+      queryClient.invalidateQueries({ queryKey: ['profile', user.id] });
+      toast.success('Profile updated successfully');
     },
   });
 
@@ -97,7 +89,6 @@ export default function ProfilePage() {
       last_name: data.last_name,
       username: data.username,
     });
-    setIsEditing(false);
   };
 
   /**
@@ -132,14 +123,14 @@ export default function ProfilePage() {
   };
 
   if (isLoading || isLoadingProfile) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  const userFullName = `${user?.user_metadata.first_name} ${user?.user_metadata.last_name}`;
+  const userFullName = `${profile?.first_name} ${profile?.last_name}`;
 
   return (
     <main className="min-h-screen bg-background">
@@ -163,7 +154,7 @@ export default function ProfilePage() {
               accept="image/*"
               className="hidden"
               onChange={onFileChange}
-              disabled={onSubmit.isPending || !isEditing}
+              disabled={onSubmit.isPending}
             />
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold">{userFullName}</h1>
@@ -172,23 +163,9 @@ export default function ProfilePage() {
               </p>
             </div>
           </div>
-
-          {isEditing ? (
-            <Button type="submit" variant="outline" data-testid="submit-button">
-              Save
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsEditing(true);
-              }}
-            >
-              Edit Profile
-            </Button>
-          )}
+          <Button type="submit" variant="outline" data-testid="submit-button">
+            Save
+          </Button>
         </div>
         <div className="flex flex-col gap-4">
           <div className="grid sm:grid-cols-2 gap-2">
@@ -198,27 +175,15 @@ export default function ProfilePage() {
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">First Name</h2>
-              <Input
-                disabled={onSubmit.isPending || !isEditing}
-                {...register('first_name')}
-                data-testid="first-name-input"
-              />
+              <Input disabled={onSubmit.isPending} {...register('first_name')} data-testid="first-name-input" />
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">Last Name</h2>
-              <Input
-                disabled={onSubmit.isPending || !isEditing}
-                {...register('last_name')}
-                data-testid="last-name-input"
-              />
+              <Input disabled={onSubmit.isPending} {...register('last_name')} data-testid="last-name-input" />
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">Username</h2>
-              <Input
-                disabled={onSubmit.isPending || !isEditing}
-                {...register('username')}
-                data-testid="username-input"
-              />
+              <Input disabled={onSubmit.isPending} {...register('username')} data-testid="username-input" />
             </div>
           </div>
         </div>
