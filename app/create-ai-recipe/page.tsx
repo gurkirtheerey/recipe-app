@@ -1,63 +1,22 @@
 'use client';
 
-import React from 'react';
-import { ChefHat, Plus, ArrowUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChefHat, Plus, ArrowUp, CircleCheckBig } from 'lucide-react';
 import { useChat } from '@ai-sdk/react';
 import { useFlags } from 'flagsmith/react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-
-// Function to extract information from the recipe paragraph
-function extractRecipeData(paragraph: string) {
-  const recipe = {
-    title: '', // Extracted dynamically
-    description: '',
-    ingredients: [] as string[],
-    instructions: [] as string[],
-    prep_time: 0,
-    cook_time: 0,
-    servings: 0,
-  };
-
-  // Regular expressions to extract data from the paragraph
-  const titleMatch = paragraph.match(/Title:\s([\s\S]*?)\n/); // Extract title
-  const descriptionMatch = paragraph.match(/Description:\s([\s\S]*?)\n/);
-  const prepTimeMatch = paragraph.match(/Prep Time:\s([\d\w\s-]+)/);
-  const cookTimeMatch = paragraph.match(/Cook Time:\s([\d\w\s-]+)/);
-  const servingsMatch = paragraph.match(/Servings:\s(\d+)/);
-  const ingredientsMatch = paragraph.match(/Ingredients:\s([\s\S]*?)Instructions:/);
-  const instructionsMatch = paragraph.match(/Instructions:\s([\s\S]*)/);
-
-  // Assign matches to respective keys
-  if (titleMatch) recipe.title = titleMatch[1].trim();
-  if (descriptionMatch) recipe.description = descriptionMatch[1].trim();
-  if (prepTimeMatch) recipe.prep_time = parseInt(prepTimeMatch[1].trim());
-  if (cookTimeMatch) recipe.cook_time = parseInt(cookTimeMatch[1].trim());
-  if (servingsMatch) recipe.servings = parseInt(servingsMatch[1].trim());
-  // Extract ingredients and instructions; remove any leading numbers, dashes,and whitespace
-  if (ingredientsMatch) {
-    recipe.ingredients = ingredientsMatch[1]
-      .split('\n')
-      .map((ingredient) => ingredient.replace(/^[-\d.]+\s*/, '').trim())
-      .filter((ingredient) => ingredient !== '');
-  }
-  if (instructionsMatch) {
-    recipe.instructions = instructionsMatch[1]
-      .split('\n')
-      .map((instruction) => instruction.replace(/^[-\d.]+\s*/, '').trim())
-      .filter((instruction) => instruction !== '');
-  }
-
-  return recipe;
-}
+import { UIMessage } from 'ai';
+import { extractRecipeData } from './utils';
 
 const CreateAiRecipe = () => {
   // Feature flag to control AI chatbot visibility
   const { 'ai-chatbot': aiChatbot } = useFlags(['ai-chatbot']);
   const supabase = createClient();
   const { user } = useAuth();
+  const [savedResponses, setSavedResponses] = useState<string[]>([]);
 
   // Chat hook that handles message state, input, and submission
   // Connects to the /api/chat endpoint for AI responses
@@ -70,9 +29,14 @@ const CreateAiRecipe = () => {
     return;
   }
 
+  // Check if the recipe is saved
+  const isRecipeSaved = (messageId: string) => {
+    return savedResponses.includes(messageId);
+  };
+
   // Handler for adding a recipe to the user's recipe list
-  const handleAddRecipe = async (content: string) => {
-    const recipe = extractRecipeData(content);
+  const handleAddRecipe = async (message: UIMessage) => {
+    const recipe = extractRecipeData(message.content);
 
     const { error } = await supabase.from('recipes').insert([
       {
@@ -88,6 +52,9 @@ const CreateAiRecipe = () => {
         user_id: user.id,
       },
     ]);
+
+    // Add the message id to the savedResponses array
+    setSavedResponses([...savedResponses, message.id]);
 
     if (error) {
       console.error('Error adding recipe:', error);
@@ -152,15 +119,24 @@ const CreateAiRecipe = () => {
                     <p className="text-sm whitespace-pre-line">{message.content}</p>
                   </div>
                   {/* "Add to Recipes" button that appears below assistant messages only if the message contains Prep Time  */}
-                  {message.role === 'assistant' && message.content.includes('Prep Time:') && (
-                    <button
-                      onClick={() => handleAddRecipe(message.content)}
-                      className="self-start flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
-                    >
-                      <Plus className="w-3 h-3" />
-                      <span>Add to Recipes</span>
-                    </button>
-                  )}
+                  {message.role === 'assistant' &&
+                    message.content.includes('Prep Time:') &&
+                    // If the recipe is not saved, show the "Add to Recipes" button
+                    (!isRecipeSaved(message.id) ? (
+                      <button
+                        onClick={() => handleAddRecipe(message)}
+                        className="self-start flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
+                      >
+                        <Plus className="w-3 h-3" />
+                        <span>Add to Recipes</span>
+                      </button>
+                    ) : (
+                      // If the recipe is saved, show the "Saved" button
+                      <span className="self-start flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors">
+                        <CircleCheckBig className="w-3 h-3" />
+                        <span>Saved</span>
+                      </span>
+                    ))}
                 </div>
                 {/* User avatar */}
                 {message.role === 'user' && (
