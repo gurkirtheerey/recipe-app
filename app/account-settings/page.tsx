@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { handleUpload } from '@/lib/utils/fileUpload';
 import Loading from './loading';
 import { profileSchema } from '@/lib/schemas/profile';
+import { Pencil } from 'lucide-react';
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
@@ -141,11 +142,15 @@ export default function ProfilePage() {
         <div className="flex justify-between items-center gap-2">
           <div className="flex items-center gap-6">
             <label htmlFor="profile-picture-upload" className="cursor-pointer">
-              <Avatar className="h-20 w-20">
-                {/* ----------------------------------- DUMMY IMAGE FOR NOW ----------------------------------- */}
-                <AvatarImage src={form.watch('profile_picture')} />
-                <AvatarFallback>{userFullName.charAt(0)}</AvatarFallback>
-              </Avatar>
+              <div className="relative group">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src={form.watch('profile_picture')} />
+                  <AvatarFallback>{userFullName.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="absolute right-0 bottom-0 rounded-full p-1 bg-gray-800/80 opacity-95 group-hover:opacity-100 group-hover:bg-gray-800 transition-all cursor-pointer">
+                  <Pencil className="h-5 w-5 text-white" />
+                </div>
+              </div>
             </label>
             <input
               id="profile-picture-upload"
@@ -153,7 +158,7 @@ export default function ProfilePage() {
               accept="image/*"
               className="hidden"
               onChange={onFileChange}
-              disabled={onSubmit.isPending}
+              disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
             />
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold">{userFullName}</h1>
@@ -162,8 +167,13 @@ export default function ProfilePage() {
               </p>
             </div>
           </div>
-          <Button type="submit" variant="outline" data-testid="submit-button">
-            Save
+          <Button
+            type="submit"
+            variant="outline"
+            data-testid="submit-button"
+            disabled={handleProfilePictureUpload.isPending || onSubmit.isPending}
+          >
+            {handleProfilePictureUpload.isPending || onSubmit.isPending ? 'Saving...' : 'Save'}
           </Button>
         </div>
         <div className="flex flex-col gap-4">
@@ -174,15 +184,27 @@ export default function ProfilePage() {
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">First Name</h2>
-              <Input disabled={onSubmit.isPending} {...register('first_name')} data-testid="first-name-input" />
+              <Input
+                disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
+                {...register('first_name')}
+                data-testid="first-name-input"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">Last Name</h2>
-              <Input disabled={onSubmit.isPending} {...register('last_name')} data-testid="last-name-input" />
+              <Input
+                disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
+                {...register('last_name')}
+                data-testid="last-name-input"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-medium">Username</h2>
-              <Input disabled={onSubmit.isPending} {...register('username')} data-testid="username-input" />
+              <Input
+                disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
+                {...register('username')}
+                data-testid="username-input"
+              />
             </div>
           </div>
         </div>

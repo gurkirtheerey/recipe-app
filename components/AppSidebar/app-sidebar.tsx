@@ -12,7 +12,6 @@ import {
 import { createClient } from '@/lib/supabase/server';
 import SidebarAction from './SidebarAction';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { AppSidebarMenuItem } from './AppSidebarMenuItem';
 
 export async function AppSidebar() {

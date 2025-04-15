@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { getMyRecipes } from '@/app/recipes/actions';
 import { RecipeGrid } from '@/components/Recipe/RecipeGrid';
 import Navbar from '@/components/navbar';
+import Image from 'next/image';
+
 type Profile = z.infer<typeof profileSchema>;
 
 const getUserByUsername = async (username: string): Promise<Profile | null> => {
@@ -42,10 +44,12 @@ const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }
       <div className="min-h-screen bg-background">
         <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center mb-8">
-            <img
+            <Image
               src={profile_picture || `https://ui-avatars.com/api/?name=${first_name}+${last_name}`}
               alt={username}
               className="w-24 h-24 rounded-full mb-4"
+              width={96}
+              height={96}
             />
             <h1 className="text-3xl font-bold">{username}</h1>
             <p className="text-muted-foreground">
