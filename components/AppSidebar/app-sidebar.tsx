@@ -14,7 +14,7 @@ import {
 import { createClient } from '@/lib/supabase/server';
 import SidebarAction from './SidebarAction';
 import { redirect } from 'next/navigation';
-
+import Link from 'next/link';
 // Menu items.
 const items = [
   {
@@ -61,10 +61,10 @@ export async function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

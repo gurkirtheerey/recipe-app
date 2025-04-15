@@ -44,11 +44,18 @@ export const favoritesService = {
     return recipes.filter((recipe): recipe is Recipe => recipe !== null);
   },
 
+  /**
+   * This query is used to fetch the favorite recipes for a user.
+   * It joins the favorites table with the recipes table and returns the recipes that are favorites.
+   * It also orders the recipes by the date they were favorited and limits the number of recipes to 6.
+   * @param userId - The user ID of the user to fetch the favorite recipes for.
+   * @returns A promise that resolves to an array of favorite recipes.
+   */
   async getFavoriteCarousel(userId: string): Promise<Recipe[]> {
     const supabase = createClient();
     const { data, error } = await supabase
       .from('favorites')
-      .select('recipe_id, is_favorite')
+      .select('recipe:recipes(*)')
       .eq('user_id', userId)
       .eq('is_favorite', true)
       .order('favorited_at', { ascending: false })
@@ -59,14 +66,6 @@ export const favoritesService = {
       return [];
     }
 
-    // Fetch the full recipe details for each favorite
-    const recipes = await Promise.all(
-      data.map(async (favorite) => {
-        const { data: recipe } = await supabase.from('recipes').select('*').eq('id', favorite.recipe_id).single();
-        return recipe;
-      })
-    );
-
-    return recipes.filter((recipe): recipe is Recipe => recipe !== null);
+    return data.map((item) => item.recipe as unknown as Recipe);
   },
 };
