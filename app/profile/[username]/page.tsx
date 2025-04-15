@@ -10,6 +10,7 @@ type Profile = z.infer<typeof profileSchema>;
 const getUserByUsername = async (username: string): Promise<Profile | null> => {
   const supabase = await createClient();
   const { data, error } = await supabase.from('profiles').select('*').eq('username', username).single();
+
   if (error) {
     throw new Error(error.message);
   }
@@ -19,14 +20,13 @@ const getUserByUsername = async (username: string): Promise<Profile | null> => {
 const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }) => {
   const { username: usernameParam } = await params;
   const user = await getUserByUsername(usernameParam);
-  console.log(user);
   if (!user) {
     notFound();
   }
 
-  const { first_name, last_name, username, profile_picture } = user;
-  console.log(user.id);
-  const recipes = await getMyRecipes(user.id);
+  const { id, first_name, last_name, username, profile_picture } = user;
+
+  const recipes = await getMyRecipes(id);
 
   return (
     <div className="min-h-screen bg-background">
