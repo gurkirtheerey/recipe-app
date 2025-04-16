@@ -45,17 +45,17 @@ export default function CollectionsPage() {
         <CreateCollectionModal isCreateOpen={isCreateOpen} setIsCreateOpen={setIsCreateOpen} />
       </div>
       {/* List of Collections */}
-      <div className="flex flex-wrap gap-4">
+      <div className="flex sm:flex-row flex-col gap-4">
         {collections.map((collection: Collection) => (
           <ContextMenu key={collection.id}>
             <ContextMenuTrigger asChild>
               <div
                 key={collection.id}
-                className="flex flex-col justify-between gap-2 border-b border-gray-200 sm:p-4 p-2 shadow-md rounded-lg sm:h-48 sm:w-48 h-32 w-48 hover:bg-gray-100 transition-all duration-300 cursor-auto"
+                className="flex flex-col justify-between gap-2 border-b border-gray-200 sm:p-4 p-2 shadow-md rounded-lg sm:h-48 sm:w-48 h-32 w-full hover:bg-gray-100 transition-all duration-300 cursor-auto"
               >
                 <div className="flex justify-between items-center">
                   <Link href={`/collections/${collection.id}`}>
-                    <h2 className="sm:text-xl text-md font-medium transition-all duration-300 hover:text-gray-500">
+                    <h2 className="sm:text-xl text-md font-medium transition-all duration-300 hover:text-gray-500 line-clamp-1">
                       {collection.name}
                     </h2>
                   </Link>
@@ -85,8 +85,10 @@ export default function CollectionsPage() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm text-gray-500 line-clamp-1">{collection.description}</p>
-                  <p className="text-sm text-gray-500">{collection.collection_recipes.length} recipes</p>
+                  <span className="text-sm text-gray-500 line-clamp-1">{collection.description}</span>
+                  <span className="text-sm text-gray-800 font-medium">
+                    {collection.collection_recipes.length} recipes
+                  </span>
                 </div>
               </div>
             </ContextMenuTrigger>
