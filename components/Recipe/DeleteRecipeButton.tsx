@@ -40,8 +40,12 @@ const DeleteRecipeButton = ({ recipeId }: { recipeId: string }) => {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Delete Recipe</DialogTitle>
-        <DialogDescription>Are you sure you want to delete this recipe?</DialogDescription>
-        <Button onClick={() => deleteRecipe()}>Delete</Button>
+        <DialogDescription>
+          Are you sure you want to delete this recipe? You will not be able to recover it.
+        </DialogDescription>
+        <Button variant="destructive" disabled={isPending} onClick={() => deleteRecipe()}>
+          {isPending ? <Loader2 className="animate-spin text-black" size={20} /> : 'Delete'}
+        </Button>
       </DialogContent>
     </Dialog>
   );

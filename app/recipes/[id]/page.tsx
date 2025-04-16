@@ -8,17 +8,29 @@ import FavoriteButton from '@/components/FavoriteButton';
 import { RecipeWithFavorites } from '@/types/recipeTypes';
 import EditRecipeModal from '@/app/recipes/EditRecipeModal';
 import DeleteRecipeButton from '@/components/Recipe/DeleteRecipeButton';
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 type RecipeParams = Promise<{
   id: string;
 }>;
 
 export default async function RecipePage({ params }: { params: RecipeParams }) {
+  const supabase = await createClient();
   const { id } = await params;
   const recipe: RecipeWithFavorites | null = await getRecipeById(id);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login');
+  }
 
   if (!recipe) {
     notFound();
   }
+
+  const isOwner = recipe.user_id === user.id;
 
   const totalTimeInMinutes: number = recipe.total_time ?? 0;
   const hours: number = Math.floor(totalTimeInMinutes / 60);
@@ -34,7 +46,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
           <BackButton />
           <div className="flex items-center gap-2">
             <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
-            <DeleteRecipeButton recipeId={recipe.id} />
+            {isOwner && <DeleteRecipeButton recipeId={recipe.id} />}
           </div>
         </div>
 
@@ -59,7 +71,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
               <div className="flex items-start justify-between sm:justify-start w-full">
                 <h1 className="text-xl sm:text-3xl font-semibold mb-2 sm:mr-3 mr-0 line-clamp-1">{recipe.title}</h1>
-                <EditRecipeModal recipe={recipe} />
+                <EditRecipeModal recipe={recipe} isOwner={isOwner} />
               </div>
               <div className="mt-2 mb-4 sm:mt-0 sm:mb-0">
                 <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
