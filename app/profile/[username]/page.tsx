@@ -1,31 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
-import { notFound } from 'next/navigation';
-import { profileSchema } from '@/lib/schemas/profile';
-import { z } from 'zod';
 import { getMyRecipes } from '@/app/recipes/actions';
 import { RecipeGrid } from '@/components/Recipe/RecipeGrid';
 import Navbar from '@/components/navbar';
 import Image from 'next/image';
-
-type Profile = z.infer<typeof profileSchema>;
-
-const getUserByUsername = async (username: string): Promise<Profile | null> => {
-  const supabase = await createClient();
-  const { data, error } = await supabase.from('profiles').select('*').eq('username', username).single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
-};
-
+import Error from './error';
 const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }) => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   const { username: usernameParam } = await params;
-  const user = await getUserByUsername(usernameParam);
-  if (!user) {
-    notFound();
+  const { data: user, error } = await supabase.from('profiles').select('*').eq('username', usernameParam).single();
+
+  if (error || !user) {
+    return <Error />;
   }
 
   const { id, first_name, last_name, username, profile_picture } = user;
