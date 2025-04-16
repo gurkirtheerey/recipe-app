@@ -76,7 +76,8 @@ export async function getAllRecipes(user_id: string): Promise<RecipeWithFavorite
     )
   `
     )
-    .eq('favorites.user_id', user_id);
+    .eq('favorites.user_id', user_id)
+    .order('created_at', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
