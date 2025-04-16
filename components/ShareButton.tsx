@@ -12,7 +12,7 @@ const ShareButton = ({ id, title }: { id: string; title: string }) => {
   return (
     <Button
       onClick={() => navigator.share(shareData)}
-      className="p-0 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent hover:text-gray-300"
+      className="p-0 text-gray-800 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent hover:text-gray-600"
     >
       <Share2 />
     </Button>

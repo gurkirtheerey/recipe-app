@@ -70,7 +70,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       if (values.image) {
         try {
           // Upload the image and get the URL
-          imageUrl = await handleUpload(values.image);
+          imageUrl = await handleUpload(values.image as File);
         } catch (error) {
           // If the image upload fails, return the error and show a toast
           toast.error(error instanceof Error ? error.message : FileErrors.UPLOAD_FAILED);

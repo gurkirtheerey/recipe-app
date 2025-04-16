@@ -6,18 +6,31 @@ import BackButton from '@/components/BackButton';
 import { StarRating } from '@/components/StarRating';
 import FavoriteButton from '@/components/FavoriteButton';
 import { RecipeWithFavorites } from '@/types/recipeTypes';
-
+import EditRecipeModal from '@/app/recipes/EditRecipeModal';
+import DeleteRecipeButton from '@/components/Recipe/DeleteRecipeButton';
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 type RecipeParams = Promise<{
   id: string;
 }>;
 
 export default async function RecipePage({ params }: { params: RecipeParams }) {
+  const supabase = await createClient();
   const { id } = await params;
   const recipe: RecipeWithFavorites | null = await getRecipeById(id);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login');
+  }
 
   if (!recipe) {
     notFound();
   }
+
+  const isOwner = recipe.user_id === user.id;
 
   const totalTimeInMinutes: number = recipe.total_time ?? 0;
   const hours: number = Math.floor(totalTimeInMinutes / 60);
@@ -31,7 +44,10 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         {/* Navigation Buttons */}
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
-          <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
+          <div className="flex items-center gap-2">
+            <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
+            {isOwner && <DeleteRecipeButton recipeId={recipe.id} />}
+          </div>
         </div>
 
         {/* Recipe Image */}
@@ -52,10 +68,16 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         <div className="bg-white rounded-t-3xl px-6 pt-8 pb-20 max-w-3xl mx-auto shadow-sm">
           {/* Recipe Header */}
           <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl sm:text-3xl font-semibold mb-2">{recipe.title}</h1>
-              <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+              <div className="flex items-start justify-between sm:justify-start w-full">
+                <h1 className="text-xl sm:text-3xl font-semibold mb-2 sm:mr-3 mr-0 line-clamp-1">{recipe.title}</h1>
+                <EditRecipeModal recipe={recipe} isOwner={isOwner} />
+              </div>
+              <div className="mt-2 mb-4 sm:mt-0 sm:mb-0">
+                <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
+              </div>
             </div>
+            {/* Recipe Details */}
             <div className="flex items-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <span>Prep Time: {recipe.prep_time} mins</span>
@@ -79,8 +101,10 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                 </div>
               )}
             </div>
+            <div className="flex items-center gap-6 text-sm text-gray-600 mt-2">
+              <span>Created: {new Date(recipe.created_at).toLocaleDateString()}</span>
+            </div>
           </div>
-
           {/* Description */}
           <div className="mb-8">
             <h2 className="text-lg font-medium mb-2">Description</h2>
