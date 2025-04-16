@@ -18,3 +18,4 @@ export * from './card';
 export * from './dialog';
 export * from './dropdown-menu';
 export * from './drawer';
+export * from './popover';

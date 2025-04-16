@@ -7,11 +7,18 @@ import EditCollectionModal from './components/edit-collection-modal';
 import { useCollections } from './useCollections';
 import DeleteCollectionModal from './components/delete-collection-modal';
 import CreateCollectionModal from './components/create-collection-modal';
-import { ContextMenu } from '@/components/ui';
-import { ContextMenuContent, ContextMenuTrigger } from '@/components/ui';
-import { ContextMenuItem } from '@/components/ui';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuTrigger,
+  ContextMenuItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui';
 import { Button } from '@/components/ui';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, EllipsisVertical } from 'lucide-react';
+
 export default function CollectionsPage() {
   const { collections, loading, error } = useCollections();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -42,15 +49,46 @@ export default function CollectionsPage() {
         {collections.map((collection: Collection) => (
           <ContextMenu key={collection.id}>
             <ContextMenuTrigger asChild>
-              <Link
-                href={`/collections/${collection.id}`}
+              <div
                 key={collection.id}
-                className="flex flex-col gap-2 border-b border-gray-200 sm:p-4 p-2 shadow-md rounded-lg sm:h-48 sm:w-48 h-32 w-32 hover:bg-gray-100 transition-all duration-300"
+                className="flex flex-col justify-between gap-2 border-b border-gray-200 sm:p-4 p-2 shadow-md rounded-lg sm:h-48 sm:w-48 h-32 w-48 hover:bg-gray-100 transition-all duration-300 cursor-auto"
               >
-                <h2 className="sm:text-xl text-lg font-medium">{collection.name}</h2>
-                <p className="text-sm text-gray-500">{collection.description}</p>
-                <p className="text-sm text-gray-500">{collection.collection_recipes.length} recipes</p>
-              </Link>
+                <div className="flex justify-between items-center">
+                  <Link href={`/collections/${collection.id}`}>
+                    <h2 className="sm:text-xl text-md font-medium transition-all duration-300 hover:text-gray-500">
+                      {collection.name}
+                    </h2>
+                  </Link>
+                  {/* Popover for Edit and Delete */}
+                  <div className="py-1 rounded hover:bg-gray-300 transition-all duration-300 ">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <EllipsisVertical className="w-4 h-4" />
+                      </PopoverTrigger>
+                      <PopoverContent className="w-30">
+                        <div className="flex flex-col gap-2 text-sm text-gray-500">
+                          <span
+                            className="cursor-pointer hover:text-gray-400 transition-all duration-300"
+                            onClick={() => setIsEditCollectionOpen(collection)}
+                          >
+                            Edit
+                          </span>
+                          <span
+                            className="cursor-pointer hover:text-gray-400 transition-all duration-300"
+                            onClick={() => setIsDeleteCollectionOpen(collection)}
+                          >
+                            Delete
+                          </span>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-gray-500 line-clamp-1">{collection.description}</p>
+                  <p className="text-sm text-gray-500">{collection.collection_recipes.length} recipes</p>
+                </div>
+              </div>
             </ContextMenuTrigger>
             <ContextMenuContent>
               <ContextMenuItem onClick={() => setIsEditCollectionOpen(collection)}>Edit</ContextMenuItem>
