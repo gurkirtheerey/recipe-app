@@ -44,7 +44,9 @@ const FavoriteButton = ({ type, id, isFavorite }: { type?: 'post' | 'recipe'; id
       {handleFavorite.isPending ? (
         <Loader2 className="animate-spin text-black" size={20} />
       ) : (
-        <Heart className={`${toggle ? 'fill-red-500 text-red-500' : type === 'post' ? 'text-white' : 'text-black'}`} />
+        <Heart
+          className={`${toggle ? 'fill-red-500 text-red-500' : type === 'post' ? 'text-gray-800' : 'text-black'}`}
+        />
       )}
     </Button>
   );

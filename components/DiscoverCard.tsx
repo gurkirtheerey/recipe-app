@@ -31,34 +31,29 @@ export function timeAgo(date: string): string {
 export function DiscoverCard({ item }: DiscoverCardProps) {
   const timePosted = timeAgo(item.created_at as string);
   return (
-    <div className="w-full sm:w-1/2 md:w-2/3 lg:w-1/2">
-      <div className="sm:rounded-lg overflow-hidden shadow-lg bg-slate-400 text-white mb-6">
-        <Link href={`/recipes/${item.id}`} className="block">
-          <div className="relative h-72 md:h-84 w-full">
-            {item.image ? (
-              <Image src={item.image} alt={item.title} fill className="object-cover" priority />
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <PlusIcon className="h-10 w-10 text-gray-400" />
-              </div>
-            )}
-          </div>
-        </Link>
-
-        <div className="h-46 flex flex-col p-4 space-y-2">
-          {/* Buttons */}
-          <div className="flex justify-between items-center">
-            <FavoriteButton type="post" id={item.id} isFavorite={!!item?.favorites?.[0]?.is_favorite} />
-            <ShareButton id={item.id} title={item.title} />
-          </div>
-
-          <Link href={`/recipes/${item.id}`} className="text-xl font-bold hover:underline">
-            {item.title}
-          </Link>
-
-          <p className="text-gray-800 text-sm line-clamp-2 min-h-[3em]">{item.description}</p>
-          <p className="text-gray-800 text-xs">{timePosted}</p>
+    <div className="w-full sm:w-1/2 md:w-2/3 lg:w-1/2 shadow-md hover:shadow-lg my-6 rounded-lg hover:scale-99 transition-all duration-300">
+      <Link href={`/recipes/${item.id}`}>
+        <div className="relative sm:h-72 h-48 md:h-84 w-full">
+          {item.image ? (
+            <Image src={item.image} alt={item.title} fill className="object-cover rounded-t-lg" priority />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <PlusIcon className="h-10 w-10 text-gray-400" />
+            </div>
+          )}
         </div>
+      </Link>
+      <div className="flex flex-col p-4 space-y-2">
+        {/* Buttons */}
+        <div className="flex justify-between items-center">
+          <FavoriteButton type="post" id={item.id} isFavorite={!!item?.favorites?.[0]?.is_favorite} />
+          <ShareButton id={item.id} title={item.title} />
+        </div>
+        <Link href={`/recipes/${item.id}`}>
+          <h2 className="text-xl font-medium text-black hover:text-gray-600 line-clamp-1">{item.title}</h2>
+        </Link>
+        <p className="text-gray-800 text-sm line-clamp-2 min-h-[3em]">{item.description}</p>
+        <p className="text-gray-800 text-xs">{timePosted}</p>
       </div>
     </div>
   );
