@@ -13,7 +13,11 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
+import { Skeleton } from '@/components/ui/skeleton';
+
 const EditRecipeModal = ({ recipe }: { recipe: Recipe }) => {
+  const { user, isLoading } = useAuth();
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -70,13 +74,22 @@ const EditRecipeModal = ({ recipe }: { recipe: Recipe }) => {
     handleEditRecipe.mutate(data);
   };
 
+  if (isLoading)
+    return (
+      <Skeleton className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 cursor-pointer">
+        <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+      </Skeleton>
+    );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <div className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 cursor-pointer">
-          <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-        </div>
-      </DialogTrigger>
+      {user?.id === recipe.user_id && (
+        <DialogTrigger asChild>
+          <div className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 cursor-pointer">
+            <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+          </div>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogTitle>Edit Recipe</DialogTitle>
         <DialogDescription>Edit your recipe to get started.</DialogDescription>
