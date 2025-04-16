@@ -17,3 +17,19 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
   }
   return NextResponse.json(data);
 }
+
+/**
+ * Delete a recipe
+ * @param request - The request object
+ * @param params - The parameters object
+ * @returns The deleted recipe
+ */
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  const supabase = await createClient();
+  const { id } = await params;
+  const { data, error } = await supabase.from('recipes').delete().eq('id', id);
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+  return NextResponse.json(data);
+}

@@ -7,6 +7,7 @@ import { StarRating } from '@/components/StarRating';
 import FavoriteButton from '@/components/FavoriteButton';
 import { RecipeWithFavorites } from '@/types/recipeTypes';
 import EditRecipeModal from '@/app/recipes/EditRecipeModal';
+import DeleteRecipeButton from '@/components/Recipe/DeleteRecipeButton';
 type RecipeParams = Promise<{
   id: string;
 }>;
@@ -31,7 +32,10 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         {/* Navigation Buttons */}
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
-          <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
+          <div className="flex items-center gap-2">
+            <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
+            <DeleteRecipeButton recipeId={recipe.id} />
+          </div>
         </div>
 
         {/* Recipe Image */}
