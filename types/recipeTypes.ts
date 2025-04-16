@@ -10,8 +10,8 @@ export interface Recipe {
   total_time?: number;
   servings: number;
   rating?: number;
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
   user_id?: string;
 }
 
