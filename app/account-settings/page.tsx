@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
@@ -14,9 +14,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { handleUpload } from '@/lib/utils/fileUpload';
 import Loading from './loading';
 import { profileSchema } from '@/lib/schemas/profile';
-import { Pencil } from 'lucide-react';
+import { Pencil, Upload } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export default function ProfilePage() {
+  const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
   const supabase = createClient();
   const form = useForm<z.infer<typeof profileSchema>>({
@@ -107,6 +109,7 @@ export default function ProfilePage() {
       toast.success('Profile picture updated successfully');
       setValue('profile_picture', imageUrl);
       queryClient.invalidateQueries({ queryKey: ['sidebar-profile-picture', user.id] });
+      setIsOpen(false);
       return imageUrl;
     },
   });
@@ -141,25 +144,51 @@ export default function ProfilePage() {
       >
         <div className="flex justify-between items-center gap-2">
           <div className="flex items-center gap-6">
-            <label htmlFor="profile-picture-upload" className="cursor-pointer">
-              <div className="relative group">
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src={form.watch('profile_picture')} />
-                  <AvatarFallback>{userFullName.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div className="absolute right-0 bottom-0 rounded-full p-1 bg-gray-800/80 opacity-95 group-hover:opacity-100 group-hover:bg-gray-800 transition-all cursor-pointer">
-                  <Pencil className="h-5 w-5 text-white" />
-                </div>
+            <div className="relative group">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={form.watch('profile_picture')} />
+                <AvatarFallback>{userFullName.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="absolute right-0 bottom-0 rounded-full p-1 bg-gray-800/80 opacity-95 group-hover:opacity-100 group-hover:bg-gray-800 transition-all cursor-pointer">
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger asChild>
+                    <button
+                      type="button"
+                      className="rounded-full p-1 bg-gray-800/80 opacity-95 group-hover:opacity-100 group-hover:bg-gray-800 transition-all cursor-pointer"
+                    >
+                      <Pencil className="h-5 w-5 text-white rounded-full" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle>Edit Profile Picture</DialogTitle>
+                    <DialogDescription>Upload a photo to your profile.</DialogDescription>
+                    <Button
+                      className="w-full"
+                      onClick={() => {
+                        const input = document.getElementById('profile-picture-upload') as HTMLInputElement;
+                        input?.click();
+                      }}
+                      disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
+                    >
+                      <Upload className="h-5 w-5 mr-2" />
+                      Select Image
+                    </Button>
+                    <input
+                      id="profile-picture-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={onFileChange}
+                      disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      By uploading an image, you agree that you have the right to publish the image and allow Nibbl to
+                      store and distribute the image.
+                    </p>
+                  </DialogContent>
+                </Dialog>
               </div>
-            </label>
-            <input
-              id="profile-picture-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={onFileChange}
-              disabled={onSubmit.isPending || handleProfilePictureUpload.isPending}
-            />
+            </div>
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold">{userFullName}</h1>
               <p className="text-sm text-muted-foreground">

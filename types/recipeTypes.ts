@@ -15,23 +15,16 @@ export interface Recipe {
   user_id?: string;
 }
 
-export interface Collection {
-  id: string;
-  title: string;
-  recipeCount: number;
-  image: string;
-}
-
 export interface RecipeCardProps {
-  item: Recipe | Collection;
-  type: 'recipe' | 'collection';
+  item: Recipe;
+  type: 'recipe';
   className?: string;
 }
 
 export interface RecipeRowProps {
   title: string;
-  items: Recipe[] | Collection[] | undefined;
-  type: 'recipe' | 'collection';
+  items: Recipe[] | undefined;
+  type: 'recipe';
   isLoading?: boolean;
 }
 
