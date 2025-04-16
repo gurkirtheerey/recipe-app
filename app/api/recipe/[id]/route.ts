@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/server';
  * @param params - The parameters object
  * @returns The updated recipe
  */
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
   const { id } = await params;
   const body = await request.json();
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
  * @param params - The parameters object
  * @returns The deleted recipe
  */
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
   const { id } = await params;
   const { data, error } = await supabase.from('recipes').delete().eq('id', id);
