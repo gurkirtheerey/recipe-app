@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
  * @param params - The params object
  * @returns The collection
  */
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
   const {
@@ -54,7 +54,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
  * @param params - The params object
  * @returns The collection
  */
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
   const body = await request.json();
@@ -70,7 +70,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
   return NextResponse.json({ data }, { status: 200 });
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const body = await request.json();
   const { recipeId } = body;
@@ -102,7 +102,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
  * @param params - The params object
  * @returns The collection
  */
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
   const body = await request.json();
