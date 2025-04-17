@@ -2,9 +2,6 @@ import React from 'react';
 import { Utensils, Heart, Lightbulb, Users, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-// Import Navbar and Footer if you have them and want them on this page
-// import Navbar from '@/components/navbar';
-// import Footer from '@/components/footer';
 
 const AboutPage = () => {
   return (

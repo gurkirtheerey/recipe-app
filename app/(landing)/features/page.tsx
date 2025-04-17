@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import React from 'react'; // Import React for types
+import React from 'react';
 // Define props type for FeatureCard
 interface FeatureCardProps {
   icon: React.ElementType;
