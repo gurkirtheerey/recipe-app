@@ -3,3 +3,4 @@ export * from './recipeTypes';
 export * from './profileTypes';
 export * from './favoriteTypes';
 export * from './ratingTypes';
+export * from './ingredientTypes';
