@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { signup } from '../actions/auth/actions';
+import { signup } from '@/app/actions/auth/actions';
 import { useActionState } from 'react';
 import Link from 'next/link';
 import { Mail, Lock, User } from 'lucide-react';
