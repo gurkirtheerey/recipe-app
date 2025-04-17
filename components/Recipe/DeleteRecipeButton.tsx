@@ -20,6 +20,7 @@ const DeleteRecipeButton = ({ recipeId }: { recipeId: string }) => {
         throw new Error('Failed to delete recipe');
       }
       toast.success('Recipe deleted successfully');
+      setOpen(false);
       router.back();
     },
   });
