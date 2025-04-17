@@ -9,6 +9,7 @@ import AppSidebarTrigger from '@/components/AppSidebar/AppSidebarTrigger';
 import QueryProvider from './providers/query-provider';
 import { FeatureFlagProvider } from './providers/flagsmith-provider';
 import flagsmith from 'flagsmith/isomorphic';
+import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -61,6 +62,7 @@ export default async function RootLayout({
           </SidebarProvider>
         </QueryProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
