@@ -18,6 +18,17 @@ export interface Recipe {
   user?: Profile;
 }
 
+export interface CreateRecipe {
+  title: string;
+  description: string;
+  ingredients: string[];
+  instructions: string[];
+  prep_time?: number;
+  cook_time?: number;
+  servings: number;
+  image: string;
+}
+
 export interface RecipeCardProps {
   item: Recipe;
   type: 'recipe';

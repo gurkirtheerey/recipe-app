@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import CreateRecipeModal from '@/components/Recipe/CreateRecipeModal';
+import CreateRecipeModal from '@/components/Recipe/CreateRecipe/create-recipe-modal';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MixpanelUserSetup } from '@/lib/mixpanel/mixpanelClient';

@@ -10,6 +10,8 @@ import EditRecipeModal from '@/app/recipes/EditRecipeModal';
 import DeleteRecipeButton from '@/components/Recipe/DeleteRecipeButton';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import Ingredients from './ingredients';
+
 type RecipeParams = Promise<{
   id: string;
 }>;
@@ -112,16 +114,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
           </div>
 
           {/* Ingredients */}
-          <div className="mb-8">
-            <h2 className="text-lg font-medium mb-4">Ingredients</h2>
-            <ul className="space-y-4">
-              {recipe.ingredients?.map((ingredient: string, index: number) => (
-                <li key={index} className="flex items-center text-gray-800 py-2 border-b border-gray-100">
-                  <span className="">{ingredient}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Ingredients ingredients={recipe.ingredients} />
 
           {/* Instructions */}
           <div>
