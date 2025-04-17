@@ -11,8 +11,8 @@ const AppSidebarTrigger = () => {
   }
 
   return (
-    <div className="sm:hidden absolute top-0 right-0">
-      <SidebarTrigger />
+    <div className="sm:hidden absolute top-2 right-4 flex items-center justify-center mt-3">
+      <SidebarTrigger className="h-6 w-6 text-muted-foreground" />
     </div>
   );
 };

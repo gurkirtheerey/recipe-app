@@ -1,3 +1,5 @@
+import { Profile } from './profileTypes';
+
 export interface Recipe {
   id: string;
   title: string;
@@ -13,6 +15,7 @@ export interface Recipe {
   created_at: string;
   updated_at: string;
   user_id?: string;
+  user?: Profile;
 }
 
 export interface CreateRecipe {
