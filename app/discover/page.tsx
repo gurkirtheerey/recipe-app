@@ -9,7 +9,7 @@ export default async function DiscoverPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/signin');
+    redirect('/login');
   }
 
   const recipes = await getAllRecipes(user.id);
