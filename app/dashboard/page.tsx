@@ -13,5 +13,5 @@ export default async function Dashboard() {
     redirect('/login');
   }
 
-  return <DashboardContent />;
+  return <DashboardContent userId={user.id} />;
 }
