@@ -18,10 +18,10 @@ export const initMixpanel = async () => {
 };
 
 export const MixpanelUserSetup = () => {
-  const { user, isLoading } = useAuth(); // your logged-in user from Supabase or context
+  const { user } = useAuth(); // your logged-in user from Supabase or context
 
   useEffect(() => {
-    if (!isLoading && user && !mixpanel.get_distinct_id()) {
+    if (user) {
       mixpanel.identify(user.id);
       mixpanel.people.set({
         $email: user.email,
