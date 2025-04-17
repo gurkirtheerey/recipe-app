@@ -222,14 +222,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="file">Image</Label>
-            <Input
-              type="file"
-              capture="environment"
-              id="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="mt-2"
-            />
+            <Input type="file" accept="image/*" id="file" onChange={handleFileChange} className="mt-2" />
             {errors.image && <p className="text-red-500 text-xs">{errors.image.message}</p>}
           </div>
         </div>
@@ -252,7 +245,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
 
   return (
     <Modal open={open} onOpenChange={setOpen} title="Create Recipe" description="Create a new recipe to get started.">
-      <form className="overflow-y-auto max-h-[80vh]" onSubmit={handleSubmit(onSubmit)}>
+      <form className="overflow-y-auto min-h-full" onSubmit={handleSubmit(onSubmit)}>
         {formContent}
       </form>
     </Modal>
