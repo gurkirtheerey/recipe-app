@@ -5,8 +5,9 @@ import { useState } from 'react';
 import CreateRecipeModal from '@/components/Recipe/CreateRecipeModal';
 import Link from 'next/link';
 import mixpanel from 'mixpanel-browser';
-
+import { MixpanelUserSetup } from '@/lib/mixpanel/mixpanelClient';
 export default function DashboardContent() {
+  MixpanelUserSetup(); // Initialize Mixpanel on user login/signup dashboard page
   const [open, setOpen] = useState(false);
 
   return (

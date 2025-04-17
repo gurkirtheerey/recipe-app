@@ -46,8 +46,6 @@ const AppSidebarContent = ({ profile, user, firstName }: { profile: Profile; use
     },
   ];
 
-  console.log(isMobile);
-
   return (
     <Sidebar side={isMobile ? 'right' : 'left'}>
       <SidebarContent>
