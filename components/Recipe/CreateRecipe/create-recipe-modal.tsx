@@ -222,7 +222,14 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="file">Image</Label>
-            <Input type="file" id="file" accept="image/*" onChange={handleFileChange} className="mt-2" />
+            <Input
+              type="file"
+              capture="environment"
+              id="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="mt-2"
+            />
             {errors.image && <p className="text-red-500 text-xs">{errors.image.message}</p>}
           </div>
         </div>
