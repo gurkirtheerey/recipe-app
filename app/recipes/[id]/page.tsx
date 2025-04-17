@@ -10,9 +10,27 @@ import EditRecipeModal from '@/app/recipes/EditRecipeModal';
 import DeleteRecipeButton from '@/components/Recipe/DeleteRecipeButton';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import NutritionLabel from '@/components/NutritionLabel';
 type RecipeParams = Promise<{
   id: string;
 }>;
+
+const nutrition = {
+  calories: 200,
+  totalFat: 10,
+  saturatedFat: 5,
+  transFat: 0,
+  cholesterol: 0,
+  sodium: 0,
+  totalCarbohydrates: 0,
+  dietaryFiber: 0,
+  sugars: 0,
+  protein: 0,
+  vitaminD: 0,
+  calcium: 0,
+  iron: 0,
+  potassium: 0,
+};
 
 export default async function RecipePage({ params }: { params: RecipeParams }) {
   const supabase = await createClient();
@@ -137,6 +155,14 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
               ))}
             </ol>
           </div>
+          <NutritionLabel
+            className="m-auto"
+            initialData={{
+              nutritionInfo: nutrition,
+              servingSize: recipe.servings?.toString() || '1 serving',
+              servingsPerContainer: 1,
+            }}
+          />
         </div>
       </div>
     </main>

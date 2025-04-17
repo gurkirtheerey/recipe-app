@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         messagesCopy[lastMsgIndex] = {
           ...messagesCopy[lastMsgIndex],
           // Add recipe-specific requirements to the user's message if recipe related
-          content: `${messagesCopy[lastMsgIndex].content}. Include title, prep time in minutes, cook time in minutes, servings, and a short description.`,
+          content: `${messagesCopy[lastMsgIndex].content}. Include title, prep time in minutes, cook time in minutes, servings, a short description, and full nutrition facts.`,
         };
       }
     }
