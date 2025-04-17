@@ -128,7 +128,42 @@ const ShoppingListContent = ({ user }: { user: User }) => {
         <ShoppingCart className="text-primary h-6 w-6" />
         <h1 className="text-2xl font-bold">Shopping List</h1>
       </div>
-
+      {/* Shopping list form */}
+      <form onSubmit={onSubmit} className="flex gap-2">
+        <div className="relative flex-1">
+          <Input
+            type="text"
+            placeholder="Add ingredient"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            disabled={handleAddItem.isPending || handleDeleteItem.isPending}
+            className="pr-10"
+          />
+          <Button
+            type="submit"
+            size="icon"
+            variant="ghost"
+            className={cn(
+              'absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7',
+              !name && 'opacity-50 pointer-events-none'
+            )}
+            disabled={!name || handleAddItem.isPending || handleDeleteItem.isPending}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </div>
+        <Button
+          variant="destructive"
+          onClick={handleClearAll}
+          disabled={ingredients.length === 0 || handleDeleteItem.isPending || handleAddItem.isPending}
+          className="whitespace-nowrap"
+          type="button"
+        >
+          <Trash2 className="h-4 w-4" />
+          Clear All
+        </Button>
+      </form>
+      {/* Shopping list ingredients */}
       <Card className="p-4">
         {ingredients.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground">Your shopping list is empty</div>
@@ -186,41 +221,6 @@ const ShoppingListContent = ({ user }: { user: User }) => {
           </ul>
         )}
       </Card>
-
-      <form onSubmit={onSubmit} className="flex gap-2">
-        <div className="relative flex-1">
-          <Input
-            type="text"
-            placeholder="Add ingredient"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={handleAddItem.isPending || handleDeleteItem.isPending}
-            className="pr-10"
-          />
-          <Button
-            type="submit"
-            size="icon"
-            variant="ghost"
-            className={cn(
-              'absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7',
-              !name && 'opacity-50 pointer-events-none'
-            )}
-            disabled={!name || handleAddItem.isPending || handleDeleteItem.isPending}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-        <Button
-          variant="destructive"
-          onClick={handleClearAll}
-          disabled={ingredients.length === 0 || handleDeleteItem.isPending || handleAddItem.isPending}
-          className="whitespace-nowrap"
-          type="button"
-        >
-          <Trash2 className="h-4 w-4" />
-          Clear All
-        </Button>
-      </form>
     </div>
   );
 };
