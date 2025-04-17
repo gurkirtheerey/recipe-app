@@ -26,7 +26,7 @@ export interface CreateRecipe {
   prep_time?: number;
   cook_time?: number;
   servings: number;
-  image: File;
+  image: File | string;
   userId: string;
 }
 

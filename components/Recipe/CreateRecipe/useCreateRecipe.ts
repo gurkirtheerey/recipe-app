@@ -8,7 +8,7 @@ export const useCreateRecipe = () => {
     mutationFn: async (recipe: CreateRecipe) => {
       let url = '';
       if (recipe.image) {
-        url = await handleUpload(recipe.image);
+        url = await handleUpload(recipe.image as File);
       }
 
       const { error } = await fetch('/api/recipe', {
