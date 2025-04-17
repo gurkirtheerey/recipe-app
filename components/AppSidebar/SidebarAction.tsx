@@ -15,6 +15,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { createClient } from '@/lib/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
+import mixpanel from 'mixpanel-browser';
+
 const SidebarAction = ({ user }: { user: User }) => {
   const supabase = createClient();
 
@@ -32,6 +34,12 @@ const SidebarAction = ({ user }: { user: User }) => {
       return data;
     },
   });
+
+  const handleSignOut = async () => {
+    await signOut();
+    mixpanel.track('Sign Out');
+    mixpanel.reset();
+  };
 
   if (isLoading) {
     return <Skeleton className="h-8 w-8 rounded-full" />;
@@ -64,7 +72,7 @@ const SidebarAction = ({ user }: { user: User }) => {
           <span>Account Settings</span>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => signOut()}
+          onClick={handleSignOut}
           className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-gray-100"
         >
           <span>Sign out</span>
