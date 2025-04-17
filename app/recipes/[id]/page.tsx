@@ -18,6 +18,23 @@ type RecipeParams = Promise<{
   id: string;
 }>;
 
+const nutrition = {
+  calories: 200,
+  totalFat: 10,
+  saturatedFat: 5,
+  transFat: 0,
+  cholesterol: 0,
+  sodium: 0,
+  totalCarbohydrates: 0,
+  dietaryFiber: 0,
+  sugars: 0,
+  protein: 0,
+  vitaminD: 0,
+  calcium: 0,
+  iron: 0,
+  potassium: 0,
+};
+
 export default async function RecipePage({ params }: { params: RecipeParams }) {
   const supabase = await createClient();
   const { id } = await params;
