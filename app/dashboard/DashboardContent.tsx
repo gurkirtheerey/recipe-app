@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import CreateRecipeModal from '@/components/Recipe/CreateRecipeModal';
+import CreateRecipeModal from '@/components/Recipe/CreateRecipe/create-recipe-modal';
 import Link from 'next/link';
 import mixpanel from 'mixpanel-browser';
 import { MixpanelUserSetup } from '@/lib/mixpanel/mixpanelClient';
