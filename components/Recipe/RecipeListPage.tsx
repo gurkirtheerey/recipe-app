@@ -1,10 +1,10 @@
-import { type Recipe, type Collection } from '@/types/recipeTypes';
 import { RecipeGrid } from '@/components/Recipe/RecipeGrid';
+import { Recipe } from '@/types';
 
 interface RecipeListPageProps {
   title: string;
-  items?: (Recipe | Collection)[];
-  type: 'recipe' | 'collection';
+  items?: Recipe[];
+  type: 'recipe';
 }
 
 export function RecipeListPage({ title, items, type }: RecipeListPageProps) {
