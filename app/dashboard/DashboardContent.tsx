@@ -16,16 +16,17 @@ type FavoriteWithProfile = {
   recipe: Recipe & { user: Profile };
 };
 
-export default function DashboardContent() {
+export default function DashboardContent({ userId }: { userId: string }) {
   MixpanelUserSetup(); // Initialize Mixpanel on user login/signup dashboard page
   const [open, setOpen] = useState(false);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['dashboard'],
+    queryKey: ['dashboard', userId],
     queryFn: async () => {
       const res = await fetch('/api/dashboard');
       return res.json();
     },
+    enabled: !!userId,
   });
 
   if (isLoading) {
