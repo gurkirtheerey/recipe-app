@@ -1,7 +1,8 @@
 import { CreateRecipe } from '@/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 export const useCreateRecipe = () => {
+  const queryClient = useQueryClient();
   const createRecipe = useMutation({
     mutationFn: async (recipe: CreateRecipe) => {
       const { error } = await fetch('/api/recipe', {
@@ -13,6 +14,7 @@ export const useCreateRecipe = () => {
         toast.error(`Error creating recipe: ${error}`);
         throw new Error(error);
       }
+      queryClient.invalidateQueries({ queryKey: ['dashboard', recipe.userId] });
       toast.success('Recipe created successfully');
       return null;
     },

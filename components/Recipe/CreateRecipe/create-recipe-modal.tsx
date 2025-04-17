@@ -102,6 +102,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
   };
 
   const onSubmit = async (values: CreateRecipeSchema) => {
+    if (!user) return;
     const recipe = {
       ...values,
       ingredients: values.ingredients.split('\n').filter((step) => step.trim() !== ''),
@@ -109,7 +110,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       image: values.image ? (values.image as string) : ('' as string),
     };
 
-    await createRecipe.mutateAsync(recipe);
+    await createRecipe.mutateAsync({ ...recipe, userId: user.id });
     setOpen(false);
   };
 
