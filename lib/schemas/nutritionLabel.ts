@@ -11,17 +11,6 @@ export const nutritionInfoSchema = z.object({
   dietaryFiber: z.number().min(0),
   sugars: z.number().min(0),
   protein: z.number().min(0),
-  vitaminD: z.number().min(0).optional(),
-  calcium: z.number().min(0).optional(),
-  iron: z.number().min(0).optional(),
-  potassium: z.number().min(0).optional(),
-});
-
-export const nutritionLabelSchema = z.object({
-  nutritionInfo: nutritionInfoSchema,
-  servingSize: z.string().min(1),
-  servingsPerContainer: z.number().min(1),
 });
 
 export type NutritionInfo = z.infer<typeof nutritionInfoSchema>;
-export type NutritionLabelData = z.infer<typeof nutritionLabelSchema>;
