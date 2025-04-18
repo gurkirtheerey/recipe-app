@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DrawerDescription,
 } from './ui';
+import { cn } from '@/lib/utils';
 
 /**
  * Modal component that renders a dialog or drawer depending on the screen size
@@ -26,19 +27,23 @@ const Modal = ({
   children,
   open,
   onOpenChange,
+  dialogClassName,
+  drawerClassName,
 }: {
   title: string;
   description: string;
   children: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  dialogClassName?: string;
+  drawerClassName?: string;
 }) => {
   const isMobile = useIsMobile();
 
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="px-4">
+        <DrawerContent className={cn('px-4', drawerClassName)}>
           <DrawerTitle className="mt-4">{title}</DrawerTitle>
           <DrawerDescription className="text-sm mb-4">{description}</DrawerDescription>
           {children}
@@ -49,7 +54,7 @@ const Modal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className={cn('px-4', dialogClassName)}>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
         {children}
