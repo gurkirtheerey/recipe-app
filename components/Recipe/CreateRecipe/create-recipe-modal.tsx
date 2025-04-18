@@ -249,7 +249,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       onOpenChange={setOpen}
       title="Create Recipe"
       description="Create a new recipe to get started."
-      drawerClassName="min-w-screen min-h-screen"
+      drawerClassName="min-w-screen h-screen overflow-y-auto"
     >
       <form className="overflow-y-auto" onSubmit={handleSubmit(onSubmit)}>
         {formContent}
