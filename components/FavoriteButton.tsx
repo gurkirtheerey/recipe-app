@@ -38,14 +38,14 @@ const FavoriteButton = ({ type, id, isFavorite }: { type?: 'post' | 'recipe'; id
       className={
         type === 'post'
           ? 'p-0 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent disabled:opacity-50'
-          : 'p-2 bg-gray-200 rounded-full hover:bg-gray-300 disabled:opacity-50'
+          : 'p-2 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50'
       }
     >
       {handleFavorite.isPending ? (
-        <Loader2 className="animate-spin text-black" size={20} />
+        <Loader2 className="animate-spin text-black dark:text-white" size={20} />
       ) : (
         <Heart
-          className={`${toggle ? 'fill-red-500 text-red-500' : type === 'post' ? 'text-gray-800' : 'text-black'}`}
+          className={`${toggle ? 'fill-red-500 text-red-500' : type === 'post' ? 'text-gray-800 dark:text-gray-300' : 'text-black dark:text-white'}`}
         />
       )}
     </Button>

@@ -31,14 +31,14 @@ export function timeAgo(date: string): string {
 export function DiscoverCard({ item }: DiscoverCardProps) {
   const timePosted = timeAgo(item.created_at as string);
   return (
-    <div className="w-full sm:w-1/2 md:w-2/3 lg:w-1/2 shadow-md hover:shadow-lg my-6 rounded-lg hover:scale-99 transition-all duration-300">
+    <div className="w-full sm:w-1/2 md:w-2/3 lg:w-1/2 shadow-md hover:shadow-lg dark:shadow-gray-800/30 dark:hover:shadow-gray-800/40 my-6 rounded-lg hover:scale-99 transition-all duration-300 bg-white dark:bg-gray-700/40">
       <Link href={`/recipes/${item.id}`}>
         <div className="relative sm:h-72 h-48 md:h-84 w-full">
           {item.image ? (
             <Image src={item.image} alt={item.title} fill className="object-cover rounded-t-lg" priority />
           ) : (
             <div className="flex items-center justify-center h-full">
-              <PlusIcon className="h-10 w-10 text-gray-400" />
+              <PlusIcon className="h-10 w-10 text-gray-400 dark:text-gray-500" />
             </div>
           )}
         </div>
@@ -50,10 +50,12 @@ export function DiscoverCard({ item }: DiscoverCardProps) {
           <ShareButton id={item.id} title={item.title} />
         </div>
         <Link href={`/recipes/${item.id}`}>
-          <h2 className="text-xl font-medium text-black hover:text-gray-600 line-clamp-1">{item.title}</h2>
+          <h2 className="text-xl font-medium text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300 line-clamp-1">
+            {item.title}
+          </h2>
         </Link>
-        <p className="text-gray-800 text-sm line-clamp-2 min-h-[3em]">{item.description}</p>
-        <p className="text-gray-800 text-xs">{timePosted}</p>
+        <p className="text-gray-800 dark:text-gray-300 text-sm line-clamp-2 min-h-[3em]">{item.description}</p>
+        <p className="text-gray-600 dark:text-gray-400 text-xs">{timePosted}</p>
       </div>
     </div>
   );

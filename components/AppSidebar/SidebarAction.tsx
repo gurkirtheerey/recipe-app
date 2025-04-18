@@ -16,7 +16,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
 import mixpanel from 'mixpanel-browser';
-
+import ThemeToggle from '../DropdownThemeToggle';
 const SidebarAction = ({ user }: { user: User }) => {
   const supabase = createClient();
 
@@ -57,23 +57,24 @@ const SidebarAction = ({ user }: { user: User }) => {
             <AvatarImage src={profile?.profile_picture} />
             <AvatarFallback>{user?.email?.charAt(0)}</AvatarFallback>
           </Avatar>
-          {user?.email}
-          <ChevronUp className="ml-auto" />
+          <span className="text-gray-900 dark:text-gray-100">{user?.email}</span>
+          <ChevronUp className="ml-auto text-gray-700 dark:text-gray-300" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         side="top"
-        className="w-[--radix-popper-anchor-width] min-w-[200px] rounded-md border bg-white p-1 shadow-md"
+        className="w-[--radix-popper-anchor-width] min-w-[200px] rounded-md border bg-white dark:bg-gray-800/10 dark:border-gray-700 p-1 shadow-md"
       >
+        <ThemeToggle />
         <DropdownMenuItem
           onClick={() => redirect('/account-settings')}
-          className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-gray-100"
+          className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm text-gray-900 dark:text-gray-100 outline-none hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <span>Account Settings</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleSignOut}
-          className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-gray-100"
+          className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm text-gray-900 dark:text-gray-100 outline-none hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <span>Sign out</span>
         </DropdownMenuItem>
