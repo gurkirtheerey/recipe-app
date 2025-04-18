@@ -174,13 +174,10 @@ const CreateAiRecipe = () => {
               disabled={status !== 'ready'}
               className="flex-1 rounded-full text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-gray-100 dark:bg-gray-800 focus:outline-none focus:border-none focus:ring-0 px-4 py-2"
             />
+            <button type="submit" className="rounded-full bg-blue-600 text-white hover:bg-blue-700 p-2 m-1">
+              <ArrowUp className="w-5 h-5" />
+            </button>
           </form>
-          <button
-            type="submit"
-            className="rounded-full bg-blue-600 text-white hover:bg-blue-700 dark:hover:bg-blue-500 p-2 m-1"
-          >
-            <ArrowUp className="w-5 h-5" />
-          </button>
         </div>
       </div>
     </div>
