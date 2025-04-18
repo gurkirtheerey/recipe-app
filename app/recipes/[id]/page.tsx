@@ -11,6 +11,7 @@ import DeleteRecipeButton from '@/components/Recipe/DeleteRecipeButton';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Ingredients from './ingredients';
+import CommentForm from './comment-form';
 
 type RecipeParams = Promise<{
   id: string;
@@ -129,6 +130,13 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                 </li>
               ))}
             </ol>
+          </div>
+          {/* Comments */}
+          <div className="my-10">
+            <h2 className="text-lg font-medium mb-4">Comments</h2>
+            <div>
+              <CommentForm recipeId={recipe.id} userId={user.id} />
+            </div>
           </div>
         </div>
       </div>
