@@ -80,7 +80,7 @@ const EditRecipeModal = ({ recipe, isOwner }: { recipe: Recipe; isOwner: boolean
           </div>
         </DialogTrigger>
       )}
-      <DialogContent className="max-h-[90vh] overflow-y-auto">
+      <DialogContent className="h-screen min-w-screen overflow-y-auto py-10">
         <DialogTitle>Edit Recipe</DialogTitle>
         <DialogDescription>Edit your recipe to get started.</DialogDescription>
         <form onSubmit={handleSubmit(onSubmit)}>

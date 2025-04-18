@@ -49,7 +49,7 @@ export function RecipeRow({ title, items, type }: RecipeRowProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 sm:mt-0 mt-4">
       <Header />
       <div className="relative -mx-4 sm:mx-0">
         {/* Carousel component */}
