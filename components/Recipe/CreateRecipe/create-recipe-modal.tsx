@@ -50,9 +50,9 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       description: '',
       ingredients: '',
       instructions: '',
-      prep_time: 0,
-      cook_time: 0,
-      servings: 0,
+      prep_time: undefined,
+      cook_time: undefined,
+      servings: undefined,
       image: undefined,
     },
   });
@@ -102,6 +102,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
   };
 
   const onSubmit = async (values: CreateRecipeSchema) => {
+    if (!user) return;
     const recipe = {
       ...values,
       ingredients: values.ingredients.split('\n').filter((step) => step.trim() !== ''),
@@ -109,7 +110,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
       image: values.image ? (values.image as string) : ('' as string),
     };
 
-    await createRecipe.mutateAsync(recipe);
+    await createRecipe.mutateAsync({ ...recipe, userId: user.id });
     setOpen(false);
   };
 
@@ -129,14 +130,6 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
             <Input type="text" id="description" placeholder="Recipe description" {...register('description')} />
             {errors.description && <p className="text-red-500 text-xs">{errors.description.message}</p>}
           </div>
-        </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <Button type="button" onClick={() => handleNextStep(2)}>
-            Next
-          </Button>
-          <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
         </div>
       </div>
     );
@@ -160,14 +153,6 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
             {errors.instructions && <p className="text-red-500 text-xs">{errors.instructions.message}</p>}
           </div>
         </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <Button type="button" onClick={() => handleNextStep(3)}>
-            Next
-          </Button>
-          <Button type="button" variant="outline" onClick={() => setStep(1)}>
-            Go Back
-          </Button>
-        </div>
       </div>
     );
   } else if (step === 3) {
@@ -179,7 +164,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
             <Input
               type="number"
               id="prep_time"
-              placeholder="Mins"
+              placeholder="Enter in minutes..."
               {...register('prep_time', { valueAsNumber: true })}
             />
             {errors.prep_time && <p className="text-red-500 text-xs">{errors.prep_time.message}</p>}
@@ -189,7 +174,7 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
             <Input
               type="number"
               id="cook_time"
-              placeholder="Mins"
+              placeholder="Enter in minutes..."
               {...register('cook_time', { valueAsNumber: true })}
             />
             {errors.cook_time && <p className="text-red-500 text-xs">{errors.cook_time.message}</p>}
@@ -199,19 +184,11 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
             <Input
               type="number"
               id="servings"
-              placeholder="# of servings"
+              placeholder="Number of servings..."
               {...register('servings', { valueAsNumber: true })}
             />
             {errors.servings && <p className="text-red-500 text-xs">{errors.servings.message}</p>}
           </div>
-        </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <Button type="button" onClick={() => handleNextStep(4)}>
-            Next
-          </Button>
-          <Button type="button" variant="outline" onClick={() => setStep(2)}>
-            Go Back
-          </Button>
         </div>
       </div>
     );
@@ -221,30 +198,53 @@ const CreateRecipeModal = ({ open, setOpen }: CreateRecipeModalProps) => {
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="file">Image</Label>
-            <Input type="file" id="file" accept="image/*" onChange={handleFileChange} className="mt-2" />
+            <Input type="file" accept="image/*" id="file" onChange={handleFileChange} className="mt-2" />
             {errors.image && <p className="text-red-500 text-xs">{errors.image.message}</p>}
           </div>
-        </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <Button
-            className="w-full"
-            type="button"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isPending || isAuthLoading || !user}
-          >
-            {isPending ? 'Creating...' : 'Create'}
-          </Button>
-          <Button type="button" variant="outline" onClick={() => setStep(3)}>
-            Go Back
-          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <Modal open={open} onOpenChange={setOpen} title="Create Recipe" description="Create a new recipe to get started.">
-      <form onSubmit={handleSubmit(onSubmit)}>{formContent}</form>
+    <Modal
+      open={open}
+      onOpenChange={setOpen}
+      title="Create Recipe"
+      description="Create a new recipe to get started."
+      drawerClassName="min-w-screen h-screen overflow-y-auto"
+    >
+      <form className="overflow-y-auto flex flex-col gap-2 justify-between h-full" onSubmit={handleSubmit(onSubmit)}>
+        {formContent}
+
+        <div className="flex flex-col gap-2 mb-4">
+          {/* Button to handle the next step (If) */}
+          <Button
+            type="submit"
+            onClick={() => (step === 4 ? handleSubmit(onSubmit)() : handleNextStep(step + 1))}
+            disabled={isPending}
+          >
+            {step === 4 ? (isPending ? 'Creating...' : 'Create Recipe') : 'Next'}
+          </Button>
+          {/* Button to handle the previous step (If not on step 1) - If on step 1, close the modal */}
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isPending || isAuthLoading}
+            onClick={() => {
+              if (step === 1) {
+                setOpen(false);
+              } else if (step === 2 || step === 3 || step === 4) {
+                setStep(step - 1);
+              } else {
+                setStep(1);
+              }
+            }}
+          >
+            Go Back
+          </Button>
+        </div>
+      </form>
     </Modal>
   );
 };

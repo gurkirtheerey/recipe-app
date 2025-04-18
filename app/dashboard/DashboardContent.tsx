@@ -118,9 +118,9 @@ export default function DashboardContent({ userId }: { userId: string }) {
                       <Image
                         src={recipe.image}
                         alt={recipe.title}
-                        width={30}
-                        height={30}
-                        className="rounded-full mr-2"
+                        width={20}
+                        height={20}
+                        className="mr-2 min-h-[30px] min-w-[30px] object-cover max-h-[30px] max-w-[30px] rounded-full"
                       />
                     )}
                     <div className="flex flex-col">

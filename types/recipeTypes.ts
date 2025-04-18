@@ -26,7 +26,8 @@ export interface CreateRecipe {
   prep_time?: number;
   cook_time?: number;
   servings: number;
-  image: string;
+  image: File | string;
+  userId: string;
 }
 
 export interface RecipeCardProps {

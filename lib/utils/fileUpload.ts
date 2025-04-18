@@ -19,7 +19,7 @@ export const handleUpload = async (file: File) => {
 
     // Create a form data object to send the file to the server
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', file, `${file.name}-${Date.now()}`);
 
     // Send the file to the server
     const res = await fetch('/api/upload', {
