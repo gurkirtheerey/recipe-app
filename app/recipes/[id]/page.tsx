@@ -41,7 +41,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
   const formattedTime: string = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
 
   return (
-    <main className="min-h-screen bg-[#f8f8f8]">
+    <main className="min-h-screen bg-[#f8f8f8] dark:bg-black">
       <div className="relative">
         {/* Navigation Buttons */}
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
@@ -58,21 +58,23 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
             <Image src={recipe.image} alt={recipe.title} fill className="object-cover" sizes="100vw" priority />
           </div>
         ) : (
-          <div className="relative h-[300px] sm:h-[400px] w-full bg-gray-200">
+          <div className="relative h-[300px] sm:h-[400px] w-full bg-gray-200 dark:bg-gray-900">
             <div className="flex items-center justify-center h-full">
-              <PlusIcon className="h-10 w-10 text-gray-400" />
+              <PlusIcon className="h-10 w-10 text-gray-400 dark:text-gray-600" />
             </div>
           </div>
         )}
       </div>
 
       <div className="-mt-8 relative z-20">
-        <div className="bg-white rounded-t-3xl px-6 pt-8 pb-20 max-w-3xl mx-auto shadow-sm">
+        <div className="bg-white dark:bg-gray-950 rounded-t-3xl px-6 pt-8 pb-20 max-w-3xl mx-auto shadow-sm dark:shadow-black/50">
           {/* Recipe Header */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
               <div className="flex items-start justify-between sm:justify-start w-full">
-                <h1 className="text-xl sm:text-3xl font-semibold mb-2 sm:mr-3 mr-0 line-clamp-1">{recipe.title}</h1>
+                <h1 className="text-xl sm:text-3xl font-semibold mb-2 sm:mr-3 mr-0 line-clamp-1 text-gray-900 dark:text-gray-100">
+                  {recipe.title}
+                </h1>
                 <EditRecipeModal recipe={recipe} isOwner={isOwner} />
               </div>
               <div className="mt-2 mb-4 sm:mt-0 sm:mb-0">
@@ -80,7 +82,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
               </div>
             </div>
             {/* Recipe Details */}
-            <div className="flex items-center gap-6 text-sm text-gray-600">
+            <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <span>Prep Time: {recipe.prep_time} mins</span>
               </div>
@@ -103,32 +105,34 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-6 text-sm text-gray-600 mt-2">
+            <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mt-2">
               <span>Created: {new Date(recipe.created_at).toLocaleDateString()}</span>
             </div>
           </div>
           {/* Description */}
           <div className="mb-8">
-            <h2 className="text-lg font-medium mb-2">Description</h2>
-            <p className="text-gray-600 leading-relaxed">{recipe.description}</p>
+            <h2 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">Description</h2>
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{recipe.description}</p>
           </div>
 
           {/* Ingredients */}
-          <Ingredients ingredients={recipe.ingredients} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Ingredients ingredients={recipe.ingredients} />
 
-          {/* Instructions */}
-          <div>
-            <h2 className="text-lg font-medium mb-4">Instructions</h2>
-            <ol className="space-y-4">
-              {recipe.instructions?.map((step: string, index: number) => (
-                <li key={index} className="flex gap-4">
-                  <span className="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-gray-100 text-gray-600 text-sm">
-                    {index + 1}
-                  </span>
-                  <p className="text-gray-600 leading-relaxed">{step}</p>
-                </li>
-              ))}
-            </ol>
+            {/* Instructions */}
+            <div>
+              <h2 className="text-lg font-medium mb-4 text-gray-900 dark:text-gray-100">Instructions</h2>
+              <ol className="space-y-4">
+                {recipe.instructions?.map((step: string, index: number) => (
+                  <li key={index} className="flex gap-4">
+                    <span className="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-sm">
+                      {index + 1}
+                    </span>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">{step}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </div>
       </div>

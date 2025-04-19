@@ -31,7 +31,7 @@ const Ingredients = ({ ingredients }: { ingredients: string[] }) => {
         {ingredients?.map((ingredient: string, index: number) => (
           <li
             key={index}
-            className={`flex items-center text-gray-800 py-2 border-b border-gray-100 ${
+            className={`text-sm flex items-center text-gray-800 py-2 border-b border-gray-100 dark:text-gray-200 dark:border-gray-700 ${
               handleClick.isPending ? 'cursor-not-allowed animate-pulse !text-gray-400' : 'cursor-pointer'
             }`}
             onClick={() => handleClick.mutate(ingredient)}

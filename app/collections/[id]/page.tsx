@@ -93,8 +93,8 @@ const CollectionIdPage = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h1 className="text-2xl font-bold">{collection.name}</h1>
-          <p className="text-gray-500 text-sm">{collection.description}</p>
+          <h1 className="text-2xl font-bold dark:text-white">{collection.name}</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{collection.description}</p>
         </div>
         <Button variant="outline" onClick={() => setIsOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -107,11 +107,11 @@ const CollectionIdPage = () => {
                 onClick={() => handleClick(recipe)}
                 key={recipe.id}
                 className={
-                  'flex items-center justify-between border border-gray-200 bg-gray-200 rounded w-full px-4 py-2 shadow-md cursor-pointer hover:bg-gray-50'
+                  'flex items-center justify-between border border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-gray-800 rounded w-full px-4 py-2 shadow-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700'
                 }
               >
-                <h2>{recipe.title}</h2>
-                {selectedRecipes.find((r) => r.id === recipe.id) && <BadgeCheck className="w-4 h-4" />}
+                <h2 className="dark:text-white">{recipe.title}</h2>
+                {selectedRecipes.find((r) => r.id === recipe.id) && <BadgeCheck className="w-4 h-4 text-green-500" />}
               </div>
             ))}
           </div>

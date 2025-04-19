@@ -77,16 +77,16 @@ const CreateAiRecipe = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 text-gray-800">
+    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 p-4 shadow-sm">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-            <ChefHat className="w-6 h-6 text-blue-600" />
+          <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+            <ChefHat className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-800">Recipe Assistant</h1>
-            <p className="text-sm text-gray-500">AI-powered recipe creation</p>
+            <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100">Recipe Assistant</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">AI-powered recipe creation</p>
           </div>
         </div>
       </header>
@@ -96,12 +96,12 @@ const CreateAiRecipe = () => {
         {/* Show empty state if no messages */}
         {aiChatbot.enabled &&
           (messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
-              <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
-                <ChefHat className="w-8 h-8 text-blue-600" />
+            <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400">
+              <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-4">
+                <ChefHat className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <p className="text-lg font-medium text-gray-700">Start a conversation</p>
-              <p className="text-sm mt-2 text-center max-w-md text-gray-500">
+              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Start a conversation</p>
+              <p className="text-sm mt-2 text-center max-w-md text-gray-500 dark:text-gray-400">
                 Ask me to create a recipe, suggest ingredients, or help with cooking techniques.
               </p>
             </div>
@@ -114,8 +114,8 @@ const CreateAiRecipe = () => {
               >
                 {/* Assistant avatar with chef hat */}
                 {message.role === 'assistant' && (
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                    <ChefHat className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                    <ChefHat className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
                 )}
                 <div
@@ -125,7 +125,7 @@ const CreateAiRecipe = () => {
                     className={`p-3 ${
                       message.role === 'user'
                         ? 'bg-blue-600 text-white rounded-2xl rounded-tr-none'
-                        : 'bg-white text-gray-800 shadow-sm rounded-2xl rounded-tl-none'
+                        : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm rounded-2xl rounded-tl-none'
                     }`}
                   >
                     <p className="text-sm whitespace-pre-line">{message.content}</p>
@@ -137,14 +137,14 @@ const CreateAiRecipe = () => {
                     (!isRecipeSaved(message.id) ? (
                       <button
                         onClick={() => handleAddRecipe(message)}
-                        className="self-start flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
+                        className="self-start flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                       >
                         <Plus className="w-3 h-3" />
                         <span>Add to Recipes</span>
                       </button>
                     ) : (
                       // If the recipe is saved, show the "Saved" button
-                      <span className="self-start flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors">
+                      <span className="self-start flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                         <CircleCheckBig className="w-3 h-3" />
                         <span>Saved</span>
                       </span>
@@ -152,7 +152,7 @@ const CreateAiRecipe = () => {
                 </div>
                 {/* User avatar */}
                 {message.role === 'user' && (
-                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
                     <Avatar>
                       <AvatarImage src={profile?.profile_picture} />
                     </Avatar>
@@ -164,18 +164,21 @@ const CreateAiRecipe = () => {
       </main>
 
       {/* Input area */}
-      <div className="bg-white border-t border-gray-200 p-4 shadow-sm">
-        <div className="flex items-center rounded-full bg-gray-50 border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+        <div className="flex items-center rounded-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
           <form onSubmit={handleSubmit} className="flex-1 flex gap-2">
             <input
               value={input}
               placeholder="Send a message..."
               onChange={handleInputChange}
               disabled={status !== 'ready'}
-              className="flex-1 rounded-full text-gray-800 placeholder-gray-400 focus:outline-none focus:border-none focus:ring-none px-4 py-2"
+              className="flex-1 rounded-full text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:border-none focus:ring-none px-4 py-2"
             />
           </form>
-          <button type="submit" className="rounded-full bg-blue-600 text-white hover:bg-blue-700 p-2 m-1">
+          <button
+            type="submit"
+            className="rounded-full bg-blue-600 text-white hover:bg-blue-700 dark:hover:bg-blue-500 p-2 m-1"
+          >
             <ArrowUp className="w-5 h-5" />
           </button>
         </div>

@@ -11,6 +11,7 @@ import { FeatureFlagProvider } from './providers/flagsmith-provider';
 import flagsmith from 'flagsmith/isomorphic';
 import { Analytics } from '@vercel/analytics/react';
 import MixpanelProvider from './providers/mixpanel-provider';
+import ThemeProvider from './providers/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -57,9 +58,11 @@ export default async function RootLayout({
           <SidebarProvider>
             <FeatureFlagProvider serverState={serverState}>
               <MixpanelProvider>
-                <AppSidebar />
-                <AppSidebarTrigger />
-                <main className="flex-1">{children}</main>
+                <ThemeProvider>
+                  <AppSidebar />
+                  <AppSidebarTrigger />
+                  <main className="flex-1">{children}</main>
+                </ThemeProvider>
               </MixpanelProvider>
             </FeatureFlagProvider>
           </SidebarProvider>
