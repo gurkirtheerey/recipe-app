@@ -22,10 +22,10 @@ const ModalItem = <T extends WithId>({
     <div
       onClick={() => handleClick(item)}
       className={
-        'flex items-center justify-between border border-gray-200 bg-gray-200 rounded w-full px-4 py-2 shadow-md cursor-pointer hover:bg-gray-50'
+        'flex items-center justify-between border border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-gray-800 rounded w-full px-4 py-2 shadow-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700'
       }
     >
-      <h2>{renderLabel(item)}</h2>
+      <h2 className="dark:text-gray-100">{renderLabel(item)}</h2>
       {selectedItems.find((t) => t.id === item.id) && selectedIcon}
     </div>
   );

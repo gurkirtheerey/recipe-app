@@ -106,13 +106,12 @@ const CollectionIdPage = () => {
             {myRecipes.map((recipe) => (
               <ModalItem<Recipe>
                 key={recipe.id}
-                className={
-                  'flex items-center justify-between border border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-gray-800 rounded w-full px-4 py-2 shadow-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700'
-                }
-              >
-                <h2 className="dark:text-white">{recipe.title}</h2>
-                {selectedRecipes.find((r) => r.id === recipe.id) && <BadgeCheck className="w-4 h-4 text-green-500" />}
-              </div>
+                item={recipe}
+                handleClick={handleClick}
+                selectedItems={selectedRecipes}
+                renderLabel={(recipe) => recipe.title}
+                selectedIcon={<BadgeCheck className="w-4 h-4" />}
+              />
             ))}
           </div>
           <div className="flex flex-col gap-2 justify-end mb-4">
