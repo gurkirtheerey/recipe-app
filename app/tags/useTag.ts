@@ -84,7 +84,6 @@ const useTag = (userId: string | null, recipeId?: string) => {
     mutationFn: async (name: string) => {
       const supabase = await createClient();
       const { error } = await supabase.from('tags').insert({ name });
-      console.log(error);
       if (error) {
         toast.error(error.message);
         throw new Error(error.message);

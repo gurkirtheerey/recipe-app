@@ -59,8 +59,6 @@ const TagsContent = ({ userId }: { userId: string }) => {
     return <div>No data</div>;
   }
 
-  console.log(data);
-
   return (
     <div className="p-4 sm:mt-0 my-6">
       <div className="flex justify-between items-center">
