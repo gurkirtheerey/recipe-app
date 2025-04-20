@@ -12,6 +12,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Ingredients from './ingredients';
 import CommentForm from './comment-form';
+import RecipeTagModal from './recipe-tag-modal';
 
 type RecipeParams = Promise<{
   id: string;
@@ -76,7 +77,10 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                 <h1 className="text-xl sm:text-3xl font-semibold mb-2 sm:mr-3 mr-0 line-clamp-1 text-gray-900 dark:text-gray-100">
                   {recipe.title}
                 </h1>
-                <EditRecipeModal recipe={recipe} isOwner={isOwner} />
+                <div className="flex items-center gap-2">
+                  <EditRecipeModal recipe={recipe} isOwner={isOwner} />
+                  {isOwner && <RecipeTagModal recipeId={recipe.id} />}
+                </div>
               </div>
               <div className="mt-2 mb-4 sm:mt-0 sm:mb-0">
                 <StarRating initialRating={recipe.rating} recipeId={recipe.id} />

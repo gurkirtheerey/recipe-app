@@ -170,6 +170,9 @@ const EditRecipeModal = ({ recipe, isOwner }: { recipe: Recipe; isOwner: boolean
           <Button className="w-full mt-4" type="submit" disabled={handleEditRecipe.isPending}>
             {handleEditRecipe.isPending ? 'Saving...' : 'Save'}
           </Button>
+          <Button type="button" variant="outline" className="w-full mt-4" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
