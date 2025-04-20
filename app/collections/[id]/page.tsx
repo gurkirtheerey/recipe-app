@@ -12,6 +12,7 @@ import { ContextMenu, ContextMenuItem, ContextMenuContent, ContextMenuTrigger } 
 import Modal from '@/components/Modal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { BadgeCheck, Plus } from 'lucide-react';
+import ModalItem from '@/components/modal-item';
 
 const CollectionIdPage = () => {
   const isMobile = useIsMobile();
@@ -103,8 +104,7 @@ const CollectionIdPage = () => {
         <Modal open={isOpen} onOpenChange={setIsOpen} title="Add Recipe" description="Add a recipe to your collection.">
           <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto py-4 mb-4">
             {myRecipes.map((recipe) => (
-              <div
-                onClick={() => handleClick(recipe)}
+              <ModalItem<Recipe>
                 key={recipe.id}
                 className={
                   'flex items-center justify-between border border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-gray-800 rounded w-full px-4 py-2 shadow-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700'

@@ -5,3 +5,4 @@ export * from './favoriteTypes';
 export * from './ratingTypes';
 export * from './ingredientTypes';
 export * from './commentTypes';
+export * from './tagTypes';

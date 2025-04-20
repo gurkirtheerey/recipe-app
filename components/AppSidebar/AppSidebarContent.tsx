@@ -11,7 +11,7 @@ import {
 import { AppSidebarMenuItem } from './AppSidebarMenuItem';
 import { User } from '@supabase/supabase-js';
 import SidebarAction from './SidebarAction';
-import { Home, Plus, Search, Utensils, User as UserIcon, Book, ShoppingCart } from 'lucide-react';
+import { Home, Plus, Search, Utensils, User as UserIcon, Book, ShoppingCart, Tag } from 'lucide-react';
 import { Profile } from '@/types/profileTypes';
 import { useWindow } from '@/hooks/useWindow';
 
@@ -48,6 +48,11 @@ const AppSidebarContent = ({ profile, user }: { profile: Profile; user: User }) 
       title: 'Shopping List',
       url: '/shopping-list',
       icon: ShoppingCart,
+    },
+    {
+      title: 'Tags',
+      url: '/tags',
+      icon: Tag,
     },
     {
       title: 'Create AI Recipe',

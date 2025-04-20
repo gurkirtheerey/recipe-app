@@ -12,6 +12,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Ingredients from './ingredients';
 import CommentForm from './comment-form';
+import RecipeTagModal from './recipe-tag-modal';
 
 type RecipeParams = Promise<{
   id: string;
@@ -40,6 +41,8 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
   const minutes: number = totalTimeInMinutes % 60;
   // e.g., "1 hour 30 minutes"
   const formattedTime: string = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+
+  console.log(isOwner);
 
   return (
     <main className="min-h-screen bg-[#f8f8f8] dark:bg-black">
@@ -77,6 +80,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                   {recipe.title}
                 </h1>
                 <EditRecipeModal recipe={recipe} isOwner={isOwner} />
+                {isOwner && <RecipeTagModal recipeId={recipe.id} />}
               </div>
               <div className="mt-2 mb-4 sm:mt-0 sm:mb-0">
                 <StarRating initialRating={recipe.rating} recipeId={recipe.id} />
