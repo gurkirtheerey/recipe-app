@@ -66,7 +66,7 @@ const RecipeTagModal = ({ recipeId }: { recipeId: string }) => {
             ))
           )}
         </div>
-        <Button onClick={() => handleSubmit()} disabled={addTagsToRecipe.isPending}>
+        <Button className="my-4" onClick={() => handleSubmit()} disabled={addTagsToRecipe.isPending}>
           {addTagsToRecipe.isPending ? 'Submitting...' : 'Submit'}
         </Button>
       </Modal>
