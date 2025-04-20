@@ -140,7 +140,7 @@ export default function DashboardContent({ userId }: { userId: string }) {
         <Button
           onClick={() => setOpen((prev) => !prev)}
           size="lg"
-          className="rounded-full w-14 h-14 shadow-lg bg-black hover:bg-black/80"
+          className="rounded-full w-14 h-14 shadow-lg bg-black hover:bg-black/80 dark:bg-white dark:hover:bg-white/80"
         >
           <PlusIcon className="w-6 h-6" />
           <span className="sr-only">Create Recipe</span>

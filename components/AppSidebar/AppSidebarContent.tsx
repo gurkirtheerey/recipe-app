@@ -15,7 +15,7 @@ import { Home, Plus, Search, Utensils, User as UserIcon, Book, ShoppingCart } fr
 import { Profile } from '@/types/profileTypes';
 import { useWindow } from '@/hooks/useWindow';
 
-const AppSidebarContent = ({ profile, user, firstName }: { profile: Profile; user: User; firstName: string }) => {
+const AppSidebarContent = ({ profile, user }: { profile: Profile; user: User }) => {
   const { width } = useWindow();
   const isMobile = width < 768;
   const items = [
@@ -60,7 +60,9 @@ const AppSidebarContent = ({ profile, user, firstName }: { profile: Profile; use
     <Sidebar side={isMobile ? 'right' : 'left'}>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Welcome, {firstName}!</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">Nibbl</span>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

@@ -23,7 +23,9 @@ export function RecipeCard({ item, type, className = '' }: RecipeCardProps) {
             </div>
           )}
         </div>
-        <div className="line-clamp-1 text-base font-bold hover:underline sm:text-lg">{item.title}</div>
+        <div className="font-bold sm:text-lg text-sm hover:text-gray-500 dark:hover:text-gray-400 transition-colors">
+          {item.title}
+        </div>
       </div>
     </Link>
   );
