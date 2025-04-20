@@ -4,7 +4,6 @@ import './globals.css';
 import { createClient } from '@/lib/supabase/server';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar/app-sidebar';
-import { Toaster } from 'sonner';
 import AppSidebarTrigger from '@/components/AppSidebar/AppSidebarTrigger';
 import QueryProvider from './providers/query-provider';
 import { FeatureFlagProvider } from './providers/flagsmith-provider';
@@ -12,6 +11,7 @@ import flagsmith from 'flagsmith/isomorphic';
 import { Analytics } from '@vercel/analytics/react';
 import MixpanelProvider from './providers/mixpanel-provider';
 import ThemeProvider from './providers/theme-provider';
+import ToasterWithTheme from '@/components/ToasterWithTheme';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -62,12 +62,12 @@ export default async function RootLayout({
                   <AppSidebar />
                   <AppSidebarTrigger />
                   <main className="flex-1">{children}</main>
+                  <ToasterWithTheme />
                 </ThemeProvider>
               </MixpanelProvider>
             </FeatureFlagProvider>
           </SidebarProvider>
         </QueryProvider>
-        <Toaster />
         <Analytics />
       </body>
     </html>
