@@ -68,6 +68,7 @@ const CommentForm = ({ recipeId, userId }: { recipeId: string; userId: string })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (content.trim() === '') return;
     createComment(content);
     setContent('');
   };
