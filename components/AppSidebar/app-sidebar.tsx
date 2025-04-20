@@ -23,11 +23,9 @@ export async function AppSidebar() {
 
   const profile = await getProfile(user.id);
 
-  const firstName = profile.first_name;
-
   if (!user) {
     redirect('/login');
   }
 
-  return <AppSidebarContent profile={profile} user={user} firstName={firstName} />;
+  return <AppSidebarContent profile={profile} user={user} />;
 }

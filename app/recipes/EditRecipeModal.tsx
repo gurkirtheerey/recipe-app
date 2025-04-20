@@ -75,12 +75,12 @@ const EditRecipeModal = ({ recipe, isOwner }: { recipe: Recipe; isOwner: boolean
     <Dialog open={open} onOpenChange={setOpen}>
       {isOwner && (
         <DialogTrigger asChild>
-          <div className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 cursor-pointer">
+          <div className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 cursor-pointer dark:bg-gray-800 dark:hover:bg-gray-700">
             <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
         </DialogTrigger>
       )}
-      <DialogContent className="max-h-[90vh] overflow-y-auto">
+      <DialogContent className="h-screen min-w-screen overflow-y-auto py-10">
         <DialogTitle>Edit Recipe</DialogTitle>
         <DialogDescription>Edit your recipe to get started.</DialogDescription>
         <form onSubmit={handleSubmit(onSubmit)}>

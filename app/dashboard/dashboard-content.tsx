@@ -65,7 +65,7 @@ export default function DashboardContent({ userId }: { userId: string }) {
       {/* Dashboard content */}
       <div className="grid grid-cols-1 sm:grid-cols-[60%_39%] gap-4 p-4">
         {/* Favorites card */}
-        <Card>
+        <Card className="min-h-[300px] max-h-[300px]">
           <CardHeader>
             <CardTitle>Favorites</CardTitle>
             <CardDescription>You have {favoriteRecipes.length} favorite recipes.</CardDescription>
@@ -100,13 +100,13 @@ export default function DashboardContent({ userId }: { userId: string }) {
           </CardContent>
         </Card>
         {/* Recent recipes card */}
-        <Card>
+        <Card className="min-h-[300px] max-h-[300px]">
           <CardHeader>
             <CardTitle>Recent Recipes</CardTitle>
             <CardDescription>Here are your most recent recipes you&apos;ve created.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
+            <div className="flex flex-col gap-4 overflow-y-auto max-h-[200px]">
               {recentRecipes.map((recipe: Recipe) => (
                 <Link
                   key={recipe.id}
@@ -140,7 +140,7 @@ export default function DashboardContent({ userId }: { userId: string }) {
         <Button
           onClick={() => setOpen((prev) => !prev)}
           size="lg"
-          className="rounded-full w-14 h-14 shadow-lg bg-black hover:bg-black/80"
+          className="rounded-full w-14 h-14 shadow-lg bg-black hover:bg-black/80 dark:bg-white dark:hover:bg-white/80"
         >
           <PlusIcon className="w-6 h-6" />
           <span className="sr-only">Create Recipe</span>
