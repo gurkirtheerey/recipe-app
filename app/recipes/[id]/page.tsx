@@ -15,7 +15,7 @@ import CommentForm from './comment-form';
 import RecipeTagModal from './recipe-tag-modal';
 import NutritionLabel from '@/components/NutritionLabel';
 import Link from 'next/link';
-
+import ShareButton from '@/components/ShareButton';
 type RecipeParams = Promise<{
   id: string;
 }>;
@@ -52,6 +52,9 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
           <div className="flex items-center gap-2">
+            <div className="rounded-full bg-gray-200 dark:bg-gray-700 px-3 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer">
+              <ShareButton id={recipe.id} name={recipe.title} type="recipes" />
+            </div>
             <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
             {isOwner && <DeleteRecipeButton recipeId={recipe.id} />}
           </div>

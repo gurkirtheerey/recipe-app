@@ -13,7 +13,7 @@ const ShareButton = ({ id, name, type }: { id: string; name: string; type: strin
 
     navigator
       .share({
-        title: type === 'recipe' ? `Check out this ${name} recipe on Nibbl!` : `Check out ${name}'s profile on Nibbl!`,
+        title: type === 'recipes' ? `Check out this ${name} recipe on Nibbl!` : `Check out ${name}'s profile on Nibbl!`,
         url: `${window.location.origin}/${type}/${type === 'recipes' ? id : name}`,
       })
       .then(() => {
