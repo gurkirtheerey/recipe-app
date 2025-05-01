@@ -13,6 +13,7 @@ import { redirect } from 'next/navigation';
 import Ingredients from './ingredients';
 import CommentForm from './comment-form';
 import RecipeTagModal from './recipe-tag-modal';
+import NutritionLabel from '@/components/NutritionLabel';
 
 type RecipeParams = Promise<{
   id: string;
@@ -138,6 +139,14 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                 ))}
               </ol>
             </div>
+          </div>
+          {/* Nutrition */}
+          <div className="my-10">
+            {recipe.nutrition ? (
+              <NutritionLabel nutrition={recipe.nutrition} servings={recipe.servings} />
+            ) : (
+              <div className="text-gray-600 dark:text-gray-400">No nutrition information available</div>
+            )}
           </div>
           {/* Comments */}
           <div className="my-10">
