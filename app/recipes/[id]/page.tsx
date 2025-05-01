@@ -126,7 +126,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
                 >
                   {userData?.username}
                 </Link>{' '}
-                on {new Date(recipe.created_at).toLocaleDateString()}
+                on {new Date(recipe.created_at).toLocaleDateString()} {recipe.is_ai_generated && '(AI-Generated)'}
               </span>
             </div>
           </div>

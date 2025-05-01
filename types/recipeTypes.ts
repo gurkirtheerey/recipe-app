@@ -17,6 +17,7 @@ export interface Recipe {
   user_id?: string;
   user?: Profile;
   nutrition?: NutritionInfo;
+  is_ai_generated?: boolean;
 }
 
 export interface CreateRecipe {
