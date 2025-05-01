@@ -14,6 +14,7 @@ import Ingredients from './ingredients';
 import CommentForm from './comment-form';
 import RecipeTagModal from './recipe-tag-modal';
 import NutritionLabel from '@/components/NutritionLabel';
+import Link from 'next/link';
 
 type RecipeParams = Promise<{
   id: string;
@@ -27,6 +28,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data: userData } = await supabase.from('profiles').select('username').eq('id', recipe?.user_id).single();
   if (!user) {
     redirect('/login');
   }
@@ -112,7 +114,17 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
               )}
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mt-2">
-              <span>Created: {new Date(recipe.created_at).toLocaleDateString()}</span>
+              <span>
+                Created By:{' '}
+                <Link
+                  target="_blank"
+                  href={`/profile/${userData?.username}`}
+                  className="font-bold tracking-wide text-lg hover:text-gray-600 dark:hover:text-gray-400 hover:underline"
+                >
+                  {userData?.username}
+                </Link>{' '}
+                on {new Date(recipe.created_at).toLocaleDateString()}
+              </span>
             </div>
           </div>
           {/* Description */}
