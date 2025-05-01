@@ -142,11 +142,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
           </div>
           {/* Nutrition */}
           <div className="my-10">
-            {recipe.nutrition ? (
-              <NutritionLabel nutrition={recipe.nutrition} servings={recipe.servings} />
-            ) : (
-              <div className="text-gray-600 dark:text-gray-400">No nutrition information available</div>
-            )}
+            <NutritionLabel nutrition={recipe.nutrition} servings={recipe.servings} />
           </div>
           {/* Comments */}
           <div className="my-10">
