@@ -4,6 +4,7 @@ import { RecipeGrid } from '@/components/Recipe/RecipeGrid';
 import Navbar from '@/components/navbar';
 import Image from 'next/image';
 import Error from './error';
+import ShareButton from '@/components/ShareButton';
 const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }) => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
@@ -35,7 +36,10 @@ const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }
               width={96}
               height={96}
             />
-            <h1 className="text-3xl font-bold">{username}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-bold">{username}</h1>
+              <ShareButton id={id} name={username} type="profile" />
+            </div>
             <p className="text-muted-foreground">
               {first_name} {last_name}
             </p>

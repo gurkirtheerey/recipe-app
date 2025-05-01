@@ -2,19 +2,41 @@
 
 import React from 'react';
 import { Button } from './ui/button';
-import { Share2 } from 'lucide-react';
+import { Share, Share2 } from 'lucide-react';
 
-const ShareButton = ({ id, title }: { id: string; title: string }) => {
-  const shareData = {
-    title: `Check out this ${title} recipe on Nibbl! `,
-    url: `/recipes/${id}`,
+const ShareButton = ({ id, name, type }: { id: string; name: string; type: string }) => {
+  let isSharing = false;
+
+  const shareDataHandler = () => {
+    if (isSharing) return;
+    isSharing = true;
+
+    navigator
+      .share({
+        title: type === 'recipe' ? `Check out this ${name} recipe on Nibbl!` : `Check out ${name}'s profile on Nibbl!`,
+        url: `${window.location.origin}/${type}/${type === 'recipes' ? id : name}`,
+      })
+      .then(() => {
+        console.log('Shared successfully');
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') {
+          console.log('User canceled the share');
+        } else {
+          console.error('Share failed:', error);
+        }
+      })
+      .finally(() => {
+        isSharing = false;
+      });
   };
+
   return (
     <Button
-      onClick={() => navigator.share(shareData)}
-      className="p-0 text-gray-800 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent hover:text-gray-600"
+      onClick={shareDataHandler}
+      className="p-0 text-gray-800 has-[>svg]:p-0 bg-transparent shadow-none hover:bg-transparent hover:text-gray-600 dark:text-gray-200 dark:hover:text-gray-400"
     >
-      <Share2 />
+      {type === 'recipe' ? <Share2 /> : <Share />}
     </Button>
   );
 };

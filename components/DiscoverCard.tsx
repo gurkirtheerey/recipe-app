@@ -47,7 +47,7 @@ export function DiscoverCard({ item }: DiscoverCardProps) {
         {/* Buttons */}
         <div className="flex justify-between items-center">
           <FavoriteButton type="post" id={item.id} isFavorite={!!item?.favorites?.[0]?.is_favorite} />
-          <ShareButton id={item.id} title={item.title} />
+          <ShareButton id={item.id} name={item.title} type="recipes" />
         </div>
         <Link href={`/recipes/${item.id}`}>
           <h2 className="text-xl font-medium text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300 line-clamp-1">
