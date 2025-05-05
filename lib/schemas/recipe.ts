@@ -1,5 +1,5 @@
 import { z } from 'zod';
-
+import { nutritionInfoSchema } from './nutritionLabel';
 export const createRecipeSchema = z.object({
   title: z.string().min(1, { message: 'Title is required.' }),
   description: z.string().min(1, { message: 'Description is required.' }),
@@ -9,6 +9,7 @@ export const createRecipeSchema = z.object({
   cook_time: z.number().min(0),
   servings: z.number().min(1, { message: 'Servings is required.' }),
   image: z.union([z.string(), z.instanceof(File)]).optional(),
+  nutrition: nutritionInfoSchema.optional(),
 });
 
 export const createRecipeStep1Schema = z.object({
