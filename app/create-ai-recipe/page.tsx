@@ -63,6 +63,7 @@ const CreateAiRecipe = () => {
         image: '',
         user_id: user.id,
         nutrition: recipe.nutrition,
+        is_ai_generated: true,
       },
     ]);
 

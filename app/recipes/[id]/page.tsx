@@ -14,7 +14,8 @@ import Ingredients from './ingredients';
 import CommentForm from './comment-form';
 import RecipeTagModal from './recipe-tag-modal';
 import NutritionLabel from '@/components/NutritionLabel';
-
+import Link from 'next/link';
+import ShareButton from '@/components/ShareButton';
 type RecipeParams = Promise<{
   id: string;
 }>;
@@ -27,6 +28,7 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data: userData } = await supabase.from('profiles').select('username').eq('id', recipe?.user_id).single();
   if (!user) {
     redirect('/login');
   }
@@ -50,6 +52,9 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
         <div className="absolute z-10 w-full p-4 flex items-center justify-between">
           <BackButton />
           <div className="flex items-center gap-2">
+            <div className="rounded-full bg-gray-200 dark:bg-gray-700 px-3 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer">
+              <ShareButton id={recipe.id} name={recipe.title} type="recipes" />
+            </div>
             <FavoriteButton type="recipe" id={recipe.id} isFavorite={recipe?.favorites?.[0]?.is_favorite} />
             {isOwner && <DeleteRecipeButton recipeId={recipe.id} />}
           </div>
@@ -112,7 +117,17 @@ export default async function RecipePage({ params }: { params: RecipeParams }) {
               )}
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mt-2">
-              <span>Created: {new Date(recipe.created_at).toLocaleDateString()}</span>
+              <span>
+                Created By:{' '}
+                <Link
+                  target="_blank"
+                  href={`/profile/${userData?.username}`}
+                  className="font-bold tracking-wide text-lg hover:text-gray-600 dark:hover:text-gray-400 hover:underline"
+                >
+                  {userData?.username}
+                </Link>{' '}
+                on {new Date(recipe.created_at).toLocaleDateString()} {recipe.is_ai_generated && '(AI-Generated)'}
+              </span>
             </div>
           </div>
           {/* Description */}
